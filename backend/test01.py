@@ -5,7 +5,7 @@ import numpy as np
 
 PATH='/home/martin/HDD/Dropbox/SafePet/images/'
 
-filename = PATH+'17_nariz.jpg'
+filename = PATH+'9_nariz.jpg'
 img = cv2.imread(filename)
 
 cv2.namedWindow('main', cv2.WINDOW_NORMAL)

@@ -7,31 +7,31 @@ PATH='/home/martin/HDD/Dropbox/SafePet/images/'
 SHAPE=(960,1280)
 FEATURES=1228800
 
-filename=PATH+'9_nariz.jpg'
-img=cv2.imread(filename)
 
-# Plot of original image
-cv2.namedWindow('main',cv2.WINDOW_NORMAL)
-cv2.imshow('main',img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+if __name__='__main__':
+	if len(sys.argv)>2:
+		sys.exit('Wrong input!')
 
-# To grayscale and to float
-gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-gray=np.float32(gray)
+	filename=PATH+sys.argv[1]
+	img=cv2.imread(filename)
 
-# Plot of grayscale image
-cv2.namedWindow('main', cv2.WINDOW_NORMAL)
-cv2.imshow('main',gray)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+	# Plot of original image
+	cv2.namedWindow('main',cv2.WINDOW_NORMAL)
+	cv2.imshow('main',img)
+	cv2.waitKey(0)
+	cv2.destroyAllWindows()
 
-# Reshape to features space
-v=gray.reshape(1,FEATURES)
+	# To grayscale and to float
+	gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+	gray=np.float32(gray)
+
+	# Plot of grayscale image
+	cv2.namedWindow('main', cv2.WINDOW_NORMAL)
+	cv2.imshow('main',gray)
+	cv2.waitKey(0)
+	cv2.destroyAllWindows()
+
+	# Reshape to features space
+	v=gray.reshape(1,FEATURES)
 
 
-
-
-
-print gray
-print gray.shape

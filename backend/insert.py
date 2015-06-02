@@ -6,13 +6,16 @@ import cv2 as cv
 from sklearn import decomposition
 
 IMAGES_PATH='/home/martin/HDD/Dropbox/SafePet/dog_noses/'
+DATA_PATH='./npyData/'
 SHAPE=(960,1280)
 FEATURES=1228800
 
 
 def load_orig_data():
 	tmp=list()
-	for arr in os.listdir('./npyData_original/'):
+	names=os.listdir('./npyData_original/')
+	names.sort()
+	for arr in names:
 		tmp.append(np.load('./npyData_original/'+arr)[0])
 	return np.array(tmp)
 
@@ -43,8 +46,7 @@ if __name__=='__main__':
 		last='0'
 	else:
 		#Get the last dog index
-		last=os.listdir('./npyData_original/')
-		last=str(int(last)+1)
+		last=str(len(os.listdir('./npyData_original/')))
 	np.save('./npyData_original/dog'+last,dog)
 
 	#Load data
@@ -53,12 +55,12 @@ if __name__=='__main__':
 	print data.shape
 
 	#Here start the fun...
-	pca=decomposition.PCA(n_components=5)
+	pca=decomposition.PCA(n_components=3)
 	pca.fit(data)
-	reduced_dog=pca.transform(dog) #Proyection in principal components subspace
+	reduced_data=pca.transform(data) #Proyection in principal components subspace
 
-	#Store reduced dog as npy file
-	np.save('./npyData_reduced/reduced_dog'+last,reduced_dog)
+	#Store reduced dogs in new subspace
+	np.save('./npyData_reduced/reduced_dogs'+last,reduced_data)
 
 	#Store principal components as npy file
 	np.save('./pc_matrix',pca.components_)

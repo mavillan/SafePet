@@ -4,9 +4,11 @@ import os
 import numpy as np
 import cv2 as cv
 from sklearn import decomposition
+from sklearn.utils.extmath import fast_dot
 
 IMAGES_PATH='/home/martin/HDD/Dropbox/SafePet/dog_noses/'
-DATA_PATH='./npyData/'
+REDUCED_DATA_PATH='./npyData_reduced/'
+ORIGINAL_DATA_PATH='./npyData_original/'
 SHAPE=(960,1280)
 FEATURES=1228800
 
@@ -55,8 +57,9 @@ if __name__=='__main__':
 	print data.shape
 
 	#Here start the fun...
-	pca=decomposition.PCA(n_components=3)
+	pca=decomposition.PCA(n_components=5,copy=True,whiten=False)
 	pca.fit(data)
+	#hermano la mansa proyeccion hermano
 	reduced_data=pca.transform(data) #Proyection in principal components subspace
 
 	#Store reduced dogs in new subspace

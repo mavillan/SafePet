@@ -11,6 +11,8 @@ REDUCED_DATA_PATH='./npyData_reduced/'
 ORIGINAL_DATA_PATH='./npyData_original/'
 SHAPE=(960,1280)
 FEATURES=1228800
+NEIGHBORS=2
+COMPONENTS=5
 
 
 def load_orig_data():
@@ -57,13 +59,13 @@ if __name__=='__main__':
 	print data.shape
 
 	#Here start the fun...
-	pca=decomposition.PCA(n_components=5,copy=True,whiten=False)
+	pca=decomposition.PCA(n_components=COMPONENTS,copy=True,whiten=False)
 	pca.fit(data)
-	#hermano la mansa proyeccion hermano
+	#Proyecting...
 	reduced_data=pca.transform(data) #Proyection in principal components subspace
 
 	#Store reduced dogs in new subspace
-	np.save('./npyData_reduced/reduced_dogs'+last,reduced_data)
+	np.save('./reduced_dogs',reduced_data)
 
 	#Store principal components as npy file
 	np.save('./pc_matrix',pca.components_)

@@ -14,6 +14,7 @@ ORIGINAL_DATA_PATH='./npyData_original/'
 SHAPE=(960,1280)
 FEATURES=1228800
 NEIGHBORS=2
+COMPONENTS=5
 
 
 def load_orig_data():
@@ -37,13 +38,17 @@ if __name__=='__main__':
 
 	#Load data
 	data=load_orig_data()
-	reduced_data=np.load('./reduced_dogs.npy')
-	pc=np.load('./pc_matrix.npy')
-	mean=np.mean(data,axis=0)
+	if os.path.isfile('./reduced_dogs.npy'):
+		reduced_data=np.load('./reduced_dogs.npy')
+	if os.path.isfile('./pc_matrix.npy'):
+		pc=np.load('./pc_matrix.npy')
+	if data.size!=0
+		mean=np.mean(data,axis=0)
 
 	#Compute KNN with training data
-	nbrs=NearestNeighbors(n_neighbors=NEIGHBORS,algorithm='ball_tree')
-	nbrs.fit(reduced_data)
+	if os.path.isfile('./reduced_dogs.npy'):
+		nbrs=NearestNeighbors(n_neighbors=NEIGHBORS,algorithm='ball_tree')
+		nbrs.fit(reduced_data)
 
 	exit=False
 	while not exit:
@@ -84,7 +89,7 @@ if __name__=='__main__':
 			data=np.vstack(data,dog)
 
 			#Here start the fun...
-			pca=decomposition.PCA(n_components=5,copy=True,whiten=False)
+			pca=decomposition.PCA(n_components=COMPONENTS,copy=True,whiten=False)
 			pca.fit(data)
 
 			#Proyecting...
@@ -146,7 +151,7 @@ if __name__=='__main__':
 				cv2.imshow('main',IMAGES_PATH+'dog'+str(res))
 				cv2.waitKey(0)
 				cv2.destroyAllWindows()
-				count+=1
+				count+=1228800
 
 		#EXIT
 		elif argv[0]=='exit':

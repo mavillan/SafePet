@@ -136,15 +136,14 @@ if __name__=='__main__':
 			rdog=np.dot(dog,pc.transpose())
 
 			#KNN (2 nearest neighbors)
-			neigh=nbrs.kneighbors(rdog,return_distance=False)
+			distances,indices=nbrs.kneighbors(rdog,return_distance=True)
 
 
 			#Show the match
-			count=1
+			count=0
 			print 'Results: '
-			for res in neigh[0]:
-				print "Neighbor {0}: dog{1}".format(str(count),str(res))
-				print IMAGES_PATH+'dog'+str(res)
+			for res in indices[0]:
+				print "Neighbor {0}: dog{1}, (distance={2})".format(str(count),str(res),str(distances[0,count]))
 				img=cv.imread(IMAGES_PATH+'dog'+str(res)+'.jpg')
 				cv.namedWindow('main', cv.WINDOW_NORMAL)
 				cv.imshow('main',img)

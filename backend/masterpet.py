@@ -7,7 +7,7 @@ from sklearn import decomposition
 from sklearn.neighbors import NearestNeighbors
 
 #Global
-IMAGES_PATH='/home/martin/HDD/Dropbox/SafePet/dog_noses/'
+IMAGES_PATH='/home/martin/HDD/Dropbox/SafePet/dog_noses++/'
 QUERY_PATH='/home/martin/HDD/Dropbox/SafePet/query_noses/'
 REDUCED_DATA_PATH='./npyData_reduced/'
 ORIGINAL_DATA_PATH='./npyData_original/'

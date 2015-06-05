@@ -10,9 +10,12 @@ IMAGES_PATH='/home/martin/HDD/Dropbox/SafePet/dog_noses++/'
 REDUCED_DATA_PATH='./npyData_reduced/'
 ORIGINAL_DATA_PATH='./npyData_original/'
 SHAPE=(960,1280)
-FEATURES=1228800
+FEATURES=SHAPE[0]*SHAPE[1]
 NEIGHBORS=2
 COMPONENTS=5
+
+
+'''Script to insert data from IMAGES_PATH directory to the app'''
 
 
 def load_orig_data():
@@ -29,46 +32,47 @@ def preProcessing(img):
 
 
 if __name__=='__main__':
-	if len(sys.argv)>2:
+	if len(sys.argv)>1:
 		sys.exit('Wrong input!')
-	elif len(sys.argv)==1:
-		sys.exit('No image input!')
+	
+	filenames=os.listdir(IMAGES_PATH)
 
-	filename=IMAGES_PATH+sys.argv[1]
-	img=cv.imread(filename)
+	for filename in filenames:
+		filename=IMAGES_PATH+filename
+		img=cv.imread(filename)
 
-	#To grayscale and to float
-	gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
-	gray=np.float32(gray)
+		#To grayscale and to float
+		gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
+		gray=np.float32(gray)
 
-	#Reshape to features space
-	dog=gray.reshape(1,FEATURES)
+		#Reshape to features space
+		dog=gray.reshape(1,FEATURES)
 
-	#Store as npy file
-	if len(os.listdir('./npyData_original'))==0:
-		#First dog!
-		last='0'
-	else:
-		#Get the last dog index
-		last=str(len(os.listdir('./npyData_original/')))
-	np.save('./npyData_original/dog'+last,dog)
+		#Store as npy file
+		if len(os.listdir('./npyData_original'))==0:
+			#First dog!
+			last='0'
+		else:
+			#Get the last dog index
+			last=str(len(os.listdir('./npyData_original/')))
+		np.save('./npyData_original/dog'+last,dog)
 
-	#Load data
-	data=load_orig_data()
-	print data
-	print data.shape
+		#Load data
+		data=load_orig_data()
+		print data
+		print data.shape
 
-	#Here start the fun...
-	pca=decomposition.PCA(n_components=COMPONENTS,copy=True,whiten=False)
-	pca.fit(data)
-	#Proyecting...
-	reduced_data=pca.transform(data) #Proyection in principal components subspace
+		#Here start the fun...
+		pca=decomposition.PCA(n_components=COMPONENTS,copy=True,whiten=False)
+		pca.fit(data)
+		#Proyecting...
+		reduced_data=pca.transform(data) #Proyection in principal components subspace
 
-	#Store reduced dogs in new subspace
-	np.save('./reduced_dogs',reduced_data)
+		#Store reduced dogs in new subspace
+		np.save('./reduced_dogs',reduced_data)
 
-	#Store principal components as npy file
-	np.save('./pc_matrix',pca.components_)
+		#Store principal components as npy file
+		np.save('./pc_matrix',pca.components_)
 
 	print "Correctly inserted!"
 	sys.exit(0)  

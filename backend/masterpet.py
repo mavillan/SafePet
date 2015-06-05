@@ -8,11 +8,11 @@ from sklearn.neighbors import NearestNeighbors
 
 #Global
 IMAGES_PATH='/home/martin/HDD/Dropbox/SafePet/dog_noses++/'
-QUERY_PATH='/home/martin/HDD/Dropbox/SafePet/query_noses/'
+QUERY_PATH='/home/martin/HDD/Dropbox/SafePet/dog_test/'
 REDUCED_DATA_PATH='./npyData_reduced/'
 ORIGINAL_DATA_PATH='./npyData_original/'
 SHAPE=(960,1280)
-FEATURES=1228800
+FEATURES=SHAPE[0]*SHAPE[1]
 NEIGHBORS=2
 COMPONENTS=5
 

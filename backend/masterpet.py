@@ -42,7 +42,7 @@ if __name__=='__main__':
 		reduced_data=np.load('./reduced_dogs.npy')
 	if os.path.isfile('./pc_matrix.npy'):
 		pc=np.load('./pc_matrix.npy')
-	if data.size!=0
+	if data.size!=0:
 		mean=np.mean(data,axis=0)
 
 	#Compute KNN with training data
@@ -51,11 +51,12 @@ if __name__=='__main__':
 		nbrs.fit(reduced_data)
 
 	exit=False
+	insert=False
 	while not exit:
 		command=raw_input("> ")
 		argv=command.strip().split()
 
-		if len(argv)!=2:
+		if len(argv)>2:
 			print 'Wrong input!'
 			continue
 
@@ -86,7 +87,7 @@ if __name__=='__main__':
 			np.save('./npyData_original/dog'+last,dog)
 
 			#Add it to data matrix
-			data=np.vstack(data,dog)
+			data=np.vstack((data,dog))
 
 			#Here start the fun...
 			pca=decomposition.PCA(n_components=COMPONENTS,copy=True,whiten=False)
@@ -98,6 +99,7 @@ if __name__=='__main__':
 
 			#Update knn object with new data
 			nbrs.fit(reduced_data)
+			insert=True
 
 		
 		#SEARCH	
@@ -115,20 +117,14 @@ if __name__=='__main__':
 			img=cv.imread(filename)
 
 			#Show original image
-			cv2.namedWindow('main',cv2.WINDOW_NORMAL)
-			cv2.imshow('main',img)
-			cv2.waitKey(0)
-			cv2.destroyAllWindows()
+			cv.namedWindow('main',cv.WINDOW_NORMAL)
+			cv.imshow('main',img)
+			cv.waitKey(0)
+			cv.destroyAllWindows()
 
 			#To grayscale and to float
 			gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
 			gray=np.float32(gray)
-
-			#Show grayscale image
-			cv2.namedWindow('main', cv2.WINDOW_NORMAL)
-			cv2.imshow('main',gray)
-			cv2.waitKey(0)
-			cv2.destroyAllWindows()
 
 			#Reshape to features space
 			dog=gray.reshape(1,FEATURES)
@@ -142,16 +138,19 @@ if __name__=='__main__':
 			#KNN (2 nearest neighbors)
 			neigh=nbrs.kneighbors(rdog,return_distance=False)
 
+
 			#Show the match
 			count=1
 			print 'Results: '
-			for res in neigh:
-				print "Neighbor {0}: dog{1}".format(str(count),str(neigh))
-				cv2.namedWindow('main', cv2.WINDOW_NORMAL)
-				cv2.imshow('main',IMAGES_PATH+'dog'+str(res))
-				cv2.waitKey(0)
-				cv2.destroyAllWindows()
-				count+=1228800
+			for res in neigh[0]:
+				print "Neighbor {0}: dog{1}".format(str(count),str(res))
+				print IMAGES_PATH+'dog'+str(res)
+				img=cv.imread(IMAGES_PATH+'dog'+str(res)+'.jpg')
+				cv.namedWindow('main', cv.WINDOW_NORMAL)
+				cv.imshow('main',img)
+				cv.waitKey(0)
+				cv.destroyAllWindows()
+				count+=1
 
 		#EXIT
 		elif argv[0]=='exit':
@@ -163,13 +162,13 @@ if __name__=='__main__':
 			print 'Wrong input!'
 			continue
 
-	#Store actual state
-
-	#Store reduced dogs in new subspace
-	np.save('./reduced_dogs',reduced_data)
-
-	#Store principal components as npy file
-	np.save('./pc_matrix',pca.components_)
+	#Store actual state if something was insert
+	if insert:
+		#Store reduced dogs in new subspace
+		np.save('./reduced_dogs',reduced_data)
+		
+		#Store principal components as npy file
+		np.save('./pc_matrix',pca.components_)
 
 	print "Session finished!"
 	sys.exit(0)  

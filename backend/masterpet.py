@@ -8,7 +8,7 @@ from sklearn.neighbors import NearestNeighbors
 
 #Global
 IMAGES_PATH='/home/martin/HDD/Dropbox/SafePet/dog_noses++/'
-QUERY_PATH='/home/martin/HDD/Dropbox/SafePet/dog_test/'
+TEST_PATH='/home/martin/HDD/Dropbox/SafePet/dog_test/'
 REDUCED_DATA_PATH='./npyData_reduced/'
 ORIGINAL_DATA_PATH='./npyData_original/'
 SHAPE=(960,1280)
@@ -104,8 +104,8 @@ if __name__=='__main__':
 		
 		#SEARCH	
 		elif argv[0]=='search':
-			if os.path.isfile(QUERY_PATH+argv[1]):
-				filename=QUERY_PATH+argv[1]	
+			if os.path.isfile(TEST_PATH+argv[1]):
+				filename=TEST_PATH+argv[1]	
 			elif os.path.isfile(os.getcwd()+'/'+argv[1]):
 				filename=os.getcwd()+'/'+argv[1]
 			elif os.path.isfile(argv[1]):

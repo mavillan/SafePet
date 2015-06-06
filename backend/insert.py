@@ -7,7 +7,6 @@ from sklearn import decomposition
 from sklearn.utils.extmath import fast_dot
 
 IMAGES_PATH='/home/martin/HDD/Dropbox/SafePet/dog_noses++/'
-REDUCED_DATA_PATH='./npyData_reduced/'
 ORIGINAL_DATA_PATH='./npyData_original/'
 SHAPE=(960,1280)
 FEATURES=SHAPE[0]*SHAPE[1]

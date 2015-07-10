@@ -21,7 +21,7 @@
     <!-- your app's js -->
     <script src="js/app.js"></script>
   </head>
-  <body ng-app="safePet">
+  <body ng-app="safePet" ng-controller="mainListController">
 
     <ion-side-menus>
       <!-- Main view -->
@@ -35,14 +35,14 @@
           <h1 class="title">SafePet</h1>
 
           <!-- New dog button-->
-          <button class="button button-icon" ng-click="">
+          <button class="button button-icon" ng-click="newDog()">
             <i class="icon ion-plus"></i>
           </button>
         </ion-header-bar>
 
         <!-- Main dog list -->
         <ion-content>
-          <ion-list ng-controller="mainListController">
+          <ion-list>
             <ion-item  class="item-thumbnail-left" ng-repeat="dog in dogs">
             <img ng-src="{{dog.photo}}">
             <h2>{{dog.name}}</h2>
@@ -77,6 +77,42 @@
           </ion-list>
         </ion-content>
       </ion-side-menu>
+
+      <!-- New dog modal script -->
+      <script id="newDog.html" type="text/ng-template">
+
+        <div class="modal">
+
+          <!-- Modal header bar -->
+          <ion-header-bar class="bar-secondary">
+            <h1 class="title">Nuevo perro</h1>
+            <button class="button button-clear button-positive" ng-click="closeNewDog()">Cancelar</button>
+          </ion-header-bar>
+
+          <!-- Modal content area -->
+          <ion-content>
+            <form ng-submit="createDog(dog)">
+              <div class="list">
+                <label class="item item-input">
+                  <input type="text" placeholder="Nombre" ng-model="dog.name">
+                </label>
+                <label class="item item-input">
+                  <input type="text" placeholder="Raza" ng-model="dog.breed">
+                </label>
+                <label class="item item-input">
+                  <input type="text" placeholder="Color" ng-model="dog.color">
+                </label>
+              </div>
+              <div class="padding">
+                <button type="submit" class="button button-block button-positive">Agregar</button>
+              </div>
+            </form>
+          </ion-content>
+
+        </div>
+
+      </script>
+
     </ion-side-menus>
   </body>
 </html>

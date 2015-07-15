@@ -16,15 +16,11 @@ angular.module('safePet', ['ionic','ngResource'])
 
   // Called when the form is submitted
   $scope.createDog = function(dog) {
-    $scope.dogs.push({
-      name: dog.name,
-      breed: dog.breed,
-      color: dog.color,
-    });
+    $scope.dog = {};
+    Dog.save(dog);
     $scope.dogModal.hide();
-    dog.name = "";
-    dog.breed = "";
-    dog.color = "";
+    $scope.dogs.push(dog);
+    $scope.dog = {};
   };
 
   // Open our new task modal

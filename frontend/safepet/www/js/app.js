@@ -2,13 +2,38 @@ angular.module('safePet', ['ionic','ngResource'])
 
 .config(function ($stateProvider, $urlRouterProvider) {
 
-  $stateProvider
-    .state('mainList', {
-      url: '/',
-      controller: 'mainListController',
-      templateUrl: 'views/mainList/mainList.html'
-    });
+//  // Satellizer config
+//  $authProvider.loginUrl = "http://safepetapi.labcomp.cl:5000/auth/login";
+//  $authProvider.signupUrl = "http://safepetapi-labcomp.cl:5000/auth/signup";
+//  $authProvider.tokenName = "token";
+//  $authProvider.tokenPrefix = "safepet";
 
-  $urlRouterProvider.otherwise('/');
 
+  // Router Config
+    $stateProvider
+        .state('app', {
+            url: "/app",
+            abstract: true,
+            templateUrl: "views/menu/menu.html"
+        })
+        .state('app.mainList', {
+            url: '/mainlist',
+            views: {
+                'menuContent': {
+                    templateUrl: 'views/mainList/mainList.html',
+                    controller: 'mainListController'
+                }
+            }
+        })
+        .state('app.dogDetails', {
+            url: '/:dogId',
+            views: {
+                'menuContent': {
+                    templateUrl: 'views/dogDetails/dogDetails.html',
+                    controller: 'dogDetailsController'
+                }
+            }
+        });
+
+    $urlRouterProvider.otherwise('/app/mainlist');
 });

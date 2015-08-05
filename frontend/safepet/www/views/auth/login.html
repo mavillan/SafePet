@@ -1,0 +1,54 @@
+<ion-view>
+  	<ion-content class="padding">
+  		<div class="row">
+	  		<div class="col text-center">
+	  			<form ng-submit="login.login()" method="post">
+	  				<h3>Log in</h3>
+		  			<div class="list list-inset">
+		  				<label class="item item-input">
+		  					<input type="email" placeholder="Email" ng-model="login.email">
+		  				</label>
+		  				<label class="item item-input">
+		  					<input type="password" placeholder="Contraseña" ng-model="login.password">
+		  				</label>
+		  			</div>
+		  			<div class="padding">
+	                    <button type="submit" class="button button-clear button-positive">Acceder</button>
+	                </div>
+                </form>
+            	<p><small>¿Aun no tienes cuenta? </small></p>
+          		<button class="button button-clear button-positive" ng-click="newUser()">Registrarse</button>
+	  		</div>
+  		</div>
+  	</ion-content>
+  	<!-- New user modal script -->
+  	<script id="newUser.html" type="text/ng-template">
+  	    <div class="modal">
+  	        <!-- Modal header bar -->
+  	        <ion-header-bar class="bar-secondary">
+  	            <h1 class="title">Registro</h1>
+  	            <button class="button button-clear button-positive" ng-click="closeNewUser()">Cancelar</button>
+  	        </ion-header-bar>
+
+  	        <!-- Modal content area -->
+  	        <ion-content>
+  	            <form ng-submit="signup.signup()" method="post">
+  	                <div class="list">
+  	                    <label class="item item-input">
+  	                        <input type="text" placeholder="Nombre completo" ng-model="signup.displayName">
+  	                    </label>
+  	                    <label class="item item-input">
+  	                        <input type="email" placeholder="Email" ng-model="signup.email">
+  	                    </label>
+  	                    <label class="item item-input">
+  	                        <input type="password" placeholder="Contraseña" ng-model="signup.password">
+  	                    </label>
+  	                </div>
+  	                <div class="padding">
+  	                    <button type="submit" class="button button-block button-positive">Registrarse</button>
+  	                </div>
+  	            </form>
+  	        </ion-content>
+  	    </div>
+  	</script>  
+</ion-view>

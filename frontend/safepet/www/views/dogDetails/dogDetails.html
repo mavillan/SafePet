@@ -1,0 +1,16 @@
+<ion-view view-title="Detalle">
+	<ion-content>
+		<ion-list>
+			<ion-item>
+				Nombre: {{dog.name}}
+			</ion-item>
+			<ion-item>
+				Color: {{dog.color}}
+			</ion-item>
+			<ion-item>
+				Raza: {{dog.breed}}
+			</ion-item>
+		</ion-list>
+		<button class="button button-clear button-assertive" ng-click="deleteDog()">Eliminar</button>
+	</ion-content>
+</ion-view>

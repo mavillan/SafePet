@@ -2,7 +2,6 @@ angular.module('safePet')
 
 .controller('mainListController', ['$scope', '$ionicModal', '$resource','$state','$auth', function($scope,$ionicModal,$resource,$state,$auth){
 
-  console.log("logeado: " + $auth.isAuthenticated());
   if(!$auth.isAuthenticated()){
     $state.go("login");
   }

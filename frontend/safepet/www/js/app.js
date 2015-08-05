@@ -1,16 +1,21 @@
-angular.module('safePet', ['ionic','ngResource'])
+angular.module('safePet', ['ionic','ngResource','satellizer'])
 
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider,$authProvider) {
 
-//  // Satellizer config
-//  $authProvider.loginUrl = "http://safepetapi.labcomp.cl:5000/auth/login";
-//  $authProvider.signupUrl = "http://safepetapi-labcomp.cl:5000/auth/signup";
-//  $authProvider.tokenName = "token";
-//  $authProvider.tokenPrefix = "safepet";
+  // Satellizer config
+  $authProvider.loginUrl = "http://safepetapi.labcomp.cl:5000/auth/login";
+  $authProvider.signupUrl = "http://safepetapi-labcomp.cl:5000/auth/signup";
+  $authProvider.tokenName = "token";
+  $authProvider.tokenPrefix = "safepet";
 
 
   // Router Config
     $stateProvider
+        .state('login', {
+            url: '/login',
+            templateUrl: 'views/auth/login.html',
+            controller: 'authController'
+        })
         .state('app', {
             url: "/app",
             abstract: true,

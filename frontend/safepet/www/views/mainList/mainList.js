@@ -1,7 +1,11 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', '$resource', function($scope,$ionicModal,$resource){
-  
+.controller('mainListController', ['$scope', '$ionicModal', '$resource','$state','$auth', function($scope,$ionicModal,$resource,$state,$auth){
+
+  console.log("logeado: " + $auth.isAuthenticated());
+  if(!$auth.isAuthenticated()){
+    $state.go("login");
+  }
   //Handle dogs information from API
   Dog = $resource("http://safepetapi.labcomp.cl:5000/api/dogs/:id",{id: "@id"});
   $scope.dogs = Dog.query();

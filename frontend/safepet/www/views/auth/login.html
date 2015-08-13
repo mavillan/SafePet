@@ -2,14 +2,14 @@
   	<ion-content class="padding">
   		<div class="row">
 	  		<div class="col text-center">
-	  			<form ng-submit="login.login()" method="post">
+	  			<form ng-submit="login(user)" method="post">
 	  				<h3>Log in</h3>
 		  			<div class="list list-inset">
 		  				<label class="item item-input">
-		  					<input type="email" placeholder="Email" ng-model="login.email">
+		  					<input type="email" placeholder="Email" ng-model="user.email">
 		  				</label>
 		  				<label class="item item-input">
-		  					<input type="password" placeholder="Contraseña" ng-model="login.password">
+		  					<input type="password" placeholder="Contraseña" ng-model="user.password">
 		  				</label>
 		  			</div>
 		  			<div class="padding">
@@ -32,16 +32,16 @@
 
   	        <!-- Modal content area -->
   	        <ion-content>
-  	            <form ng-submit="signup.signup()" method="post">
+  	            <form ng-submit="signup(user)" method="post">
   	                <div class="list">
   	                    <label class="item item-input">
-  	                        <input type="text" placeholder="Nombre completo" ng-model="signup.displayName">
+  	                        <input type="text" placeholder="Nombre completo" ng-model="user.displayName">
   	                    </label>
   	                    <label class="item item-input">
-  	                        <input type="email" placeholder="Email" ng-model="signup.email">
+  	                        <input type="email" placeholder="Email" ng-model="user.email">
   	                    </label>
   	                    <label class="item item-input">
-  	                        <input type="password" placeholder="Contraseña" ng-model="signup.password">
+  	                        <input type="password" placeholder="Contraseña" ng-model="user.password">
   	                    </label>
   	                </div>
   	                <div class="padding">

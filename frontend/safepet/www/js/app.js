@@ -2,14 +2,14 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
 
 .config(function ($stateProvider, $urlRouterProvider,$authProvider) {
 
-  // Satellizer config
-  $authProvider.loginUrl = "http://safepetapi.labcomp.cl:5000/auth/login";
-  $authProvider.signupUrl = "http://safepetapi-labcomp.cl:5000/auth/signup";
-  $authProvider.tokenName = "token";
-  $authProvider.tokenPrefix = "safepet";
+    // Satellizer config
+    $authProvider.loginUrl = "http://safepetapi.labcomp.cl:5000/auth/login";
+    $authProvider.signupUrl = "http://safepetapi.labcomp.cl:5000/auth/signup";
+    $authProvider.tokenName = "token";
+    $authProvider.tokenPrefix = "safepet";
+    $authProvider.platform = 'mobile';
 
-
-  // Router Config
+    // Router Config
     $stateProvider
         .state('login', {
             url: '/login',
@@ -19,7 +19,8 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
         .state('app', {
             url: "/app",
             abstract: true,
-            templateUrl: "views/menu/menu.html"
+            templateUrl: "views/menu/menu.html",
+            controller: 'menuController'
         })
         .state('app.mainList', {
             url: '/mainlist',
@@ -41,4 +42,23 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
         });
 
     $urlRouterProvider.otherwise('/app/mainlist');
-});
+})
+
+
+// Return the users resource
+.factory('usersResource', ['$resource', function($resource){
+    return $resource("http://safepetapi.labcomp.cl:5000/users/:id",{id: "@id"},{update: {method: "PUT"}});
+}])
+
+// Return the dogs resource
+.factory('dogsResource', ['$resource', function($resource){
+    return $resource("http://safepetapi.labcomp.cl:5000/dogs/:id",{id: "@id"},{update: {method: "PUT"}});
+}])
+
+// Return current authenticated user
+.factory('userInfo', ['$auth', 'usersResource', function($auth,usersResource){
+    var tokenPayload = $auth.getPayload();
+    var userId = tokenPayload.sub;
+
+    return usersResource.get({id: userId});
+}]);

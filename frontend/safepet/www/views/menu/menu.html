@@ -22,7 +22,7 @@
     	<!-- Left Menu -->
     	<ion-side-menu side="left">
     	  	<ion-header-bar align-title="left" class="bar-stable">
-    	    	<h1 class="title">John Doe</h1>
+    	    	<h1 class="title">{{menuTitle}}</h1>
     	  	</ion-header-bar>
 
    			<ion-content>
@@ -33,6 +33,7 @@
    		      		<ion-item href="#"> ajustes </ion-item>
    		      		<ion-item href="#"> Preguntas Frecuentes </ion-item>
    		      		<ion-item href="#"> Acerca de SafePet </ion-item>
+   		      		<ion-item ng-click="logout()"> Logout </ion-item>
    		    	</ion-list>
    		  	</ion-content>
    		</ion-side-menu>

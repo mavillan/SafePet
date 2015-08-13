@@ -1,13 +1,15 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', '$resource','$state','$auth', function($scope,$ionicModal,$resource,$state,$auth){
+.controller('mainListController', ['$scope', '$ionicModal', 'dogsResource','$state','$auth','userInfo', function($scope,$ionicModal,dogsResource,$state,$auth,userInfo){
+
 
   if(!$auth.isAuthenticated()){
     $state.go("login");
   }
+
+
   //Handle dogs information from API
-  Dog = $resource("http://safepetapi.labcomp.cl:5000/api/dogs/:id",{id: "@id"});
-  $scope.dogs = Dog.query();
+  $scope.dogs = dogsResource.query();
 
   // Create and load the Modal
   $ionicModal.fromTemplateUrl('newDog.html', function(modal) {
@@ -17,13 +19,19 @@ angular.module('safePet')
     animation: 'slide-in-up'
   });
 
-  // Called when the form is submitted
+  // create a new dog when the form is submitted
   $scope.createDog = function(dog) {
-    $scope.dog = {};
-    Dog.save(dog);
+    // Add owner id to the dog info
+    dog.userId = userInfo._id;
+
+    //Save new dog
+    dogsResource.save(dog);
+    
+    // Refresh dogs list
+    $scope.$apply(function(){
+      $scope.dogs = dogsResource.query();
+    });
     $scope.dogModal.hide();
-    $scope.dogs.push(dog);
-    $scope.dog = {};
   };
 
   // Open our new task modal

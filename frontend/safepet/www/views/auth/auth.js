@@ -1,31 +1,37 @@
 angular.module('safePet')
 
 .controller('authController', ['$scope','$auth','$state','$ionicModal', function($scope,$auth,$state,$ionicModal){
-    var vm = this;
-    this.signup = function() {
+    $scope.signup = function(user) {
         $auth.signup({
-        	displayName: vm.displayName,
-            email: vm.email,
-            password: vm.password
+        	displayName: user.displayName,
+            email: user.email,
+            password: user.password
         })
         .then(function() {
+        	$scope.userModal.hide();
             $state.go("app.mainList");
         })
         .catch(function(response) {
+        	$ionicPopup.alert({
+        	  title: 'Error',
+        	  content: response.data ? response.data || response.data.message : response
+        	});
         });
     }
-    this.login = function(){
+    $scope.login = function(user){
         $auth.login({
-        	displayName: vm.displayName,
-            email: vm.email,
-            password: vm.password
+        	displayName: user.displayName,
+            email: user.email,
+            password: user.password
         })
         .then(function(){
-
             $state.go("app.mainList")
         })
         .catch(function(response){
-
+        	$ionicPopup.alert({
+        	  title: 'Error',
+        	  content: response.data ? response.data || response.data.message : response
+        	})
         });
     }
 	// Create and load the Modal
@@ -45,12 +51,4 @@ angular.module('safePet')
 	$scope.closeNewUser = function() {
 		$scope.userModal.hide();
 	};
-}])
-
-.controller('LogoutController', ['$scope','$auth','$state', function($scope,$auth,$state){
-    $auth.logout()
-        .then(function() {
-
-            $state.go("login")
-        });
 }]);

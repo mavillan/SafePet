@@ -1,94 +1,59 @@
-<ion-view view-title="Safepet" hide-back-button="true">
-    <ion-side-menus>
-      <!-- Main view -->
-      <ion-side-menu-content>
-        <ion-header-bar class="bar-stable">
-          <!-- Toggle side-menu button -->
-          <button class="button button-icon" menu-toggle="left">
-            <i class="icon ion-android-menu"></i>
-          </button>
-
-          <h1 class="title">SafePet</h1>
-
-          <!-- New dog button-->
-          <button class="button button-icon" ng-click="newDog()">
+<ion-view view-title="Safepet">
+    <!-- New dog Button -->
+    <ion-nav-buttons side="right">
+        <button class="button button-icon" ng-click="newDog()">
             <i class="icon ion-plus"></i>
-          </button>
-        </ion-header-bar>
+        </button>
+    </ion-nav-buttons>
 
-        <!-- Main dog list -->
-        <ion-content>
-          <ion-list>
-            <ion-item  class="item-thumbnail-left" ng-repeat="dog in dogs">
-            <img ng-src="{{dog.photo}}">
-            <h2>{{dog.name}}</h2>
-            <p>{{dog.breed}}</p>     
+    <!-- Main dog list -->
+    <ion-content>
+        <ion-list>
+            <ion-item  class="item-thumbnail-left" ng-repeat="dog in dogs" href="#/app/{{dog._id}}">
+                <img ng-src="{{dog.photo}}">
+                <h2>{{dog.name}}</h2>
+                <p>{{dog.breed}}</p>
             </ion-item>
-          </ion-list>
-        </ion-content>
+        </ion-list>
+    </ion-content>
 
-        <!-- Nose scan Button -->
-        <ion-footer-bar align-title="left" class="bar-balanced">
-          <h1 class="title">
+    <!-- Nose scan Button -->
+    <ion-footer-bar align-title="left" class="bar-balanced">
+        <h1 class="title">
             <button class="button button-clear">
-              <i class="icon ion-android-camera"></i> Escanear nariz
+                <i class="icon ion-android-camera"></i> Escanear nariz
             </button>
-          </h1>
-        </ion-footer-bar>  
-      </ion-side-menu-content>
+        </h1>
+    </ion-footer-bar>
 
-      <!-- Left Menu -->
-      <ion-side-menu side="left">
-        <ion-header-bar align-title="left" class="bar-stable">
-          <h1 class="title">John Doe</h1>
-        </ion-header-bar>
-
-        <ion-content>
-        <!-- Menu Options -->
-          <ion-list>
-            <ion-item> Perros perdidos </ion-item>
-            <ion-item> Perfil </ion-item>
-            <ion-item> ajustes </ion-item>
-            <ion-item> Preguntas Frecuentes </ion-item>
-            <ion-item> Acerca de SafePet </ion-item>
-          </ion-list>
-        </ion-content>
-      </ion-side-menu>
-
-      <!-- New dog modal script -->
-      <script id="newDog.html" type="text/ng-template">
-
+    <!-- New dog modal script -->
+    <script id="newDog.html" type="text/ng-template">
         <div class="modal">
+            <!-- Modal header bar -->
+            <ion-header-bar class="bar-secondary">
+                <h1 class="title">Nuevo perro</h1>
+                <button class="button button-clear button-positive" ng-click="closeNewDog()">Cancelar</button>
+            </ion-header-bar>
 
-          <!-- Modal header bar -->
-          <ion-header-bar class="bar-secondary">
-            <h1 class="title">Nuevo perro</h1>
-            <button class="button button-clear button-positive" ng-click="closeNewDog()">Cancelar</button>
-          </ion-header-bar>
-
-          <!-- Modal content area -->
-          <ion-content>
-            <form ng-submit="createDog(dog)">
-              <div class="list">
-                <label class="item item-input">
-                  <input type="text" placeholder="Nombre" ng-model="dog.name">
-                </label>
-                <label class="item item-input">
-                  <input type="text" placeholder="Raza" ng-model="dog.breed">
-                </label>
-                <label class="item item-input">
-                  <input type="text" placeholder="Color" ng-model="dog.color">
-                </label>
-              </div>
-              <div class="padding">
-                <button type="submit" class="button button-block button-positive">Agregar</button>
-              </div>
-            </form>
-          </ion-content>
-
+            <!-- Modal content area -->
+            <ion-content>
+                <form ng-submit="createDog(dog)">
+                    <div class="list">
+                        <label class="item item-input">
+                            <input type="text" placeholder="Nombre" ng-model="dog.name">
+                        </label>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Raza" ng-model="dog.breed">
+                        </label>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Color" ng-model="dog.color">
+                        </label>
+                    </div>
+                    <div class="padding">
+                        <button type="submit" class="button button-block button-positive">Agregar</button>
+                    </div>
+                </form>
+            </ion-content>
         </div>
-
-      </script>
-
-    </ion-side-menus>
+    </script>  
 </ion-view>

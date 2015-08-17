@@ -55,6 +55,11 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
     return $resource("http://safepetapi.labcomp.cl:5000/dogs/:id",{id: "@id"},{update: {method: "PUT"}});
 }])
 
+// Return the user dogs resource
+.factory('userDogsResource', ['$resource', function($resource){
+    return $resource("http://safepetapi.labcomp.cl:5000/dogs/user/:id",{userId: "@id"},{update: {method: "PUT"}});
+}])
+
 // Return current authenticated user
 .factory('userInfo', ['$auth', 'usersResource', function($auth,usersResource){
     var tokenPayload = $auth.getPayload();

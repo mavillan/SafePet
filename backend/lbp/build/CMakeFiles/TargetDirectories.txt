@@ -1,0 +1,1 @@
+/home/martin/Repos/opencv/lbp/build/CMakeFiles/lbp.dir

@@ -62,8 +62,9 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
 
 // Return current authenticated user
 .factory('userInfo', ['$auth', 'usersResource', function($auth,usersResource){
-    var tokenPayload = $auth.getPayload();
-    var userId = tokenPayload.sub;
-
+    if($auth.isAuthenticated()){
+        var tokenPayload = $auth.getPayload();
+        var userId = tokenPayload.sub;
+    }
     return usersResource.get({id: userId});
 }]);

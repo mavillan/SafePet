@@ -1,10 +1,6 @@
 #include "histogram.hpp"
 #include <vector>
 
-template <typename _Tp>
-void lbp::uniformize_() {
-
-}
 
 template <typename _Tp>
 void lbp::histogram_(const Mat& src, Mat& hist, int numPatterns) {

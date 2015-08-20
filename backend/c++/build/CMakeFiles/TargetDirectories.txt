@@ -1,2 +1,0 @@
-/home/martin/Repos/SafePet/backend/c++/build/CMakeFiles/lbp.dir
-/home/martin/Repos/SafePet/backend/c++/build/CMakeFiles/test.dir

@@ -7,6 +7,35 @@ import matplotlib.pyplot as plt
 from skimage.feature import local_binary_pattern as lbp
 
 
+def data_to_lbp():
+	"""
+	> load images from TRAINING_PATH, and convert each one to
+	  lbp respresentation
+	> stores the result as .npy searialized array on LBP_PATH
+	"""
+	filenames=os.listdir(TRAINING_PATH)
+	for filename in files:
+		filename=TRAINING_PATH+filename
+		img=cv.imread(filename)
+		#To grayscale and to float
+		gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
+		#LBP kernel convolution with the gray-scale image
+		#Applying LBPu2(P,R), no rotational invariant
+		lbp_image=lbp(gray,P,R,method=LBP_METHOD)
+		lbp_image=lbp_image.astype(np.uint8)
+
+	return
+
+
+def data_to_sp_hist():
+	"""
+	> load images from LBP_PATH, and convert each one to
+	  spatial histogram respresentation
+	> stores the result as .npy searialized array on SP_HIST_PATH
+	"""
+	return
+
+
 def _weight_calculate():
 	return
 
@@ -112,13 +141,15 @@ R=2 #Raduis parameter of LBP operator
 LBP_METHOD='nri_uniform' #Method of LBP operator
 
 ###parameters of spatial_histogram() function
-NX=25 #number of images divisions on x (rows) direction
-NY=25 #number of images divisions on y (cols) direction
-OVERLAPX=2 #overlap on x (rows) direction
-OVERLAPY=2 #overlap on y (cols) direction  
+Nx=25 #number of images divisions on x (rows) direction
+Ny=25 #number of images divisions on y (cols) direction
+OVERLAPx=2 #overlap on x (rows) direction
+OVERLAPy=2 #overlap on y (cols) direction  
 
-###parameters of main()
+###important paths
 TRAINING_PATH='/home/martin/HDD/Documents/SafePet_Data/training_set_processed/' #Default training path
+LBP_PATH='/home/martin/HDD/Documents/SafePet_Data/lbp_images/'
+SP_HIST_PATH='/home/martin/HDD/Documents/SafePet_Data/sp_hist/'
 
 
 
@@ -139,7 +170,7 @@ if __name__='__main___':
 		#Applying LBPu2(P,R), no rotational invariant
 		lbp_image=lbp(gray,P,R,method=LBP_METHOD)
 		lbp_image=lbp_image.astype(np.uint8)
-		sp_hist=spatial_histogram(lbp_image,)
+		sp_hist=spatial_histogram(lbp_image,Nx,Ny,OVERLAPx,OVERLAPy)
 
 
 

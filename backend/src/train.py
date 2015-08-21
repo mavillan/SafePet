@@ -5,10 +5,9 @@ import numpy as np
 import cv2 as cv
 import matplotlib.pyplot as plt
 from skimage.feature import local_binary_pattern as lbp
-from scipy.stats import itemfreq 
 
 
-def weight_calculate():
+def _weight_calculate():
 	return
 
 
@@ -23,70 +22,102 @@ def _histogram(src,numPatterns=59):
 	  version of LBP operator.
 	"""
 	rows,cols=src.shape
-	hist=itemfreq(src)[:,1]
+	hist=np.bincount(src.ravel(),minlength=numPatterns)
 	normalized_hist=hist/np.float(rows*cols)
 	return normalized_hist
 
 
-def spatial_histogram(src,numPatterns=59,nx,ny,overlapX=0,overlapY=0):
+def spatial_histogram(src,nx,ny,numPatterns=59,overlapX=0,overlapY=0):
 	"""
 	> the window size couldn't be fixed. Example, if there are 2 noses 
 	  pictures of the same dog, the first 800x800 and the second 400x400,
 	  then the spatial information will not match.
 	> more or less realistic assumption, the noses pictures will keep ratio.
-	> nx and ny stands for the number of divisions in horizontal and vertical
+	> x and y will mean for vertical and horizontal directions respectively,
+	  (x->rows direction and y->columns direction)
+	> nx and ny stands for the number of divisions in vertical and horizontal	
 	  axis, respectively.
 	"""
+	#some constrains to overlap parameter
+	if type(overlapX) is not int | overlapX<0 | overlapX>10:
+		print "Wrong overlapX parameter"
+		return -1
+	if type(overlapY) is not int | overlapY<0 | overlapY>10:
+		print "Wrong overlapY parameter"
+		return -1
 	height,width=src.shape
-
-	#widowsSize=(dx,dy)
-	dx=np.int(np.floor((width+2.*overlapX)/nx))
-	dy=np.int(np.floor((height+2.*overlapY)/ny))
-	#remainders=(rx,ry)
-	x_rem=width-nx*dx+2*overlapX
-	y_rem=height-ny*dy+2*overlapY
-	#right and left tops for regions with +1 pixel
-	if rx%2==0:
-		rx_top=rx/2-1
-		lx_top=nx-rx/2
+	#widows size: (wsx,wsy)
+	wsx=np.int(np.floor((height+2.*overlapX)/nx))
+	wsy=np.int(np.floor((width+2.*overlapY)/ny))
+	#remainders=(xrem,yrem), ie, number of pixels that 
+	#can't be covered with such windows sizes
+	xrem=height-nx*wsx+2*overlapX
+	yrem=width-ny*wsy+2*overlapY
+	"""
+	> Each image subdivision will be named region. there are in
+	  total nx*ny regions.
+	> Each region has two index Rxy=R[x,y].
+	> All regions R[0:rx0,:] and R[rx1:,:] will have a windows 
+	  size with one more pixel on x direction. 
+	> All regions R[:,0:ry0] and R[:,ry1:] will have a windows
+	  size with one more pixel on y direction.
+	"""
+	if xrem%2==0:
+		rx0=xrem/2-1
+		rx1=nx-xrem/2
 	else:
-		rx_top=rx/2
-		lx_top=nx-rx/2
-
-	#upper and lower tops for regions with +1 pixel
-	if ry%2==0:
-		uy_top=ry/2-1
-		ly_top=ny-ry/2
+		rx0=xrem/2
+		rx1=nx-xrem/2
+	if yrem%2==0:
+		ry0=yrem/2-1
+		ry1=ny-yrem/2
 	else:
-		uy_top=ry/2-1
-		ly_top=ny-ry/2
-
-	sp_histo=np.empty((nx*ny,numPatterns))
-		
-	#i_start_index and j_start_index are index where to start
-	#in the next iteration.
-	i_start_index=0
-	for i in range(nx):
-		j_start_index=0
-		for j in range(ny):
-			#verify it a pixel must be added
-			if i<=rx_top | i>=lx_top:
-				x_windows_size=dx+1
-			if j<=uy_top | j>=ly_top:
-				y_windows_size=dy+1
-
-			hist=_histogram(src[i_start_index:i_start_index+x_windows_size,j_start_index+y_windows_size],numPatterns)
-
-	return  sp_hist
+		ry0=yrem/2
+		ry1=ny-yrem/2
+	#spatial histogram will contain in each of his rows
+	#an LBP histogram of a region.
+	sp_hist=np.empty((nx*ny,numPatterns))
+	#hist_index, counter for histograms above. 
+	#hist_index=0:nx*ny
+	hist_index=0
+	#i_index and j_index are indexes of src matrix corresponding
+	#to each region in the corresponding iteration.
+	i_index=0
+	#iteration through regions
+	for rx_index in range(nx):
+		#verify if a pixel must be added to the windows size on x direction
+		Wsx=wsx
+		if rx_index<=rx0 | rx_index>=rx1:
+			Wsx+=1
+		j_index=0
+		for ry_index in range(ny):
+			#verify if a pixel must be added to the windows size on y direction
+			Wsy=wsy
+			if ry_index<=ry0 | ry_index>=ry1:
+				Wsy+=1
+			sp_hist[hist_index,:]=_histogram(src[i_index:i_index+Wsx, j_index:j_index+Wsy],numPatterns)
+			hist_index+=1
+			j_index+=Wsy-overlapY
+		i_index+=Wsx-overlapX
+	#concatenation of histrograms in each row
+	return sp_hist.ravel()
 
 
 """
 DEFINING SOME IMPORTANT PARAMETERS
 """
+###parameters of lbp() function
 P=8 #P (number of neighbors) parameter or LBP operator
 R=2 #Raduis parameter of LBP operator
-LBP_METHOD='nri_uniform' #Method of LBP operator 
+LBP_METHOD='nri_uniform' #Method of LBP operator
 
+###parameters of spatial_histogram() function
+NX=25 #number of images divisions on x (rows) direction
+NY=25 #number of images divisions on y (cols) direction
+OVERLAPX=2 #overlap on x (rows) direction
+OVERLAPY=2 #overlap on y (cols) direction  
+
+###parameters of main()
 TRAINING_PATH='/home/martin/HDD/Documents/SafePet_Data/training_set_processed/' #Default training path
 
 
@@ -108,6 +139,7 @@ if __name__='__main___':
 		#Applying LBPu2(P,R), no rotational invariant
 		lbp_image=lbp(gray,P,R,method=LBP_METHOD)
 		lbp_image=lbp_image.astype(np.uint8)
+		sp_hist=spatial_histogram(lbp_image,)
 
 
 

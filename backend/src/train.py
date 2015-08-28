@@ -5,6 +5,7 @@ import numpy as np
 import cv2 as cv
 import matplotlib.pyplot as plt
 from skimage.feature import local_binary_pattern as lbp
+from sklearn.neighbors import BallTree
 
 
 def data_to_lbp():
@@ -59,6 +60,14 @@ def _weight_calculate():
 
 
 def weighted_chi2():
+	return
+
+def chi2(v0,v1):
+	return np.sum((v0-v1)**2./((v0+v1)+1e-16))
+	
+
+def build_nn(data):
+	tree=BallTree(data,LEAF_SIZE,metric='pyfunc',func=chi2)
 	return
 
 
@@ -165,9 +174,13 @@ OVERLAPx=2 #overlap on x (rows) direction
 OVERLAPy=2 #overlap on y (cols) direction  
 
 ###important paths
-TRAINING_PATH='/home/martin/HDD/Documents/SafePet_Data/training_set_processed/' #Default training path
+TRAINING_PATH='/home/martin/HDD/Mega/SafePet/SafePetData/training_set_processed/' #Default training path
+TEST_PATH='/home/martin/HDD/Mega/SafePet/SafePetData/test_set_processed/'
 LBP_PATH='/home/martin/HDD/Documents/SafePet_Data/lbp_images/'
 SP_HIST_PATH='/home/martin/HDD/Documents/SafePet_Data/sp_hist/'
+
+###parameters of nearest neighbor search
+LEAF_SIZE=30
 
 
 
@@ -188,7 +201,7 @@ if __name__='__main___':
 		#Applying LBPu2(P,R), no rotational invariant
 		lbp_image=lbp(gray,P,R,method=LBP_METHOD)
 		lbp_image=lbp_image.astype(np.uint8)
-		sp_hist=spatial_histogram(lbp_image,Nx,Ny,OVERLAPx,OVERLAPy)
+			sp_hist=spatial_histogram(lbp_image,Nx,Ny)
 
 
 

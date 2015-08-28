@@ -26,8 +26,6 @@ def load_orig_data():
 	return np.array(tmp)
 
 
-def preProcessing(img):
-	return img
 
 
 if __name__=='__main__':
@@ -65,10 +63,11 @@ if __name__=='__main__':
 		pca=decomposition.PCA(n_components=COMPONENTS,copy=True,whiten=False)
 		pca.fit(data)
 		#Proyecting...
-		reduced_data=pca.transform(data) #Proyection in principal components subspace
+		reduced_data=pca.transform(data) #Proyection on principal components subspace
 
 		#Store reduced dogs in new subspace
 		np.save('./reduced_dogs',reduced_data)
+
 
 		#Store principal components as npy file
 		np.save('./pc_matrix',pca.components_)

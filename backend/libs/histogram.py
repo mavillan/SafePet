@@ -1,4 +1,3 @@
-
 import numpy as np
 import cv2 as cv
 from skimage.feature import local_binary_pattern as lbp
@@ -9,12 +8,10 @@ def _histogram(src,numPatterns=59):
 	> defautl value of number of patterns corresponds to uniform
 	  version of LBP operator.
 	"""
-	rows,cols=src.shape
-	hist=np.bincount(src.ravel(),minlength=numPatterns)
-	hist*=1./(rows*cols) #normalization
+	npattern=np.float(src.shape[0]*src.shape[1]) #total number of patterns
+	hist=np.bincount(src.ravel(),minlength=numPatterns).astype(np.float)
+	hist/=npattern #normalization
 	return hist
-
-
 
 
 def spatial(src,nx,ny,numPatterns=59,overlapX=2,overlapY=2):
@@ -98,5 +95,11 @@ def pyramidal(src,level=3,overlapX=2,overlapY=2):
 	"""
 	> Implementation of Spatial Pyramidal Histogram, with overlaps.
 	>
+	"""
+	return
+
+def gradient():
+	"""
+	> Implementation of HOG.
 	"""
 	return

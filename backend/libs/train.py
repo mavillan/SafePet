@@ -63,33 +63,6 @@ def build_nn(data):
 
 
 
-
-
-"""
-DEFINING SOME IMPORTANT PARAMETERS
-"""
-###parameters of lbp() function
-P=8 #P (number of neighbors) parameter or LBP operator
-R=2 #Raduis parameter of LBP operator
-LBP_METHOD='nri_uniform' #Method of LBP operator
-
-###parameters of spatial_histogram() function
-Nx=25 #number of images divisions on x (rows) direction
-Ny=25 #number of images divisions on y (cols) direction
-OVERLAPx=2 #overlap on x (rows) direction
-OVERLAPy=2 #overlap on y (cols) direction  
-
-###important paths
-TRAINING_PATH='/home/martin/HDD/Mega/SafePet/SafePetData/training_set_processed/' #Default training path
-TEST_PATH='/home/martin/HDD/Mega/SafePet/SafePetData/test_set_processed/'
-LBP_PATH='/home/martin/HDD/Documents/SafePet_Data/lbp_images/'
-SP_HIST_PATH='/home/martin/HDD/Documents/SafePet_Data/sp_hist/'
-
-###parameters of nearest neighbor search
-LEAF_SIZE=30
-
-
-
 if __name__=='__main___':
 	if len(sys.argv)!=1:
 		sys.exit('Wrong input!')

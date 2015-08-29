@@ -15,6 +15,20 @@ FEATURES=SHAPE[0]*SHAPE[1]
 NEIGHBORS=2
 COMPONENTS=5
 
+def load_params():
+	params=dict()
+	f=open('./safepet.cfg','r')
+	for line in f:
+		if line[0]=='#':
+			#comented line
+			continue
+		line=line.strip().split('=')
+		if len(line)!=2:
+			sys.exit('Bad format on configuration file!')
+		params[line[0]]=line[1]
+	f.close()
+	return params
+
 
 def load_orig_data():
 	tmp=list()

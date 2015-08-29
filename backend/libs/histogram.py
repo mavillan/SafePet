@@ -100,14 +100,14 @@ def spatial_pyramid(src,level=3,numPatterns=59,,overlapX=2,overlapY=2):
 	sp_pyrd=np.empty((2**(2*level+2)-1)*numPatterns)
 	rindex=0 #right index
 	lindex=0 #left index
-	for i in range(level):
-		if i==0:
+	for l in range(level):
+		if l==0:
 			lindex=rindex+numPatterns
-			sp_pyrd[rindex,lindex]=_histogram(src)
+			sp_pyrd[rindex:lindex]=_histogram(src)
 			rindex=lindex
 		else:
-			lindex=rindex+2**(2*level)*numPatterns
-			sp_pyrd[rindex,lindex]=spatial(src,2**level,2**level)
+			lindex=rindex+2**(2*l)*numPatterns
+			sp_pyrd[rindex:lindex]=spatial(src,2**l,2**l)
 			rindex=lindex
 	return sp_pyrd
 

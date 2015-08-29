@@ -91,12 +91,25 @@ def spatial(src,nx,ny,numPatterns=59,overlapX=2,overlapY=2):
 	return sp_hist.ravel()
 
 
-def pyramidal(src,level=3,overlapX=2,overlapY=2):
+def spatial_pyramid(src,level=3,numPatterns=59,,overlapX=2,overlapY=2):
 	"""
 	> Implementation of Spatial Pyramidal Histogram, with overlaps.
-	>
+	> The total number of histograms with L levels would be (2**(2L+2)-1)
+	> The number of histograms on level l is 2**(2*l)
 	"""
-	return
+	sp_pyrd=np.empty((2**(2*level+2)-1)*numPatterns)
+	rindex=0 #right index
+	lindex=0 #left index
+	for i in range(level):
+		if i==0:
+			lindex=rindex+numPatterns
+			sp_pyrd[rindex,lindex]=_histogram(src)
+			rindex=lindex
+		else:
+			lindex=rindex+2**(2*level)*numPatterns
+			sp_pyrd[rindex,lindex]=spatial(src,2**level,2**level)
+			rindex=lindex
+	return sp_pyrd
 
 def gradient():
 	"""

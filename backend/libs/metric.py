@@ -9,3 +9,9 @@ def weighted_chi2(v0,v1,weights):
 
 def chi2(v0,v1,tol=1e-10):
 	return np.sum((v0-v1)**2./((v0+v1)+tol))
+
+def pmk():
+	"""
+	> Pyramid Match Kernel
+	"""
+	return 

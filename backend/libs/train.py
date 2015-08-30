@@ -31,7 +31,7 @@ def data_to_lbp():
 	return 1
 
 
-def data_to_sp_hist(nx,ny,numPatterns=59,overlapX=2,overlapY=2):
+def data_to_sp_hist(nx,ny,npatterns=59,overlapX=2,overlapY=2):
 	"""
 	> load images from LBP_PATH, and convert each one to
 	  spatial histogram respresentation
@@ -67,20 +67,20 @@ if __name__=='__main___':
 	if len(sys.argv)!=1:
 		sys.exit('Wrong input!')
 
-	# files=os.listdir(TRAINING_PATH)
+	files=os.listdir(TRAINING_PATH)
 
-	# for filename in files:
-	# 	filename=TRAINING_PATH+filename
-	# 	img=cv.imread(filename)
+	for filename in files:
+		filename=TRAINING_PATH+filename
+		img=cv.imread(filename)
 
-	# 	#To grayscale and to float
-	# 	gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
+		#To grayscale and to float
+		gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
 
-	# 	#LBP kernel convolution with the gray-scale image
-	# 	#Applying LBPu2(P,R), no rotational invariant
-	# 	lbp_image=lbp(gray,P,R,method=LBP_METHOD)
-	# 	lbp_image=lbp_image.astype(np.uint8)
-	# 	sp_hist=spatial_histogram(lbp_image,Nx,Ny)
+		#LBP kernel convolution with the gray-scale image
+		#Applying LBPu2(P,R), no rotational invariant
+		lbp_image=lbp(gray,P,R,method=LBP_METHOD)
+		lbp_image=lbp_image.astype(np.uint8)
+		sp_hist=spatial_histogram(lbp_image,Nx,Ny)
 
 
 

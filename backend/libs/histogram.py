@@ -2,19 +2,19 @@ import numpy as np
 import cv2 as cv
 from skimage.feature import local_binary_pattern as lbp
 
-def _histogram(src,numPatterns=59):
+def _histogram(src,npatterns=59):
 	"""
-	> src must be uniform LBP version of image.
+	> src must be a LBP version of image.
 	> defautl value of number of patterns corresponds to uniform
 	  version of LBP operator.
 	"""
 	npattern=np.float(src.shape[0]*src.shape[1]) #total number of patterns
-	hist=np.bincount(src.ravel(),minlength=numPatterns).astype(np.float)
+	hist=np.bincount(src.ravel(),minlength=npatterns).astype(np.float)
 	hist/=npattern #normalization
 	return hist
 
 
-def spatial(src,nx,ny,numPatterns=59,overlapX=2,overlapY=2):
+def spatial(src,nx,ny,npatterns=59,overlapX=2,overlapY=2):
 	"""
 	> Implementation of Ahonen's Enhanced Spatial Histogram, with overlaps.
 	> The window size couldn't be fixed. Example, if there are 2 noses 
@@ -64,7 +64,7 @@ def spatial(src,nx,ny,numPatterns=59,overlapX=2,overlapY=2):
 		ry1=ny-yrem/2
 	#spatial histogram will contain in each of his rows
 	#an LBP histogram of a region.
-	sp_hist=np.empty((nx*ny,numPatterns))
+	sp_hist=np.empty((nx*ny,npatterns))
 	#hist_index, counter for histograms above. 
 	#hist_index=0:nx*ny
 	hist_index=0
@@ -83,7 +83,7 @@ def spatial(src,nx,ny,numPatterns=59,overlapX=2,overlapY=2):
 			Wsy=wsy
 			if ry_index<=ry0 | ry_index>=ry1:
 				Wsy+=1
-			sp_hist[hist_index,:]=_histogram(src[i_index:i_index+Wsx, j_index:j_index+Wsy],numPatterns)
+			sp_hist[hist_index,:]=_histogram(src[i_index:i_index+Wsx, j_index:j_index+Wsy],npatterns)
 			hist_index+=1
 			j_index+=Wsy-overlapY
 		i_index+=Wsx-overlapX
@@ -91,24 +91,23 @@ def spatial(src,nx,ny,numPatterns=59,overlapX=2,overlapY=2):
 	return sp_hist.ravel()
 
 
-def spatial_pyramid(src,level=3,numPatterns=59,,overlapX=2,overlapY=2):
+def spatial_pyramid(src,level=3,npatterns=59,,overlapX=2,overlapY=2):
 	"""
 	> Implementation of Spatial Pyramidal Histogram, with overlaps.
 	> The total number of histograms with L levels would be (2**(2L+2)-1)
 	> The number of histograms on level l is 2**(2*l)
 	"""
-	sp_pyrd=np.empty((2**(2*level+2)-1)*numPatterns)
+	sp_pyrd=np.empty((2**(2*level+2)-1)*npatterns)
 	rindex=0 #right index
 	lindex=0 #left index
 	for l in range(level):
 		if l==0:
-			lindex=rindex+numPatterns
+			lindex=rindex+npatterns
 			sp_pyrd[rindex:lindex]=_histogram(src)
-			rindex=lindex
 		else:
-			lindex=rindex+2**(2*l)*numPatterns
+			lindex=rindex+2**(2*l)*npatterns
 			sp_pyrd[rindex:lindex]=spatial(src,2**l,2**l)
-			rindex=lindex
+		rindex=lindex
 	return sp_pyrd
 
 def gradient():

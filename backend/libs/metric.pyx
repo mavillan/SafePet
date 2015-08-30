@@ -4,11 +4,11 @@
 # cdef extern from "math.h":
 # 	double sqrt(double m)
 
-import metric
+import numpy as np
 cimport numpy as np
-cimport cython
 
 ctypedef np.float64_t DTYPE_t
+ctypedef unsigned int uint
 
 
 def chi2(np.ndarray[DTYPE_t, ndim=1] h0 not None, np.ndarray[DTYPE_t, ndim=1] h1 not None):
@@ -16,8 +16,8 @@ def chi2(np.ndarray[DTYPE_t, ndim=1] h0 not None, np.ndarray[DTYPE_t, ndim=1] h1
 	> Standard chi_square metric
 	"""
 	cdef:
-		Py_ssize_t i
-		Py_ssize_t n = h0.shape[0]
+		uint i
+		uint n = h0.shape[0]
 		DTYPE_t a
 		DTYPE_t b
 		DTYPE_t retval = 0.0
@@ -32,15 +32,15 @@ def chi2(np.ndarray[DTYPE_t, ndim=1] h0 not None, np.ndarray[DTYPE_t, ndim=1] h1
 
 def pmk(np.ndarray[DTYPE_t, ndim=1] sp_pyrd0 not None, 
 	    np.ndarray[DTYPE_t, ndim=1] sp_pyrd1 not None, 
-	    unsigned int level=3, unsigned int npatterns=59):
+	    uint level=3, uint npatterns=59):
 	"""
 	> Pyramid Match Kernel
 	"""
 	cdef:
-		Py_ssize_t l
-		Py_ssize_t L = level
-		Py_ssize_t rindex = 0
-		Py_ssize_t lindex = 0
+		uint l
+		uint L = level
+		uint rindex = 0
+		uint lindex = 0
 		DTYPE_t retval = 0.
 	for l in range(L):
 		if l==0:

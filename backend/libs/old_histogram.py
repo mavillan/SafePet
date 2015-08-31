@@ -35,12 +35,12 @@ def spatial(src,nx,ny,npatterns=59,overlapX=2,overlapY=2):
 		return -1
 	height,width=src.shape
 	#widows size: (wsx,wsy)
-	wsx=np.int(np.floor((height+2.*overlapX)/nx))
-	wsy=np.int(np.floor((width+2.*overlapY)/ny))
+	wsx=(height+(nx-1)*overlapX)/nx
+	wsy=(width+(ny-1)*overlapY)/ny
 	#remainders=(xrem,yrem), ie, number of pixels that 
 	#can't be covered with such windows sizes
-	xrem=height-nx*wsx+2*overlapX
-	yrem=width-ny*wsy+2*overlapY
+	xrem=height-nx*wsx+(nx-1)*overlapX
+	yrem=width-ny*wsy+(ny-1)*overlapY
 	"""
 	> Each image subdivision will be named region. there are in
 	  total nx*ny regions.
@@ -75,13 +75,13 @@ def spatial(src,nx,ny,npatterns=59,overlapX=2,overlapY=2):
 	for rx_index in range(nx):
 		#verify if a pixel must be added to the windows size on x direction
 		Wsx=wsx
-		if rx_index<=rx0 | rx_index>=rx1:
+		if rx_index<=rx0 or rx_index>=rx1:
 			Wsx+=1
 		j_index=0
 		for ry_index in range(ny):
 			#verify if a pixel must be added to the windows size on y direction
 			Wsy=wsy
-			if ry_index<=ry0 | ry_index>=ry1:
+			if ry_index<=ry0 or ry_index>=ry1:
 				Wsy+=1
 			sp_hist[hist_index,:]=_histogram(src[i_index:i_index+Wsx, j_index:j_index+Wsy],npatterns)
 			hist_index+=1

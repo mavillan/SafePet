@@ -3,31 +3,44 @@ import sys
 import os
 import numpy as np
 import cv2 as cv
-from sklearn import decomposition
-from sklearn.neighbors import NearestNeighbors
+import config as cfg
+from skimage.feature import local_binary_pattern as lbp
 
-#Global
-IMAGES_PATH='/home/martin/HDD/Dropbox/SafePet/dog_noses++/'
-TEST_PATH='/home/martin/HDD/Dropbox/SafePet/dog_test++/'
-ORIGINAL_DATA_PATH='./npyData_original/'
-SHAPE=(960,1280)
-FEATURES=SHAPE[0]*SHAPE[1]
-NEIGHBORS=2
-COMPONENTS=5
+def data_to_lbp():
 
-def load_params():
-	params=dict()
-	f=open('./safepet.cfg','r')
-	for line in f:
-		if line[0]=='#':
-			#comented line
-			continue
-		line=line.strip().split('=')
-		if len(line)!=2:
-			sys.exit('Bad format on configuration file!')
-		params[line[0]]=line[1]
-	f.close()
-	return params
+	filenames=os.listdir(TRAINING_PATH)
+	filenames.sort()
+	if len(filenames)==0:
+		sys.exit("TRAINING_PATH directory has no data!")
+	for filename in filenames:
+		target=TRAINING_PATH+filename #target name
+		img=cv.imread(target)
+		#To grayscale and to float
+		gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
+		#LBP kernel convolution with the gray-scale image
+		#Applying LBPu2(P,R), no rotational invariant
+		lbp_image=lbp(gray,P,R,method=LBP_METHOD)
+		lbp_image=lbp_image.astype(np.uint8)
+		np.save(LBP_PATH+filename[:-4],lbp_image)
+	return 1
+
+def data_to_lbp(in_path, out_path):
+	"""
+	> load images from in_path, and convert each one to
+	  lbp respresentation
+	> stores the results as .npy searialized array on out_path
+	"""
+	filenames = os.listdir(in_path)
+	if len(filenames) == 0:
+		print in_path, 'is empty!'
+		return -1
+	for filename in filenames:
+		img = cv.imread(filename)
+		gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
+		lbp_image = lbp() 
+
+
+
 
 
 def load_orig_data():
@@ -39,15 +52,14 @@ def load_orig_data():
 	return np.array(tmp)
 
 
-def preProcessing(img):
-	return img
-
-
 if __name__=='__main__':
 	# if len(sys.argv)>2:
 	# 	sys.exit('Wrong input!')
 	# elif len(sys.argv)==1:
 	# 	sys.exit('No image input!')
+
+	#initialization step
+	params = load_params()
 
 	#Load data
 	data=load_orig_data()
@@ -56,12 +68,8 @@ if __name__=='__main__':
 	if os.path.isfile('./pc_matrix.npy'):
 		pc=np.load('./pc_matrix.npy')
 	if data.size!=0:
-		mean=np.mean(data,axis=0)
+		mean=np.mean(data,axis=0
 
-	#Compute KNN with training data
-	if os.path.isfile('./reduced_dogs.npy'):
-		nbrs=NearestNeighbors(n_neighbors=NEIGHBORS,algorithm='ball_tree')
-		nbrs.fit(reduced_data)
 
 	exit=False
 	insert=False

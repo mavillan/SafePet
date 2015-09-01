@@ -1,55 +1,82 @@
 #!/usr/bin/python
 import sys
 import os
+import time
+import histogram
 import numpy as np
 import cv2 as cv
 import config as cfg
 from skimage.feature import local_binary_pattern as lbp
 
-def data_to_lbp():
-
-	filenames=os.listdir(TRAINING_PATH)
-	filenames.sort()
-	if len(filenames)==0:
-		sys.exit("TRAINING_PATH directory has no data!")
-	for filename in filenames:
-		target=TRAINING_PATH+filename #target name
-		img=cv.imread(target)
-		#To grayscale and to float
-		gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
-		#LBP kernel convolution with the gray-scale image
-		#Applying LBPu2(P,R), no rotational invariant
-		lbp_image=lbp(gray,P,R,method=LBP_METHOD)
-		lbp_image=lbp_image.astype(np.uint8)
-		np.save(LBP_PATH+filename[:-4],lbp_image)
-	return 1
 
 def data_to_lbp(in_path, out_path):
 	"""
 	> load images from in_path, and convert each one to
-	  lbp respresentation
-	> stores the results as .npy searialized array on out_path
+	  lbp respresentation.
+	> stores the results as .npy searialized array on out_path.
 	"""
-	filenames = os.listdir(in_path)
+	try:
+		filenames = os.listdir(in_path)
+	except OSError, msg:
+		print in_path, 'is invalid!'
+
 	if len(filenames) == 0:
 		print in_path, 'is empty!'
 		return -1
+
 	for filename in filenames:
-		img = cv.imread(filename)
-		gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
-		lbp_image = lbp() 
+		img = cv.imread(in_path+filename, cv.IMREAD_GRAYSCALE)
+		lbp_image = lbp(img, cfg.params['P'], cfg.params['R'], cfg.params['LBP_METHOD'])
+		lbp_image = lbp_image.astype(np.uint8)
+		np.save(out_path+filename[:-4], lbp_image)
+	return 1
+
+def data_to_hist(in_path, out_path, hist_type=cfg.params['HIST_TYPE']):
+	"""
+	> load serialized numpy arrays from in_path containing
+	  lbp representation of an image. 
+	> stores an (spatial | spatial pyramid) histogram matrix on out_path
+	"""
+	try:
+		filenames = os.listdir(in_path)
+	except OSError, msg:
+		print in_path, 'is invalid!'
+		return -1
+
+	if len(filenames)==0:
+		print in_path, 'is empty!'
+		return -1
+
+	#Generating empty histogram matrix, such that in
+	#each there will be an histogram
+	nrows = len(filenames)
+	ncols = cfg.params['NPATTERNS']*cfg.params['NX']*cfg.params['NY'] 
+	hist_matrix = np.empty((nrows,ncols))
+	i_index = 0
+
+	if hist_type=='SPATIAL':
+		for filename in filenames:
+			lbp_image = np.load(in_path+filename)
+			hist_matrix[i_index,:] = histogram.spatial(lbp_image, cfg.params['NX'], cfg.params['NY'], 
+				              cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
+			i_index+=1
+
+	elif hist_type=='SPATIAL_PYRAMID':
+		for filename in filenames:
+			lbp_image = np.load(in_path+filename)
+			hist_matrix[i_index,:] = histogram.spatial_pyramid(lbp_image, cfg.params['LEVEL'], 
+				                     cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
+			i_index+=1
+
+	else:
+		print 'invalid hist_type!'
+		return -1
+
+	#save the resulting matrix
+	np.save(out_path+'hist_matrix::'+hist_type+'::'+time.strftime("%y/%m/%d")+'::'+time.strftime("%X"), hist_matrix)
+	return 1
 
 
-
-
-
-def load_orig_data():
-	tmp=list()
-	names=os.listdir('./npyData_original/')
-	names.sort()
-	for arr in names:
-		tmp.append(np.load('./npyData_original/'+arr)[0])
-	return np.array(tmp)
 
 
 if __name__=='__main__':

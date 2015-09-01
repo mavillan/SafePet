@@ -55,6 +55,3 @@ params = {
 	'LEAF_SIZE' : _LEAF_SIZE,
 	'NEIGHBORS' : _NEIGHBORS,
 }
-
-
-

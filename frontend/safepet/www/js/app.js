@@ -9,6 +9,12 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
     $authProvider.tokenPrefix = "safepet";
     $authProvider.platform = 'mobile';
 
+    // Facebook Login
+    $authProvider.facebook({
+        clientId: '1460728627588325',
+        responseType: 'token'
+    })
+
     // Router Config
     $stateProvider
         .state('login', {

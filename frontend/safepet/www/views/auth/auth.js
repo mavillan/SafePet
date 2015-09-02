@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('authController', ['$scope','$auth','$state','$ionicModal', function($scope,$auth,$state,$ionicModal){
+.controller('authController', ['$scope','$auth','$state','$ionicModal', '$ionicPopup', function($scope,$auth,$state,$ionicModal,$ionicPopup){
     $scope.signup = function(user) {
         $auth.signup({
         	displayName: user.displayName,
@@ -17,7 +17,7 @@ angular.module('safePet')
         	  content: response.data ? response.data || response.data.message : response
         	});
         });
-    }
+    };
     $scope.login = function(user){
         $auth.login({
         	displayName: user.displayName,
@@ -33,7 +33,23 @@ angular.module('safePet')
         	  content: response.data ? response.data || response.data.message : response
         	})
         });
-    }
+    };
+
+    //Facebook Login
+    $scope.authenticate = function(provider) {
+      $auth.authenticate(provider)
+        .then(function() {
+            $location.path('/mainlist')
+        })
+        .catch(function(response) {
+          $ionicPopup.alert({
+            title: 'Error',
+            content: response.data ? response.data || response.data.message : response
+          })
+
+        });
+    };
+
 	// Create and load the Modal
 	$ionicModal.fromTemplateUrl('newUser.html', function(modal) {
 		$scope.userModal = modal;

@@ -7,7 +7,7 @@ angular.module('safePet')
         $state.go("login");
     }
 
-    //Handle Userr dogs from the API.
+    //Handle User dogs from the API.
     userInfo.$promise.then(function(user){
         $scope.dogs = userDogsResource.query({id: user._id});
     });

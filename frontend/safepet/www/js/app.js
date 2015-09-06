@@ -39,6 +39,15 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
                     controller: 'dogDetailsController'
                 }
             }
+        })
+        .state('app.notifications',{
+            url: '/notifications',
+            views: {
+                'menuContent': {
+                    templateUrl: 'views/notifications/notifications.html',
+                    controller: 'notificationsController'
+                }
+            }
         });
 
     $urlRouterProvider.otherwise('/app/mainlist');

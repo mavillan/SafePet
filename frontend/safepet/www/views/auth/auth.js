@@ -39,7 +39,7 @@ angular.module('safePet')
     $scope.authenticate = function(provider) {
       $auth.authenticate(provider)
         .then(function() {
-            $location.path('/mainlist')
+            $state.go("app.mainList")
         })
         .catch(function(response) {
           $ionicPopup.alert({

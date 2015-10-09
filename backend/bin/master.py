@@ -3,9 +3,11 @@ import sys
 import os
 import time
 import histogram
+import metric
 import numpy as np
 import cv2 as cv
 import config as cfg
+from sklearn.neighbors import BallTree	
 from skimage.feature import local_binary_pattern as lbp
 
 
@@ -50,6 +52,7 @@ def data_to_hist(in_path, out_path, hist_type=cfg.params['HIST_TYPE']):
 	#Generating empty histogram matrix, such that in
 	#each there will be an histogram
 	nrows = len(filenames)
+	#arreglar esto para otros casos (pyramid - square pyramid)
 	ncols = cfg.params['NPATTERNS']*cfg.params['NX']*cfg.params['NY'] 
 	hist_matrix = np.empty((nrows,ncols))
 	i_index = 0
@@ -72,8 +75,9 @@ def data_to_hist(in_path, out_path, hist_type=cfg.params['HIST_TYPE']):
 		print 'invalid hist_type!'
 		return -1
 
-	#save the resulting matrix
-	np.save(out_path+'hist_matrix::'+hist_type+'::'+time.strftime("%y/%m/%d")+'::'+time.strftime("%X"), hist_matrix)
+	#save the resulting matrix with timestamps
+	out = out_path+'hist_matrix::'+hist_type+'::'+time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
+	np.save(out, hist_matrix)
 	return 1
 
 
@@ -85,138 +89,51 @@ if __name__=='__main__':
 	# elif len(sys.argv)==1:
 	# 	sys.exit('No image input!')
 
-	#initialization step
-	params = load_params()
+	exit = False
+	while exit:
+		cmd = raw_input('>>> ')
+		cmd = cmd.strip().split()
 
-	#Load data
-	data=load_orig_data()
-	if os.path.isfile('./reduced_dogs.npy'):
-		reduced_data=np.load('./reduced_dogs.npy')
-	if os.path.isfile('./pc_matrix.npy'):
-		pc=np.load('./pc_matrix.npy')
-	if data.size!=0:
-		mean=np.mean(data,axis=0
+		if cmd[0] == 'build':
+			if cmd[1] == 'lbp':
+				#create lbp representation for each image in training set
+				data_to_lbp(cfg.params['TRAINING_PATH'], cfg.params['TRAINING_PATH_LBP'])
 
+			elif cmd[1] == 'hist':
+				#create matrix with each histograms in a respective row
+				data_to_hist(cfg.params['TRAINING_PATH_LBP'], cfg.params['MATRICES_PATH'])
 
-	exit=False
-	insert=False
-	while not exit:
-		command=raw_input("> ")
-		argv=command.strip().split()
-
-		if len(argv)>2:
-			print 'Wrong input!'
-			continue
-
-		#INSERT
-		elif argv[0]=='insert':
-			if os.path.isfile(IMAGES_PATH+argv[1]):
-				filename=IMAGES_PATH+argv[1]
+			elif cmd[1] == 'nn':
+				#build nn search objedt
+				matrices = os.listdir(cfg.params['MATRICES_PATH'])
+				matrices.sort()
+				tgt_name = matrices[-1]
+				data = np.load(cfg.params['MATRICES_PATH']+tgt_name)
+				tree=BallTree(data, cfg.params['LEAF_SIZE'], metric='pyfunc', func=metric.chi2)
 			else:
-				print 'Image not found!'
-				continue
+				print 'Wrong build command!'
 
-			img=cv.imread(filename)	
+		elif cmd[0] == 'query':
+			if cmd[1] == 'all':
+				pass
 
-			#To grayscale and to float
-			gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
-			gray=np.float32(gray)
+			elif os.path.isfile(cmd[1]):
+				img = cv.imread(cfg.params['TEST_PATH']+cmd[1], cv.IMREAD_GRAYSCALE)
+				lbp_image = lbp(img, cfg.params['P'], cfg.params['R'], cfg.params['LBP_METHOD'])
+				lbp_image = lbp_image.astype(np.uint8)
+				query_hist = histogram.spatial(lbp_image, cfg.params['NX'], cfg.params['NY'], 
+				             cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
+				dist, ind = tree.query(query_hist, cfg.params['NEIGHBORS'])
+				print "Indexes:",ind
+				print "Distances:",dist
 
-			#Reshape to features space
-			dog=gray.reshape(1,FEATURES)
-
-			#Store as npy file
-			if len(os.listdir('./npyData_original'))==0:
-				#First dog!
-				last='0'
 			else:
-				#Get the last dog index
-				last=str(len(os.listdir('./npyData_original/')))
-			np.save('./npyData_original/dog'+last,dog)
+				print 'Wrong query command!'
 
-			#Add it to data matrix
-			data=np.vstack((data,dog))
+		elif cmd[0] == 'exit':
+			exit = True
 
-			#Here start the fun...
-			pca=decomposition.PCA(n_components=COMPONENTS,copy=True,whiten=False)
-			pca.fit(data)
-
-			#Proyecting...
-			reduced_data=pca.transform(data) #Proyection in principal components subspace
-			print "Correctly inserted!"
-
-			#Update knn object with new data
-			nbrs.fit(reduced_data)
-			insert=True
-
-		
-		#SEARCH	
-		elif argv[0]=='search':
-			if os.path.isfile(TEST_PATH+argv[1]):
-				filename=TEST_PATH+argv[1]	
-			elif os.path.isfile(os.getcwd()+'/'+argv[1]):
-				filename=os.getcwd()+'/'+argv[1]
-			elif os.path.isfile(argv[1]):
-				filename=argv[1]
-			else:
-				print 'Image not found!'
-				continue
-
-			img=cv.imread(filename)
-
-			#Show original image
-			cv.namedWindow('main',cv.WINDOW_NORMAL)
-			cv.imshow('main',img)
-			cv.waitKey(0)
-			cv.destroyAllWindows()
-
-			#To grayscale and to float
-			gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
-			gray=np.float32(gray)
-
-			#Reshape to features space
-			dog=gray.reshape(1,FEATURES)
-
-			#Shift
-			dog-=mean
-
-			#Proyection in principal components subspace
-			rdog=np.dot(dog,pc.transpose())
-
-			#KNN (2 nearest neighbors)
-			distances,indices=nbrs.kneighbors(rdog,return_distance=True)
-
-
-			#Show the match
-			count=0
-			print 'Results: '
-			for res in indices[0]:
-				print "Neighbor {0}: dog{1}, (distance={2})".format(str(count),str(res),str(distances[0,count]))
-				img=cv.imread(IMAGES_PATH+'dog'+str(res)+'.jpg')
-				cv.namedWindow('main', cv.WINDOW_NORMAL)
-				cv.imshow('main',img)
-				cv.waitKey(0)
-				cv.destroyAllWindows()
-				count+=1
-
-		#EXIT
-		elif argv[0]=='exit':
-			exit=True
-			continue
-
-		#WRONG
 		else:
 			print 'Wrong input!'
-			continue
-
-	#Store actual state if something was insert
-	if insert:
-		#Store reduced dogs in new subspace
-		np.save('./reduced_dogs',reduced_data)
-		
-		#Store principal components as npy file
-		np.save('./pc_matrix',pca.components_)
-
-	print "Session finished!"
 	sys.exit(0)  
 	

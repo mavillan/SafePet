@@ -156,6 +156,14 @@ cdef ndarray _spatial_pyramid(uint8_t[:,::1] src,
 # 	"""
 # 	return
 
+cdef ndarray _squared_spatial_pyramid(uint8_t[:,::1] src,
+	int level=3, int npatterns=59, int overlapX=2, int overlapY=2):
+	"""
+	> Implementation of Squared Spatial Pyramidal Histogram, with overlaps.
+	> The total number of histograms with L levels would be (2**(2L+2)-1)
+	> The number of histograms on level l is 2**(2*l)
+	"""
+
 
 """
 Wrapers Funtions

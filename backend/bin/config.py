@@ -14,8 +14,8 @@ _NPATTERNS = 59 #number of patterns of lbp method
 
 ### Parameters for histogram() module funcions
 _HIST_TYPE = 'SPATIAL' #could be SPATIAL or SPATIAL_PYRAMID
-_NX = 20 #number of images divisions on x (rows) direction
-_NY = 20 #number of images divisions on y (cols) direction
+_NX = 10 #number of images divisions on x (rows) direction
+_NY = 10 #number of images divisions on y (cols) direction
 _OVERLAPX = 2 #overlap on x (rows) direction
 _OVERLAPY = 2 #overlap on y (cols) direction  
 _LEVEL = 3 #number of levels on spatial pyramid
@@ -23,7 +23,7 @@ _LEVEL = 3 #number of levels on spatial pyramid
 
 ### Important paths (paths must be ended by '/', except _ROOT)
 _ROOT = '/home/martin/HDD/Mega/SafePet/SafePetData'
-_TRAINING_PATH = _ROOT+'/training_set/'
+_TRAINING_PATH = _ROOT+'/internet_data/'
 _TRAINING_PATH_LBP = _ROOT+'/training_set_lbp/'
 _TEST_PATH = _ROOT+'/test_set/'
 _TEST_PATH_LBP = _ROOT+'/test_set_lbp/'
@@ -61,7 +61,7 @@ params = {
 
 	'HIST_TYPE' : _HIST_TYPE,
 	'NX' : _NX,
-	'NX' : _NY,
+	'NY' : _NY,
 	'OVERLAPX' : _OVERLAPX,
 	'OVERLAPY' : _OVERLAPY,
 	'LEVEL' : _LEVEL,

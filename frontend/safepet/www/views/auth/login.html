@@ -16,6 +16,8 @@
 	                    <button type="submit" class="button button-clear button-positive">Acceder</button>
 	                </div>
                 </form>
+              <p><button ng-click="authenticate('facebook')" class="button button-block icon-left ion-social-facebook">Facebook Login</button></p>
+              <p><button ng-click="authenticate('twitter')" class="button button-block icon-left ion-social-twitter">Twitter Login</button></p>
             	<p><small>¿Aun no tienes cuenta? </small></p>
           		<button class="button button-clear button-positive" ng-click="newUser()">Registrarse</button>
 	  		</div>
@@ -43,6 +45,12 @@
   	                    <label class="item item-input">
   	                        <input type="password" placeholder="Contraseña" ng-model="user.password">
   	                    </label>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Telefono" ng-model="user.phone">
+                        </label>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Dirección" ng-model="user.address">
+                        </label>
   	                </div>
   	                <div class="padding">
   	                    <button type="submit" class="button button-block button-positive">Registrarse</button>

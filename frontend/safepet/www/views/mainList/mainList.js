@@ -7,19 +7,22 @@ angular.module('safePet')
         $state.go("login");
     }
 
+    //Refresh user information
+        userInfo.refresh();
+
     //Handle User dogs from the API.
-    userInfo.$promise.then(function(user){
+    userInfo.user.$promise.then(function(user){
         $scope.dogs = userDogsResource.query({id: user._id});
     });
 
     // create a new dog when the form is submitted
     $scope.createDog = function(dog) {
         // Add owner id to the dog info
-        dog.userId = userInfo._id;
+        dog.userId = userInfo.user._id;
 
         //Save new dog and refreshing dog list in the callback
         dogsResource.save(dog,function(){
-            $scope.dogs = userDogsResource.query({id: userInfo._id});
+            $scope.dogs = userDogsResource.query({id: userInfo.user._id});
         });
 
         $scope.dogModal.hide();

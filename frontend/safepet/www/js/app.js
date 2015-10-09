@@ -3,11 +3,47 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
 .config(function ($stateProvider, $urlRouterProvider,$authProvider) {
 
     // Satellizer config
-    $authProvider.loginUrl = "http://safepetapi.labcomp.cl:5000/auth/login";
-    $authProvider.signupUrl = "http://safepetapi.labcomp.cl:5000/auth/signup";
+    $authProvider.baseUrl = 'http://safepetapi.labcomp.cl:5000';
+    $authProvider.loginUrl = "/auth/login";
+    $authProvider.signupUrl = "/auth/signup";
     $authProvider.tokenName = "token";
     $authProvider.tokenPrefix = "safepet";
-    $authProvider.platform = 'mobile';
+
+    var facebookCfg = {
+        popupOptions: {
+            location: 'no',
+            toolbar: 'no',
+            width: window.screen.width,
+            height: window.screen.height
+        },
+        url: '/auth/facebook',
+        clientId: '1460728627588325',
+    };
+
+    var twitterCfg = {
+        popupOptions: {
+            location: 'no',
+            toolbar: 'no',
+            width: window.screen.width,
+            height: window.screen.height
+        },
+        url: '/auth/twitter'
+    }
+
+    if (ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
+        $authProvider.platform   = 'mobile';
+        facebookCfg.redirectUri  = 'http://127.0.0.1/';
+        twitterCfg.redirectUri   = 'http://127.0.0.1/';
+    } else {
+        $authProvider.withCredentials = false;
+    }
+
+    // Facebook Login
+    $authProvider.facebook(facebookCfg);
+
+    // Twitter Login
+    $authProvider.twitter(twitterCfg);
+
 
     // Router Config
     $stateProvider
@@ -71,9 +107,22 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
 
 // Return current authenticated user
 .factory('userInfo', ['$auth', 'usersResource', function($auth,usersResource){
-    if($auth.isAuthenticated()){
-        var tokenPayload = $auth.getPayload();
-        var userId = tokenPayload.sub;
-    }
-    return usersResource.get({id: userId});
+
+    var userInfo = {};
+
+    userInfo.refresh = function(){
+        if($auth.isAuthenticated()){
+            userInfo.tokenPayload = $auth.getPayload();
+            userInfo.userId = userInfo.tokenPayload.sub;
+            userInfo.user = usersResource.get({id: userInfo.userId});
+        }
+        
+    };
+
+    userInfo.clear = function(){
+            userInfo.tokenPayload = null;
+            userInfo.userId = null;
+            userInfo.user = null;
+    };
+    return userInfo;
 }]);

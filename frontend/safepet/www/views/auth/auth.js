@@ -5,7 +5,9 @@ angular.module('safePet')
         $auth.signup({
         	displayName: user.displayName,
             email: user.email,
-            password: user.password
+            password: user.password,
+            address: user.address,
+            phone: user.phone
         })
         .then(function() {
         	$scope.userModal.hide();
@@ -17,7 +19,7 @@ angular.module('safePet')
         	  content: response.data ? response.data || response.data.message : response
         	});
         });
-    }
+    };
     $scope.login = function(user){
         $auth.login({
         	displayName: user.displayName,
@@ -30,10 +32,26 @@ angular.module('safePet')
         .catch(function(response){
         	$ionicPopup.alert({
         	  title: 'Error',
-        	  content: response.data ? response.data || response.data.message : response
+        	  content: 'Usuario o contraseña incorrectos'//response.data ? response.data || response.data.message : response
         	})
         });
-    }
+    };
+
+    //Facebook Login
+    $scope.authenticate = function(provider) {
+      $auth.authenticate(provider)
+        .then(function() {
+            $state.go("app.mainList")
+        })
+        .catch(function(response) {
+          $ionicPopup.alert({
+            title: 'Error',
+            content: response.data ? response.data || response.data.message : response
+          })
+
+        });
+    };
+
 	// Create and load the Modal
 	$ionicModal.fromTemplateUrl('newUser.html', function(modal) {
 		$scope.userModal = modal;

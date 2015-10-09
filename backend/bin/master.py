@@ -90,7 +90,7 @@ if __name__=='__main__':
 	# 	sys.exit('No image input!')
 
 	exit = False
-	while exit:
+	while not exit:
 		cmd = raw_input('>>> ')
 		cmd = cmd.strip().split()
 
@@ -117,7 +117,7 @@ if __name__=='__main__':
 			if cmd[1] == 'all':
 				pass
 
-			elif os.path.isfile(cmd[1]):
+			elif os.path.isfile(cv.imread(cfg.params['TEST_PATH']+cmd[1])):
 				img = cv.imread(cfg.params['TEST_PATH']+cmd[1], cv.IMREAD_GRAYSCALE)
 				lbp_image = lbp(img, cfg.params['P'], cfg.params['R'], cfg.params['LBP_METHOD'])
 				lbp_image = lbp_image.astype(np.uint8)

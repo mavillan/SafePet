@@ -7,26 +7,29 @@ angular.module('safePet')
         $state.go("login");
     }
 
-    //Refresh user information
-        userInfo.refresh();
-
     //Handle User dogs from the API.
-    userInfo.user.$promise.then(function(user){
+    userInfo.$promise.then(function(user){
         $scope.dogs = userDogsResource.query({id: user._id});
     });
 
     // create a new dog when the form is submitted
     $scope.createDog = function(dog) {
         // Add owner id to the dog info
-        dog.userId = userInfo.user._id;
+        dog.userId = userInfo._id;
 
         //Save new dog and refreshing dog list in the callback
         dogsResource.save(dog,function(){
-            $scope.dogs = userDogsResource.query({id: userInfo.user._id});
+            $scope.dogs = userDogsResource.query({id: userInfo._id});
         });
 
         $scope.dogModal.hide();
     };
+
+    $scope.tomaFoto = function(){
+	navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+    	destinationType: Camera.DestinationType.DATA_URL
+	});
+};
 
     // Create and load the Modal
     $ionicModal.fromTemplateUrl('newDog.html', function(modal) {

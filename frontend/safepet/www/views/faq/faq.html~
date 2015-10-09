@@ -1,0 +1,33 @@
+<ion-view view-title="Preguntas Frecuentes">
+    <ion-content>
+<div class="list card">
+  <a class="item"> <i class="icon ion-chevron-right"></i>
+    Seguridad de datos
+  </a>
+  <a class="item item-text-wrap ">
+    Los datos recolectados por SafePet son utilizados solamente con el propósito del funcionamiento de la aplicacion.
+  </a>
+
+  <a class="item"> <i class="icon ion-chevron-right"></i>
+    Seguridad de datos
+  </a>
+  <a class="item item-text-wrap ">
+    Los datos recolectados por SafePet son utilizados solamente con el propósito del funcionamiento de la aplicacion.
+  </a>
+
+  <a class="item"> <i class="icon ion-chevron-right"></i>
+    Seguridad de datos
+  </a>
+  <a class="item item-text-wrap ">
+    Los datos recolectados por SafePet son utilizados solamente con el propósito del funcionamiento de la aplicacion.
+  </a>
+
+  <a class="item"> <i class="icon ion-chevron-right"></i>
+    Seguridad de datos
+  </a>
+  <a class="item item-text-wrap ">
+    Los datos recolectados por SafePet son utilizados solamente con el propósito del funcionamiento de la aplicacion.
+  </a>
+</div>
+    </ion-content>
+</ion-view>

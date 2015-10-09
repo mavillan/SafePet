@@ -3,7 +3,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
 .config(function ($stateProvider, $urlRouterProvider,$authProvider) {
 
     // Satellizer config
-    $authProvider.baseUrl = 'http://safepetapi.labcomp.cl:5000';
+    $authProvider.baseUrl = 'http://localhost:5000';
     $authProvider.loginUrl = "/auth/login";
     $authProvider.signupUrl = "/auth/signup";
     $authProvider.tokenName = "token";
@@ -18,7 +18,6 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
         },
         url: '/auth/facebook',
         clientId: '1460728627588325',
-        responseType: 'token'
     };
 
     var twitterCfg = {
@@ -84,24 +83,37 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
 
 // Return the users resource
 .factory('usersResource', ['$resource', function($resource){
-    return $resource("http://safepetapi.labcomp.cl:5000/users/:id",{id: "@id"},{update: {method: "PUT"}});
+    return $resource("http://localhost:5000/users/:id",{id: "@id"},{update: {method: "PUT"}});
 }])
 
 // Return the dogs resource
 .factory('dogsResource', ['$resource', function($resource){
-    return $resource("http://safepetapi.labcomp.cl:5000/dogs/:id",{id: "@id"},{update: {method: "PUT"}});
+    return $resource("http://localhost:5000/dogs/:id",{id: "@id"},{update: {method: "PUT"}});
 }])
 
 // Return the user dogs resource
 .factory('userDogsResource', ['$resource', function($resource){
-    return $resource("http://safepetapi.labcomp.cl:5000/dogs/user/:id",{userId: "@id"},{update: {method: "PUT"}});
+    return $resource("http://localhost:5000/dogs/user/:id",{userId: "@id"},{update: {method: "PUT"}});
 }])
 
 // Return current authenticated user
 .factory('userInfo', ['$auth', 'usersResource', function($auth,usersResource){
-    if($auth.isAuthenticated()){
-        var tokenPayload = $auth.getPayload();
-        var userId = tokenPayload.sub;
-    }
-    return usersResource.get({id: userId});
+
+    var userInfo = {};
+
+    userInfo.refresh = function(){
+        if($auth.isAuthenticated()){
+            userInfo.tokenPayload = $auth.getPayload();
+            userInfo.userId = userInfo.tokenPayload.sub;
+            userInfo.user = usersResource.get({id: userInfo.userId});
+        }
+        
+    };
+
+    userInfo.clear = function(){
+            userInfo.tokenPayload = null;
+            userInfo.userId = null;
+            userInfo.user = null;
+    };
+    return userInfo;
 }]);

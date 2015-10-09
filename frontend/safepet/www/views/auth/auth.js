@@ -5,7 +5,9 @@ angular.module('safePet')
         $auth.signup({
         	displayName: user.displayName,
             email: user.email,
-            password: user.password
+            password: user.password,
+            address: user.address,
+            phone: user.phone
         })
         .then(function() {
         	$scope.userModal.hide();
@@ -30,7 +32,7 @@ angular.module('safePet')
         .catch(function(response){
         	$ionicPopup.alert({
         	  title: 'Error',
-        	  content: response.data ? response.data || response.data.message : response
+        	  content: 'Usuario o contraseña incorrectos'//response.data ? response.data || response.data.message : response
         	})
         });
     };

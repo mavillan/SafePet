@@ -33,6 +33,7 @@
     <script src="views/notifications/notifications.js"></script>
     <script src="views/profile/profile.js"></script>
     <script src="views/editProfile/editProfile.js"></script>
+    <script src="views/mainList/services.js"></script>
   </head>
   <body ng-app="safePet">
 

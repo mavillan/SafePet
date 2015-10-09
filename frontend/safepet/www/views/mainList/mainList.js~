@@ -25,6 +25,12 @@ angular.module('safePet')
         $scope.dogModal.hide();
     };
 
+    $scope.tomaFoto = function(){
+	navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+    	destinationType: Camera.DestinationType.DATA_URL
+	});
+};
+
     // Create and load the Modal
     $ionicModal.fromTemplateUrl('newDog.html', function(modal) {
         $scope.dogModal = modal;

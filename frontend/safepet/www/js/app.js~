@@ -44,7 +44,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
  	    url: '/edit',
 	    views: {
 		'menuContent': {
-		    templateUrl: 'views/editProfile/editProfile.html',
+		    templateUrl: 'views/profile/editProfile.html',
 		    controller: 'editController'
 		}
 	   }

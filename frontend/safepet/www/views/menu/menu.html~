@@ -40,7 +40,7 @@
    		      		<!--<ion-item href="#"> Perros perdidos </ion-item>-->
    		      		<ion-item menu-close href="#/app/profile"> Perfil </ion-item>
                                 <ion-item menu-close href="#/app/notifications"> Notificaciones </ion-item>
-   		      		<ion-item menu-close href="#/app/settings"> Ajustes </ion-item>
+   		      		<ion-item menu-close href="#"> Ajustes </ion-item>
    		      		<ion-item menu-close href="#/app/faq"> Preguntas Frecuentes </ion-item>
    		      		<ion-item menu-close ng-click="showAlert()"> Acerca de SafePet </ion-item>
    		      		<ion-item menu-close ng-click="logout()"> Logout </ion-item>

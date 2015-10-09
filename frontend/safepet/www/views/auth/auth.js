@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('authController', ['$scope','$auth','$state','$ionicModal', function($scope,$auth,$state,$ionicModal){
+.controller('authController', ['$scope','$auth','$state','$ionicModal', '$ionicPopup', function($scope,$auth,$state,$ionicModal,$ionicPopup){
     $scope.signup = function(user) {
         $auth.signup({
         	displayName: user.displayName,

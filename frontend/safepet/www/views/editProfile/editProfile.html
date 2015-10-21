@@ -1,18 +1,33 @@
 
 <ion-view view-title="Editar Perfil">
     <ion-content>
-      <form class="list">
-	    <label class="item item-input item-floating-label">
-    		<span class="input-label">Direccion</span>
-    		<input type="text" placeholder="Direccion" ng-model="dato.address">
-  	    </label>
-  	    <label class="item item-input item-floating-label">
-    		<span class="input-label">Celular</span>
-    		<input type="text" placeholder="Celular" ng-model="dato.phoneNumber">
-  	    </label></div>
-  		<button class="button button-full button-positive" ng-click="submit()">
-  		Guardar
-  	  	</button>
-     
+      <form ng-submit="editProfile(User)" method="post">
+        <div class="list">
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Nombre Completo</span>
+            <input type="text" placeholder="Nombre Completo" ng-model="User.displayName">
+          </label>
+    
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Email</span>
+            <input type="text" placeholder="Email" ng-model="User.email">
+          </label>
+    
+    	    <label class="item item-input item-floating-label">
+        		<span class="input-label">Direccion</span>
+        		<input type="text" placeholder="Direccion" ng-model="User.address">
+      	  </label>
+    
+          <label class="item item-input item-floating-label">
+        		<span class="input-label">Celular</span>
+        		<input type="text" placeholder="Celular" ng-model="User.phone">
+      	  </label>          
+        </div>
+        <div class="padding">
+  		    <button type="submit" class="button button-full button-positive">
+            Guardar
+          </button> 
+        </div>
+      </form>
     <ion-content>
 <ion-view>

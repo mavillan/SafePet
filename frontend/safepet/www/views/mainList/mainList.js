@@ -2,15 +2,15 @@ angular.module('safePet')
 
 .controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo){
 
-    // iIf the user is not authenticated redirect to the login
+    // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
         $state.go("login");
     }
 
-    //Refresh user information
+    // Refresh user information
         userInfo.refresh();
 
-    //Handle User dogs from the API.
+    // Handle User dogs from the API.
     userInfo.user.$promise.then(function(user){
         $scope.dogs = userDogsResource.query({id: user._id});
     });
@@ -20,7 +20,7 @@ angular.module('safePet')
         // Add owner id to the dog info
         dog.userId = userInfo.user._id;
 
-        //Save new dog and refreshing dog list in the callback
+        // Save new dog and refreshing dog list in the callback
         dogsResource.save(dog,function(){
             $scope.dogs = userDogsResource.query({id: userInfo.user._id});
         });

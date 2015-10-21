@@ -141,7 +141,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
 
 // Return current authenticated user
 .factory('userInfo', ['$auth', 'usersResource', function($auth,usersResource){
-
+    
     var userInfo = {};
 
     userInfo.refresh = function(){

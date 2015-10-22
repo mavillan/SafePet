@@ -13,11 +13,10 @@ ctypedef cnp.ndarray ndarray
 ctypedef unsigned int uint
 
 cdef ndarray _histogram(uint8_t[:,::1] src, int npatterns=59):
-	"""
-	> src must be a LBP version of image.
-	> default value of number of patterns corresponds to uniform
-	  version of LBP operator.
-	"""
+	#> src must be a LBP version of image.
+	#> default value of number of patterns corresponds to uniform
+	#  version of LBP operator.
+
 	cdef:
 		ndarray[float64_t, ndim=1] hist = np.zeros(npatterns, dtype=np.float64)
 		Py_ssize_t i
@@ -135,11 +134,11 @@ cdef ndarray _spatial_pyramid(uint8_t[:,::1] src,
 	"""
 
 	cdef:
-		ndarray[float64_t, ndim=1] sp_pyrd = np.empty((2**(2*level+2)-1)*npatterns) 
-		Py_ssize_t l_index = 0 #right index
-		Py_ssize_t r_index = 0 #left index
+		Py_ssize_t l_index = 0 #left index
+		Py_ssize_t r_index = 0 #right index
 		Py_ssize_t l
 		Py_ssize_t L = level  #just for convenience
+		ndarray[float64_t, ndim=1] sp_pyrd = np.empty((2**(2*L+2)-1)*npatterns) 
 	for l in range(L):
 		if l==0:
 			r_index = l_index+npatterns
@@ -160,9 +159,23 @@ cdef ndarray _squared_spatial_pyramid(uint8_t[:,::1] src,
 	int level=3, int npatterns=59, int overlapX=2, int overlapY=2):
 	"""
 	> Implementation of Squared Spatial Pyramidal Histogram, with overlaps.
-	> The total number of histograms with L levels would be (2**(2L+2)-1)
-	> The number of histograms on level l is 2**(2*l)
+	> The total number of histograms with L levels would be L*(L+1)*(2*L+1)/6
+	> The number of histograms on level l is l**2
+	> first level is l=1
 	"""
+
+	cdef:
+		Py_ssize_t l_index = 0 #left index
+		Py_ssize_t r_index = 0
+		Py_ssize_t l
+		Py_ssize_t L = level
+		ndarray[float64_t, ndim=1] sq_sp_pyrd = np.empty(((L*(L+1)*(2*L+1))/6)*npatterns)
+	for l in range(1,L+1):
+		r_index = l_index+(l**2)*npatterns
+		sq_sp_pyrd[l_index:r_index] = _spatial(src, l**2, l**2, npatterns, overlapX, overlapY)
+		l_index = r_index
+	return sq_sp_pyrd
+
 
 
 """
@@ -178,3 +191,7 @@ def spatial(uint8_t[:,::1] src not None,
 def spatial_pyramid(uint8_t[:,::1] src not None,
 	int level=3, int npatterns=59, int overlapX=2, int overlapY=2):
 	return _spatial_pyramid(src, level, npatterns, overlapX, overlapY)
+
+def squared_spatial_pyramid(uint8_t[:,::1] src not None,
+	int level=3, int npatterns=59, int overlapX=2, int overlapY=2):
+	return _squared_spatial_pyramid(src, level, npatterns, overlapX, overlapY)

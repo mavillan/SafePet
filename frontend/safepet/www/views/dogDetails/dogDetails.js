@@ -1,4 +1,5 @@
 angular.module('safePet')
+
 .controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state', function($scope,dogsResource,$stateParams,$state){
 
 	$scope.dog = dogsResource.get({id: $stateParams.dogId});

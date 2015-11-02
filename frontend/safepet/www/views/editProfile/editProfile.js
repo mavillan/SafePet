@@ -15,7 +15,7 @@ angular.module('safePet')
 	});
 
 	$scope.editProfile = function(User){
-		usersResource.update({id: $scope.User.id}{data: $scope.User});
+		usersResource.update({id: $scope.User.id},{data: $scope.User});
 		
 		$state.go('app.mainList');
 	};

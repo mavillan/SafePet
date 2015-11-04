@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo){
+.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera){
 
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
@@ -44,6 +44,30 @@ angular.module('safePet')
     // Close the new task modal
     $scope.closeNewDog = function() {
         $scope.dogModal.hide();
+    };
+
+
+    $scope.getPhoto = function() {
+        console.log('Getting camera');
+        Camera.getPicture({
+        quality: 75,
+        targetWidth: 320,
+        targetHeight: 320,
+        saveToPhotoAlbum: false
+        }).then(function(imageURI) {
+            console.log(imageURI);
+            $scope.lastPhoto = imageURI;
+        }, function(err) {
+        console.err(err);
+    });
+    
+        navigator.camera.getPicture(function(imageURI) {
+            console.log(imageURI);
+        }, function(err) {
+        }, { 
+            quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL
+        });
     };
 
 }]);

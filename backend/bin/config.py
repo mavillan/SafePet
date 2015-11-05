@@ -14,20 +14,23 @@ _NPATTERNS = 59 #number of patterns of lbp method
 
 ### Parameters for histogram() module funcions
 _HIST_TYPE = 'SPATIAL' #could be SPATIAL or SPATIAL_PYRAMID
-_NX = 10 #number of images divisions on x (rows) direction
-_NY = 10 #number of images divisions on y (cols) direction
+_NX = 2 #number of images divisions on x (rows) direction
+_NY = 2 #number of images divisions on y (cols) direction
 _OVERLAPX = 2 #overlap on x (rows) direction
 _OVERLAPY = 2 #overlap on y (cols) direction  
 _LEVEL = 3 #number of levels on spatial pyramid
 
 
 ### Important paths (paths must be ended by '/', except _ROOT)
-_ROOT = '/home/martin/HDD/Mega/SafePet/SafePetData'
+_ROOT = '/home/martin/Mega/SafePet/SafePetData'
 _TRAINING_PATH = _ROOT+'/internet_data/'
 _TRAINING_PATH_LBP = _ROOT+'/training_set_lbp/'
 _TEST_PATH = _ROOT+'/test_set/'
 _TEST_PATH_LBP = _ROOT+'/test_set_lbp/'
 _MATRICES_PATH = _ROOT+'/matrices/'
+_SVM_POSITIVE = _ROOT+'/svm_train/positive/'
+_SVM_NEGATIVE = _ROOT+'/svm_train/negative/'
+_SVM_TEST = _ROOT+'/svm_test/'
 
 # Verification of existence
 if not os.path.isdir(_TRAINING_PATH):
@@ -74,4 +77,8 @@ params = {
 
 	'LEAF_SIZE' : _LEAF_SIZE,
 	'NEIGHBORS' : _NEIGHBORS,
+
+	'SVM_NEGATIVE' : _SVM_NEGATIVE,
+	'SVM_POSITIVE' : _SVM_POSITIVE,
+	'SVM_TEST' : _SVM_TEST
 }

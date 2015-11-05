@@ -32,10 +32,10 @@ def data_to_lbp(in_path, out_path):
 		img = cv.imread(in_path+filename, cv.IMREAD_GRAYSCALE)
 		lbp_image = lbp(img, cfg.params['P'], cfg.params['R'], cfg.params['LBP_METHOD'])
 		lbp_image = lbp_image.astype(np.uint8)
-		np.save(out_path+filename[:-4], lbp_image)
+
 	return 1
 
-def data_to_hist(in_path, out_path, hist_type=cfg.params['HIST_TYPE']):
+def data_to_hist(in_path, out_path=None, hist_type=cfg.params['HIST_TYPE']):
 	"""
 	> load serialized numpy arrays from in_path containing
 	  lbp representation of an image. 
@@ -60,28 +60,28 @@ def data_to_hist(in_path, out_path, hist_type=cfg.params['HIST_TYPE']):
 	hist_matrix = np.empty((nrows,ncols))
 	i_index = 0
 
-	if hist_type=='SPATIAL':
-		for filename in filenames:
-			print filename
-			lbp_image = np.load(in_path+filename)
+	for filename in filenames:
+		img = cv.imread(in_path+filename, cv.IMREAD_GRAYSCALE)
+		lbp_image = lbp(img, cfg.params['P'], cfg.params['R'], cfg.params['LBP_METHOD'])
+		lbp_image = lbp_image.astype(np.uint8)
+
+		#transform lbp to histogram representation
+		if hist_type=='SPATIAL':
 			hist_matrix[i_index,:] = histogram.spatial(lbp_image, cfg.params['NX'], cfg.params['NY'], 
 				              cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
 			i_index+=1
-
-	elif hist_type=='SPATIAL_PYRAMID':
-		for filename in filenames:
-			lbp_image = np.load(in_path+filename)
+		elif hist_type=='SPATIAL_PYRAMID':
 			hist_matrix[i_index,:] = histogram.spatial_pyramid(lbp_image, cfg.params['LEVEL'], 
 				              cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
 			i_index+=1
+		else:
+			print 'invalid hist_type!'
+			return -1
 
-	else:
-		print 'invalid hist_type!'
-		return -1
-
-	#save the resulting matrix with timestamps
-	out = out_path+'hist_matrix::'+hist_type+'::'+time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
-	np.save(out, hist_matrix)
+	if out_path!=None
+		#save the resulting matrix with timestamps
+		out = out_path+'hist_matrix::'+hist_type+'::'+time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
+		np.save(out, hist_matrix)
 	return 1
 
 

@@ -78,7 +78,7 @@ def data_to_hist(in_path, out_path=None, hist_type=cfg.params['HIST_TYPE']):
 			print 'invalid hist_type!'
 			return -1
 
-	if out_path!=None
+	if out_path!=None:
 		#save the resulting matrix with timestamps
 		out = out_path+'hist_matrix::'+hist_type+'::'+time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
 		np.save(out, hist_matrix)
@@ -208,5 +208,4 @@ if __name__=='__main__':
 
 		else:
 			print 'Wrong input!'
-	sys.exit(0)  
-	
+	sys.exit(0)

@@ -1,9 +1,11 @@
 import os
 import sys
+import time
 import histogram
 import numpy as np
 import cv2 as cv
 import config as cfg
+import cPickle as pickle
 from skimage.feature import local_binary_pattern as lbp
 
 def data_to_lbp(in_path, out_path):
@@ -48,6 +50,9 @@ def data_to_hist(in_path, out_path=None, hist_type=cfg.params['HIST_TYPE'], prec
 		print in_path, 'is empty!'
 		return -1
 
+	#dictionary with mappings between row numbers and image name
+	mappings = dict()
+
 	#Generating empty histogram matrix, such that in
 	#each there will be an histogram
 	nrows = len(filenames)
@@ -70,14 +75,19 @@ def data_to_hist(in_path, out_path=None, hist_type=cfg.params['HIST_TYPE'], prec
 		if hist_type=='SPATIAL':
 			hist_matrix[i_index,:] = histogram.spatial(lbp_image, cfg.params['NX'], cfg.params['NY'], 
 				              cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
-			i_index += 1
 		elif hist_type=='SPATIAL_PYRAMID':
 			hist_matrix[i_index,:] = histogram.spatial_pyramid(lbp_image, cfg.params['LEVEL'], 
 				              cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
-			i_index += 1
 		else:
-			print 'invalid hist_type!'
-			return -1
+			print 'invalid hist_type!'; return -1
+		#save the mapping
+		mappings[i_index] = filename
+		i_index += 1
+
+	#storing mappings in vault
+	tgt = file(cfg.params['VAULT']+'mappings', 'wb')
+	pickle.dump(mappings, tgt)
+	tgt.close()
 
 	if out_path!=None:
 		#save the resulting matrix with timestamps

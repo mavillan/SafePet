@@ -11,6 +11,7 @@ cimport numpy as cnp
 ctypedef unsigned int uint
 ctypedef cnp.float64_t float64_t
 ctypedef cnp.uint8_t uint8_t
+ctypedef cnp.ndarray ndarray
 
 
 cdef float64_t _chi2(float64_t[::1] h0, float64_t[::1] h1):
@@ -33,11 +34,28 @@ cdef float64_t _chi2(float64_t[::1] h0, float64_t[::1] h1):
 	return retval
 
 
+cdef ndarray _Chi2(float64_t[:,::1] X, float64_t[:,::1] Y):
+	"""
+	> Function to compute Gram Matrix between X and Y using 
+	  chi2 metric
+	"""
+	cdef:
+		Py_ssize_t m = X.shape[0]
+		Py_ssize_t n = Y.shape[0]
+		Py_ssize_t i, j
+		#Gram Matrix
+		ndarray[float64_t, ndim=2] G = np.empty((m,n))
+	for i in range(m):
+		for j in range(n):
+			G[i,j] = _chi2(X[i],Y[j])
+	return G
+
+
 cdef float64_t _pmk(float64_t[::1] sp_pyrd0, 
 	                float64_t[::1] sp_pyrd1, 
 	                int level=3, int npatterns=59):
 	"""
-	> Pyramid Match Kernel
+	> Pyramid Match Kernel metric
 	"""
 	cdef:
 		Py_ssize_t l
@@ -62,6 +80,9 @@ Wrapers Funtions
 
 def chi2(float64_t[::1] h0 not None, float64_t[::1] h1 not None):
 	return _chi2(h0, h1)
+
+def Chi2(float64_t[:,::1] X not None, float64_t[:,::1] Y not None):
+	return _Chi2(X, Y)
 
 def pmk(float64_t[::1] sp_pyrd0 not None,
 	    float64_t[::1] sp_pyrd1 not None, 

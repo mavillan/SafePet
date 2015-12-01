@@ -52,7 +52,7 @@ if not os.path.isdir(_MATRICES_PATH):
 
 
 ### Parameters of nearest neighbor search
-_LEAF_SIZE = 30 #leaf size of ball_tree structure
+_LEAF_SIZE = 20 #leaf size of ball_tree structure
 _NEIGHBORS = 2  #neighbors to show on NN search
 
 

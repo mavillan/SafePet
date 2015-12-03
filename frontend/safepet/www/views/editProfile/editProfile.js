@@ -15,9 +15,16 @@ angular.module('safePet')
 	});
 
 	$scope.editProfile = function(User){
-		usersResource.update({id: $scope.User.id},{data: $scope.User});
-		
-		$state.go('app.mainList');
+		usersResource.update({id: $scope.User.id},{data: $scope.User}, function(){
+			// Handle user information
+			userInfo.user.$promise.then(function(user){
+				$scope.User.email = user.email;
+				$scope.User.phone = user.phone;
+				$scope.User.address = user.address;
+				$scope.User.displayName = user.displayName;
+				$scope.User.id = user._id;
+			}); 
+		});
+		$state.go('app.profile');
 	};
-	
 }]);

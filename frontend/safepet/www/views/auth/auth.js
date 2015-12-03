@@ -70,7 +70,7 @@ angular.module('safePet')
 		$scope.userModal.hide();
 	};
     // Create and load the Modal Crop (borrar hasta el ultimo "};" antes del " }]);" )
-    $ionicModal.fromTemplateUrl('imgCrop.html', function(modal) {
+    /*$ionicModal.fromTemplateUrl('imgCrop.html', function(modal) {
         $scope.cropModal = modal;
     }, {
         scope: $scope,
@@ -108,7 +108,7 @@ angular.module('safePet')
         });
     };
             $scope.showAlert();*/
-            $scope.myImage = imageURI;
+     /*       $scope.myImage = imageURI;
             $scope.cropModal.show();
 
         }, function(err) {
@@ -122,5 +122,5 @@ angular.module('safePet')
             quality: 50,
             destinationType: Camera.DestinationType.DATA_URL
         });
-    };
+    };*/
 }]);

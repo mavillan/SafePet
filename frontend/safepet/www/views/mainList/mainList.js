@@ -99,49 +99,5 @@ angular.module('safePet')
             destinationType: Camera.DestinationType.DATA_URL
         });
     };
-    // Create and load the Modal Crop
-    /*$ionicModal.fromTemplateUrl('imgCrop.html', function(modal) {
-        $scope.cropModal = modal;
-    }, {
-        scope: $scope,
-        animation: 'slide-in-up'
-    });
-
-    // Open new task modal
-    $scope.crop = function() {
-        $scope.cropModal.show();
-        $scope.myCroppedImage='';
-        $scope.getPhoto();
-    };
-
-    // Close the new task modal
-    $scope.closeCrop = function() {
-        $scope.cropModal.hide();
-    };
-
-
-    $scope.getPhoto = function() {
-        console.log('Getting camera');
-        Camera.getPicture({
-        quality: 75,
-        targetWidth: 480,
-        targetHeight: 480,
-        saveToPhotoAlbum: false
-        }).then(function(imageURI) {
-            console.log(imageURI);
-            $scope.lastPhoto = imageURI;
-        }, function(err) {
-        console.err(err);
-    });
-    
-        navigator.camera.getPicture(function(imageURI) {
-            console.log(imageURI);
-        }, function(err) {
-        }, { 
-            quality: 50,
-            destinationType: Camera.DestinationType.DATA_URL
-        });
-    };*/
-
 }]);
 

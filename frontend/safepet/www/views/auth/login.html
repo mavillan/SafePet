@@ -23,7 +23,14 @@
 	  		</div>
   		</div>
   	</ion-content>
-   
+        <!-- Nose scan Button -->
+    <ion-footer-bar align-title="left" class="bar-balanced">
+        <h1 class="title">
+            <button class="button button-clear" ng-click='crop()'>
+                <i class="icon ion-android-camera"></i> Escanear nariz
+            </button>
+        </h1>
+    </ion-footer-bar>
   	<!-- New user modal script -->
   	<script id="newUser.html" type="text/ng-template">
   	    <div class="modal">
@@ -62,7 +69,7 @@
   	</script>  
         <!-- NgImgCrop modal script (borrar hasta </script>) -->
     <script id="imgCrop.html" type="text/ng-template">
-       /* <div class="modal">
+        <div class="modal">
             <!-- Modal header bar -->
             <ion-header-bar class="bar-secondary">
                 <h1 class="title">Escanear nariz</h1>
@@ -71,13 +78,12 @@
 
             <!-- Modal content area -->
             <ion-content>
-                
                 <div class="cropArea">
                     <img-crop image="myImage" result-image="myCroppedImage" area-type="circle"></img-crop>
                 </div>
                 <div>Cropped Image:</div>
                 <img ng-src="{{myCroppedImage}}">
             </ion-content>
-        </div>*/
+        </div>
     </script>
 </ion-view>

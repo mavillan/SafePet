@@ -3,26 +3,26 @@ angular.module('safePet')
 .controller('authController', ['$scope','$auth','$state','$ionicModal', '$ionicPopup', 'Camera', function($scope,$auth,$state,$ionicModal,$ionicPopup, Camera){
     $scope.signup = function(user) {
         $auth.signup({
-        	displayName: user.displayName,
+            displayName: user.displayName,
             email: user.email,
             password: user.password,
             address: user.address,
             phone: user.phone
         })
         .then(function() {
-        	$scope.userModal.hide();
+            $scope.userModal.hide();
             $state.go("app.mainList");
         })
         .catch(function(response) {
-        	$ionicPopup.alert({
-        	  title: 'Error',
-        	  content: response.data ? response.data || response.data.message : response
-        	});
+            $ionicPopup.alert({
+              title: 'Error',
+              content: response.data ? response.data || response.data.message : response
+            });
         });
     };
     $scope.login = function(user){
         $auth.login({
-        	displayName: user.displayName,
+            displayName: user.displayName,
             email: user.email,
             password: user.password
         })
@@ -30,10 +30,10 @@ angular.module('safePet')
             $state.go("app.mainList")
         })
         .catch(function(response){
-        	$ionicPopup.alert({
-        	  title: 'Error',
-        	  content: 'Usuario o contraseña incorrectos'//response.data ? response.data || response.data.message : response
-        	})
+            $ionicPopup.alert({
+              title: 'Error',
+              content: 'Usuario o contraseña incorrectos'//response.data ? response.data || response.data.message : response
+            })
         });
     };
 
@@ -52,31 +52,30 @@ angular.module('safePet')
         });
     };
 
-	// Create and load the Modal
-	$ionicModal.fromTemplateUrl('newUser.html', function(modal) {
-		$scope.userModal = modal;
-	}, {
-		scope: $scope,
-		animation: 'slide-in-up'
-	});
-
-	// Open our new task modal
-	$scope.newUser = function() {
-	  	$scope.userModal.show();
-	};
-
-  	// Close the new task modal
-	$scope.closeNewUser = function() {
-		$scope.userModal.hide();
-	};
-    // Create and load the Modal Crop (borrar hasta el ultimo "};" antes del " }]);" )
-    /*$ionicModal.fromTemplateUrl('imgCrop.html', function(modal) {
-        $scope.cropModal = modal;
+    // Create and load the Modal
+    $ionicModal.fromTemplateUrl('newUser.html', function(modal) {
+        $scope.userModal = modal;
     }, {
         scope: $scope,
         animation: 'slide-in-up'
     });
 
+    // Open our new task modal
+    $scope.newUser = function() {
+        $scope.userModal.show();
+    };
+
+    // Close the new task modal
+    $scope.closeNewUser = function() {
+        $scope.userModal.hide();
+    };
+    // Create and load the Modal Crop (borrar hasta el ultimo "};" antes del " }]);" )
+    $ionicModal.fromTemplateUrl('imgCrop.html', function(modal) {
+        $scope.cropModal = modal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up'
+    });
     // Open new task modal
     $scope.crop = function() {
         $scope.myImage = '';
@@ -84,13 +83,10 @@ angular.module('safePet')
         $scope.getPhoto();
         //$scope.cropModal.show();
     };
-
     // Close the new task modal
     $scope.closeCrop = function() {
         $scope.cropModal.hide();
     };
-
-
     $scope.getPhoto = function() {
         console.log('Getting camera');
         Camera.getPicture({
@@ -108,9 +104,8 @@ angular.module('safePet')
         });
     };
             $scope.showAlert();*/
-     /*       $scope.myImage = imageURI;
+            $scope.myImage = imageURI;
             $scope.cropModal.show();
-
         }, function(err) {
         console.err(err);
     });
@@ -122,5 +117,5 @@ angular.module('safePet')
             quality: 50,
             destinationType: Camera.DestinationType.DATA_URL
         });
-    };*/
+    };
 }]);

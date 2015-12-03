@@ -67,24 +67,24 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
                 }
             }
         })
-	.state('app.profile', {
- 	    url: '/profile',
-	    views: {
-		'menuContent': {
-		    templateUrl: 'views/profile/profile.html',
-		    controller: 'profileController'
-		}
-	   }
-	})
-	.state('app.editProfile', {
- 	    url: '/edit',
-	    views: {
-		'menuContent': {
-		    templateUrl: 'views/editProfile/editProfile.html',
-		    controller: 'editController'
-		}
-	   }
-	})
+    .state('app.profile', {
+        url: '/profile',
+        views: {
+        'menuContent': {
+            templateUrl: 'views/profile/profile.html',
+            controller: 'profileController'
+        }
+       }
+    })
+    .state('app.editProfile', {
+        url: '/edit',
+        views: {
+        'menuContent': {
+            templateUrl: 'views/editProfile/editProfile.html',
+            controller: 'editController'
+        }
+       }
+    })
         .state('app.notifications',{
             url: '/notifications',
             views: {

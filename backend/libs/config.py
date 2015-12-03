@@ -14,8 +14,8 @@ _NPATTERNS = 59 #number of patterns of lbp method
 
 ### Parameters for histogram() module funcions
 _HIST_TYPE = 'SPATIAL' #could be SPATIAL or SPATIAL_PYRAMID
-_NX = 8 #number of images divisions on x (rows) direction
-_NY = 8 #number of images divisions on y (cols) direction
+_NX = 4 #number of images divisions on x (rows) direction
+_NY = 4 #number of images divisions on y (cols) direction
 _OVERLAPX = 2 #overlap on x (rows) direction
 _OVERLAPY = 2 #overlap on y (cols) direction  
 _LEVEL = 3 #number of levels on spatial pyramid
@@ -53,7 +53,7 @@ if not os.path.isdir(_MATRICES_PATH):
 
 ### Parameters of nearest neighbor search
 _LEAF_SIZE = 20 #leaf size of ball_tree structure
-_NEIGHBORS = 2  #neighbors to show on NN search
+_NEIGHBORS = 3  #neighbors to show on NN search
 
 
 

@@ -30,7 +30,7 @@ def build_svm(in_path1, in_path2, out_path=None):
 
 	#creating the SVM with chi2 kernel
 	#to do: cross validation
-	clf = svm.SVC(kernel=metric.Chi2)
+	clf = svm.NuSVC(kernel=metric.Chi2, nu=0.1)
 	clf.fit(data,labels)
 
 	if out_path is not None:
@@ -38,4 +38,4 @@ def build_svm(in_path1, in_path2, out_path=None):
 		pickle.dump(clf, tgt)
 		tgt.close()
 		return 1
-	else: return svm
+	else: return clf

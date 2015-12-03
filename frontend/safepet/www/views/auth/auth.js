@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('authController', ['$scope','$auth','$state','$ionicModal', '$ionicPopup', function($scope,$auth,$state,$ionicModal,$ionicPopup){
+.controller('authController', ['$scope','$auth','$state','$ionicModal', '$ionicPopup', 'Camera', function($scope,$auth,$state,$ionicModal,$ionicPopup, Camera){
     $scope.signup = function(user) {
         $auth.signup({
         	displayName: user.displayName,
@@ -69,4 +69,58 @@ angular.module('safePet')
 	$scope.closeNewUser = function() {
 		$scope.userModal.hide();
 	};
+    // Create and load the Modal Crop
+    $ionicModal.fromTemplateUrl('imgCrop.html', function(modal) {
+        $scope.cropModal = modal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up'
+    });
+
+    // Open new task modal
+    $scope.crop = function() {
+        $scope.myImage = '';
+        $scope.myCroppedImage = '';
+        $scope.getPhoto();
+        //$scope.cropModal.show();
+    };
+
+    // Close the new task modal
+    $scope.closeCrop = function() {
+        $scope.cropModal.hide();
+    };
+
+
+    $scope.getPhoto = function() {
+        console.log('Getting camera');
+        Camera.getPicture({
+        quality: 75,
+        targetWidth: 500,
+        targetHeight: 500,
+        saveToPhotoAlbum: false
+        }).then(function(imageURI) {
+            //console.log(imageURI);
+            $scope.lastPhoto = imageURI;
+           /* $scope.showAlert = function() {
+        var alertPopup = $ionicPopup.alert({
+                title: 'Acerca de SafePet',
+                template: '{{lastPhoto}}' 
+        });
+    };
+            $scope.showAlert();*/
+            $scope.myImage = imageURI;
+            $scope.cropModal.show();
+
+        }, function(err) {
+        console.err(err);
+    });
+    
+        navigator.camera.getPicture(function(imageURI) {
+            console.log(imageURI);
+        }, function(err) {
+        }, { 
+            quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL
+        });
+    };
 }]);

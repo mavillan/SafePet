@@ -69,7 +69,7 @@ angular.module('safePet')
 	$scope.closeNewUser = function() {
 		$scope.userModal.hide();
 	};
-    // Create and load the Modal Crop
+    // Create and load the Modal Crop (borrar hasta el ultimo "};" antes del " }]);" )
     $ionicModal.fromTemplateUrl('imgCrop.html', function(modal) {
         $scope.cropModal = modal;
     }, {

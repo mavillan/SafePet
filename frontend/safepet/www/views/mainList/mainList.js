@@ -45,7 +45,6 @@ angular.module('safePet')
     $scope.closeNewDog = function() {
         $scope.dogModal.hide();
     };
-
     // Create and load the Modal Crop
     $ionicModal.fromTemplateUrl('imgCrop.html', function(modal) {
         $scope.cropModal = modal;
@@ -56,8 +55,10 @@ angular.module('safePet')
 
     // Open new task modal
     $scope.crop = function() {
+        $scope.myImage = '';
+        $scope.myCroppedImage = '';
         $scope.getPhoto();
-        $scope.cropModal.show();
+        //$scope.cropModal.show();
     };
 
     // Close the new task modal
@@ -70,12 +71,22 @@ angular.module('safePet')
         console.log('Getting camera');
         Camera.getPicture({
         quality: 75,
-        targetWidth: 320,
-        targetHeight: 320,
+        targetWidth: 500,
+        targetHeight: 500,
         saveToPhotoAlbum: false
         }).then(function(imageURI) {
-            console.log(imageURI);
+            //console.log(imageURI);
             $scope.lastPhoto = imageURI;
+           /* $scope.showAlert = function() {
+        var alertPopup = $ionicPopup.alert({
+                title: 'Acerca de SafePet',
+                template: '{{lastPhoto}}' 
+        });
+    };
+            $scope.showAlert();*/
+            $scope.myImage = imageURI;
+            $scope.cropModal.show();
+
         }, function(err) {
         console.err(err);
     });

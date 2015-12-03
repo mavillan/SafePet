@@ -1,3 +1,0 @@
-/home/luis/Desktop/crop/SafePet/frontend/safepet/platforms/android/build/intermediates/classes/debug
-/home/luis/Desktop/crop/SafePet/frontend/safepet/platforms/android/build/intermediates/pre-dexed/debug/classes-32623ee87db70a55f526f9b1cae8093afe73e164.jar
-/home/luis/Desktop/crop/SafePet/frontend/safepet/platforms/android/build/intermediates/pre-dexed/debug/classes-37e80ab20563f76cfae60e03a222e5cea1f47192.jar

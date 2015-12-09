@@ -58,20 +58,20 @@ if __name__=='__main__':
 	Perform a search for the k nearest results
 	stored in the database
 	"""
-	# elif args.search:
-	# 	#loading nn object
-	# 	tgt = open(cfg.params['VAULT']+'NearestNeighbors', 'rb')
-	# 	nn = pickle.load(tgt)
-	# 	tgt.close()
-	# 	#loading mappings dictionary
-	# 	tgt = open(cfg.params['VAULT']+'mappings', 'rb')
-	# 	mappings = pickle.load(tgt)
-	# 	tgt.close()
-	# 	#performing the search
-	# 	dist, ind = nn.query(hist, k=cfg.params['NEIGHBORS'])
-	# 	#mapping the results
-	# 	result = [mappings[i] for i in ind]
-	# 	return result
+	elif args.search:
+		#loading nn object
+	 	tgt = open(cfg.params['VAULT']+'NearestNeighbors', 'rb')
+	 	nn = pickle.load(tgt)
+	 	tgt.close()
+	 	#loading mappings dictionary
+	 	tgt = open(cfg.params['VAULT']+'mappings', 'rb')
+	 	mappings = pickle.load(tgt)
+	 	tgt.close()
+	 	#performing the search
+	 	dist, ind = nn.query(hist, k=cfg.params['NEIGHBORS'])
+	 	#mapping the results
+	 	result = [mappings[i] for i in ind]
+	 	return result
 	
 	# elif args.insert:
 	# 	#loading hist matrix

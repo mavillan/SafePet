@@ -24,6 +24,6 @@ angular.module('safePet')
 				$scope.User.id = user._id;
 			});      
 		});
-		$state.go('app.profile', {}, {reload: true});
+		$state.go('app.profile');
 	};	
 }]);

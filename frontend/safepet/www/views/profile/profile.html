@@ -3,7 +3,7 @@
     <div class="list card">
       <div class="item item-avatar">
         <img src="">
-          <h2>{{nickname}}</h2>
+          <h2>{{User.displayName}}</h2>
       </div>
       <a class="item item-body" href="#/app">
         Mis perros
@@ -13,11 +13,11 @@
         Datos personales
         <div class="item item-body">
           Direccion
-          <span class="item-note">{{datos.address}}</span>
+          <span class="item-note">{{User.address}}</span>
         </div>
         <div class="item item-body">
           Num Telefonico
-          <span class="item-note">{{datos.phoneNumber}}</span>
+          <span class="item-note">{{User.phone}}</span>
         </div>
       </div>
       <div class="item tabs tabs-secondary tabs-icon-left">

@@ -1,7 +1,7 @@
 <!-- Menu content -->
-<ion-tabs class="tabs-striped tabs-top tabs-background-stable tabs-color-dark">
-    <ion-tab title="Mis perros">
-        <ion-view view-title="Safepet">
+<ion-view view-title="SafePet">
+    <ion-tabs class="tabs-striped tabs-top tabs-background-stable tabs-color-dark">
+        <ion-tab title="Mis perros">
             <!-- New dog Button -->
             <ion-nav-buttons side="right">
                 <button class="button button-icon" ng-click="newDog()">
@@ -21,7 +21,7 @@
             </ion-content>
 
             <!-- Nose scan Button -->
-            <ion-footer-bar align-title="left" class="bar-balanced">
+            <ion-footer-bar align-title="center" class="bar-balanced">
                 <h1 class="title">
                     <button class="button button-clear">
                         <i class="icon ion-android-camera"></i> Escanear nariz
@@ -83,9 +83,9 @@
                     </ion-content>
                 </div>
             </script>
-        </ion-view>
-    </ion-tab>
-    <ion-tab title="Perros perdidos">
-    <!-- Aca va la lista de perros perdidos -->
-    </ion-tab>                
-</ion-tabs>
+        </ion-tab>
+        <ion-tab title="Perros perdidos">
+        <!-- Aca va la lista de perros perdidos -->
+        </ion-tab>                
+    </ion-tabs>
+</ion-view>

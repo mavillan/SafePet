@@ -1,4 +1,4 @@
-angular.module('safePet', ['ionic','ngResource','satellizer'])
+angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 
 .config(function ($stateProvider, $urlRouterProvider,$authProvider) {
 
@@ -67,24 +67,24 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
                 }
             }
         })
-	.state('app.profile', {
- 	    url: '/profile',
-	    views: {
-		'menuContent': {
-		    templateUrl: 'views/profile/profile.html',
-		    controller: 'profileController'
-		}
-	   }
-	})
-	.state('app.editProfile', {
- 	    url: '/edit',
-	    views: {
-		'menuContent': {
-		    templateUrl: 'views/editProfile/editProfile.html',
-		    controller: 'editController'
-		}
-	   }
-	})
+    .state('app.profile', {
+        url: '/profile',
+        views: {
+        'menuContent': {
+            templateUrl: 'views/profile/profile.html',
+            controller: 'profileController'
+        }
+       }
+    })
+    .state('app.editProfile', {
+        url: '/edit',
+        views: {
+        'menuContent': {
+            templateUrl: 'views/editProfile/editProfile.html',
+            controller: 'editController'
+        }
+       }
+    })
         .state('app.notifications',{
             url: '/notifications',
             views: {
@@ -137,6 +137,23 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
 // Return the user dogs resource
 .factory('userDogsResource', ['$resource', function($resource){
     return $resource("http://safepetapi.labcomp.cl:5000/dogs/user/:id",{userId: "@id"},{update: {method: "PUT"}});
+}])
+
+//Camera
+.factory('Camera', ['$q', function($q) {
+  return {
+    getPicture: function(options) {
+      var q = $q.defer();
+      
+      navigator.camera.getPicture(function(result) {
+        q.resolve(result);
+      }, function(err) {
+        q.reject(err);
+      }, options);
+      
+      return q.promise;
+    }
+  }
 }])
 
 // Return current authenticated user

@@ -47,17 +47,17 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 
     // Router Config
     $stateProvider
-        .state('login', {
-            url: '/login',
-            templateUrl: 'views/auth/login.html',
-            controller: 'authController'
-        })
-        .state('app', {
-            url: "/app",
-            abstract: true,
-            templateUrl: "views/menu/menu.html",
-            controller: 'menuController'
-        })
+    .state('login', {
+        url: '/login',
+        templateUrl: 'views/auth/login.html',
+        controller: 'authController'
+    })
+    .state('app', {
+        url: "/app",
+        abstract: true,
+        templateUrl: "views/menu/menu.html",
+        controller: 'menuController'
+    })
         .state('app.mainList', {
             url: '/mainlist',
             views: {
@@ -67,24 +67,25 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
                 }
             }
         })
-    .state('app.profile', {
-        url: '/profile',
-        views: {
-        'menuContent': {
-            templateUrl: 'views/profile/profile.html',
-            controller: 'profileController'
-        }
-       }
-    })
-    .state('app.editProfile', {
-        url: '/edit',
-        views: {
-        'menuContent': {
-            templateUrl: 'views/editProfile/editProfile.html',
-            controller: 'editController'
-        }
-       }
-    })
+        .state('app.profile', {
+            url: '/profile',
+            cache: false,
+            views: {
+            'menuContent': {
+                templateUrl: 'views/profile/profile.html',
+                controller: 'profileController'
+            }
+           }
+        })
+        .state('app.editProfile', {
+            url: '/edit',
+            views: {
+            'menuContent': {
+                templateUrl: 'views/editProfile/editProfile.html',
+                controller: 'editController'
+            }
+           }
+        })
         .state('app.faq',{
             url: '/faq',
             views: {

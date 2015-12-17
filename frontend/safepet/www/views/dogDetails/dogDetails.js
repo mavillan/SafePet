@@ -1,9 +1,9 @@
 angular.module('safePet')
 
-.controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state','$ionicModal', function($scope,dogsResource,$stateParams,$state,$ionicModal){
+.controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state','$ionicModal', 'userInfo', function($scope,dogsResource,$stateParams,$state,$ionicModal, userInfo){
 
 	$scope.dog = dogsResource.get({id: $stateParams.dogId});
-
+    $scope.UserId = userInfo.userId;
 	$scope.deleteDog = function () {
 		dogsResource.delete({id: $stateParams.dogId});
 		

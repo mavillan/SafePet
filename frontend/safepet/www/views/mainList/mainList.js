@@ -15,6 +15,9 @@ angular.module('safePet')
         $scope.dogs = userDogsResource.query({id: user._id});
     });
 
+    // Find all lost dogs.
+    $scope.lostdogs = dogsResource.query();
+
     // create a new dog when the form is submitted
     $scope.createDog = function(dog) {
         // Add owner id to the dog info

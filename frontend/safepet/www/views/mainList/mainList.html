@@ -22,8 +22,18 @@
             </ion-view>
         </ion-tab>
         <ion-tab title="Perros perdidos">
-        <!-- Aca va la lista de perros perdidos -->
-
+            <!-- Lost dogs list -->
+            <ion-view>
+                <ion-content>
+                    <ion-list>
+                        <ion-item  class="item-thumbnail-left" ng-repeat="dog in lostdogs" href="#/app/{{dog._id}}">
+                            <img ng-src="{{dog.photo}}">
+                            <h2>{{dog.name}}</h2>
+                            <p>{{dog.breed}}</p>
+                        </ion-item>
+                    </ion-list>
+                </ion-content>
+            </ion-view>
         </ion-tab>                
     </ion-tabs>
     <!-- New dog modal script -->

@@ -33,7 +33,7 @@
 	        <div class="modal">
 	            //<!-- Modal header bar -->
 	            <ion-header-bar class="bar-secondary">
-	                <h1 class="title">Perdida</h1>
+	                <h1 class="title">Notificar</h1>
 	                <button class="button button-assertive button-clear pull-right" ng-click="closeLostDog()">Cancelar</button>
 	            </ion-header-bar>
 
@@ -44,7 +44,7 @@
 	                		<div class="col text-center">
 	                			<p>¿Está seguro?</p>
 	                			<h6>Se notificará a todos los usuarios cercanos de que su mascota ha sido reportada como perdida</h6>
-                				<button class="button button-block button-energized pull-left" ng-click="reportLostDog()">Reportar Perdido</button>
+                				<button class="button button-block button-energized pull-left" ng-click="reportLostDog()">Reportar Pérdida</button>
                 			</div>
                 		</div>
 	                </div>
@@ -57,15 +57,19 @@
 	        <ion-modal-view>
 	            //<!-- Modal header bar -->
 	            <ion-header-bar class="bar-secondary">
-	                <h1 class="title">Mascota encontrada</h1>
+	                <h1 class="title">Notificar</h1>
+	                <button class="button button-assertive button-clear pull-right" ng-click="closeFoundDog()">Cancelar</button>
 	            </ion-header-bar>
 
 	            //<!-- Modal content area -->
 	            <ion-content>
 	                <div class="padding">
-	                	<p>¿Haz encontrado a tu mascota?</p>
-	                	<button class="button button-positive pull-left" ng-click="reportLostDog()">Si</button>
-	                	<button class="button button-assertive pull-right" ng-click="closeFoundDog()">Cancelar</button>
+	                	<div class="row">
+	                		<div class="col text-center">
+	                			<p>¿Has encontrado a tu mascota?</p>
+	                			<button class="button button-block button-positive pull-left" ng-click="reportLostDog()">Mascota Encontrada</button>
+	                		</div>
+	                	</div>
 	                </div>
 	            </ion-content>
 	        </ion-modal-view>

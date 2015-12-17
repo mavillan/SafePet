@@ -5,10 +5,10 @@ angular.module('safePet')
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
         $state.go("login");
-    }
+    };
 
     // Refresh user information
-        userInfo.refresh();
+    userInfo.refresh();
 
     // Handle User dogs from the API.
     userInfo.user.$promise.then(function(user){
@@ -29,11 +29,11 @@ angular.module('safePet')
     };
 
     // Create and load the Modal
-    $ionicModal.fromTemplateUrl('newDog.html', function(modal) {
-        $scope.dogModal = modal;
-    }, {
+    $ionicModal.fromTemplateUrl('newDog.html', {
         scope: $scope,
         animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.dogModal = modal;
     });
 
     // Open new task modal

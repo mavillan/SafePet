@@ -25,6 +25,10 @@
             <!-- Lost dogs list -->
             <ion-view>
                 <ion-content>
+                <ion-refresher
+                    pulling-text="Pull to refresh..."
+                    on-refresh="doRefresh()">
+                </ion-refresher>
                     <ion-list>
                         <ion-item  class="item-thumbnail-left" ng-repeat="dog in lostdogs" href="#/app/{{dog._id}}">
                             <img ng-src="{{dog.photo}}">

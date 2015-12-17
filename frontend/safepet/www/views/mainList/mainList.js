@@ -15,18 +15,6 @@ angular.module('safePet')
         $scope.dogs = userDogsResource.query({id: user._id});
     });
 
-    // Find all lost dogs.
-    $scope.lostdogs = dogsResource.query();
-    //Refresh lost dogs on pull
-    $scope.doRefresh = function() {
-        $http.get('#/app/mainlist')
-        .success(function() {
-            $scope.lostdogs = dogsResource.query();
-        }).finally(function() {
-            // Stop the ion-refresher from spinning
-            $scope.$broadcast('scroll.refreshComplete');
-        });
-    };
     // create a new dog when the form is submitted
     $scope.createDog = function(dog) {
         // Add owner id to the dog info
@@ -38,6 +26,20 @@ angular.module('safePet')
         });
 
         $scope.dogModal.hide();
+    };
+
+    // Find all lost dogs.
+    $scope.lostdogs = dogsResource.query();
+    
+    //Refresh lost dogs on pull
+    $scope.doRefresh = function() {
+        $http.get('#/app/mainlist')
+        .success(function() {
+            $scope.lostdogs = dogsResource.query();
+        }).finally(function() {
+            // Stop the ion-refresher from spinning
+            $scope.$broadcast('scroll.refreshComplete');
+        });
     };
 
     // Create and load the Modal

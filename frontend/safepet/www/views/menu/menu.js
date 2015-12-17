@@ -5,16 +5,12 @@ angular.module('safePet')
 
 	// Refresh user information
 	userInfo.refresh();
-
-	if($auth.isAuthenticated()){
 	// Handle user information from the API
 	userInfo.user.$promise.then(function(user){
-		userInfo.refresh();
 		$scope.menuTitle = user.displayName;
 		$scope.dogs = userDogsResource.query({id: user._id});
 	});
 	
-	}
 	$scope.logout = function(){
 		$auth.logout()
 		.then(function() {

@@ -28,6 +28,22 @@ angular.module('safePet')
 		}
 	};
 
+    // Create and load the edit dog Modal
+    $ionicModal.fromTemplateUrl('editDog.html', function(modal) {
+        $scope.editDogModal = modal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up'
+    });
+    // Open edit dog modal
+    $scope.editDog = function() {
+        $scope.editDogModal.show();
+    };
+    //Close edit dog modal
+    $scope.closeEditDog = function() {
+        $scope.editDogModal.hide();
+    };
+
 	// Create and load the lost dog Modal
     $ionicModal.fromTemplateUrl('lostDog.html', function(modal) {
         $scope.lostDogModal = modal;

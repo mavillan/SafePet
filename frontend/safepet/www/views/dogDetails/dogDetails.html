@@ -1,36 +1,42 @@
 <ion-view view-title="Detalle">
+	<ion-nav-buttons side="right">
+        <button class="button button-clear" ng-click="editDog()">
+            Editar
+        </button>
+    </ion-nav-buttons>
 	<ion-content>
 		<div class="list card">
-			<ion-item class="item item-avatar">
+			<div class="item item-avatar">
 				<img src="">
 				<h2>{{dog.name}}</h2>
-			</ion-item>
-			<ion-item>
+			</div>
+			<div class="item item-body">
 				Color: {{dog.color}}
-			</ion-item>
-			<ion-item>
+			</div>
+			<div class="item item-body">
 				Raza: {{dog.breed}}
-			</ion-item>
-			<ion-item ng-hide="dog.lost">
+			</div>
+			<div ng-hide="dog.lost" class="item item-body">
 				Estado: Con su dueño
-			</ion-item>
-			<ion-item ng-hide="!dog.lost">
+			</div>
+			<div ng-hide="!dog.lost" class="item item-body">
 				Estado: Perdido
-			</ion-item>
-			<button class="button button-clear button-assertive" ng-click="deleteDog()">Eliminar</button>
-			<button ng-hide="dog.lost" class="button button-clear button-energized" ng-click="lostDog()">Reportar perdida</button>
-			<button ng-hide="!dog.lost"class="button button-clear button-balanced" ng-click="foundDog()">Reportar perro encontrado</button>
+			</div>
+			<div class="item tabs tabs-secondary tabs-icon-left">
+				<button ng-hide="dog.lost" class="button button-block button-energized" ng-click="lostDog()"><i class="ion-information-circled"></i>Perdido</button>
+			
+				<button ng-hide="!dog.lost"class="button button-block button-balanced" ng-click="foundDog()"><i class="ion-information-circled"></i>Encontrado</button>
+			</div>
 		</div>
-
 	   <!-- Lost dog modal script -->
 	    <script id="lostDog.html" type="text/ng-template">
 	        <div class="modal">
-	            <!-- Modal header bar -->
+	            //<!-- Modal header bar -->
 	            <ion-header-bar class="bar-secondary">
 	                <h1 class="title">Reportar perdida</h1>
 	            </ion-header-bar>
 
-	            <!-- Modal content area -->
+	            //<!-- Modal content area -->
 	            <ion-content>
 	                <div class="padding">
 	                	<p>¿Esta seguro?</p>
@@ -43,13 +49,13 @@
 
 	   <!-- Found dog modal script -->
 	    <script id="foundDog.html" type="text/ng-template">
-	        <div class="modal">
-	            <!-- Modal header bar -->
+	        <ion-modal-view>
+	            //<!-- Modal header bar -->
 	            <ion-header-bar class="bar-secondary">
 	                <h1 class="title">Mascota encontrada</h1>
 	            </ion-header-bar>
 
-	            <!-- Modal content area -->
+	            //<!-- Modal content area -->
 	            <ion-content>
 	                <div class="padding">
 	                	<p>¿Haz encontrado a tu mascota?</p>
@@ -57,7 +63,19 @@
 	                	<button class="button button-clear button-assertive" ng-click="closeFoundDog()">Cancelar</button>
 	                </div>
 	            </ion-content>
-	        </div>
+	        </ion-modal-view>
+	    </script>
+
+	    <script id="editDog.html" type="text/ng-template">
+	    	<ion-modal-view>
+	    		<ion-header-bar class="bar-secondary">
+	    			<h1 class="title">Editar Mascota</h1>
+	    			<button class="button button-clear button-assertive" ng-click="closeEditDog()">Cancelar</button>
+	    		</ion-header-bar>
+	    		<ion-content>
+	    			<button class="button button-assertive" ng-click="deleteDog()"><i class="ion-close-round"></i>Eliminar</button>
+	    		</ion-content>
+	    	</ion-modal-view>
 	    </script>   
 	</ion-content>
 </ion-view>

@@ -28,7 +28,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
             height: window.screen.height
         },
         url: '/auth/twitter'
-    }
+    };
 
     if (ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
         $authProvider.platform   = 'mobile';

@@ -9,6 +9,7 @@ angular.module('safePet')
 	    $scope.User.phone = user.phone;
 	    $scope.User.address = user.address;
 		$scope.User.displayName = user.displayName;
+		$scope.User.picture = user.picture;
 		$scope.User.id = user._id;		
 	});
 }]);

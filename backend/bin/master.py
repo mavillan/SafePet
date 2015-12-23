@@ -11,6 +11,10 @@ import cPickle as pickle
 from skimage.feature import local_binary_pattern as lbp
 
 
+def ret(tgt):
+	print tgt
+	sys.stdout.flush()
+
 
 if __name__=='__main__':
 	"""
@@ -24,6 +28,7 @@ if __name__=='__main__':
 	args = parser.parse_args()
 
 	path = args.path
+	filename = path.strip().split('/')[-1]
 	if not os.path.isfile(path):
 		sys.exit('File doesnt exist.')
 
@@ -40,10 +45,9 @@ if __name__=='__main__':
 	hist = histogram.spatial(lbp_img, cfg.params['NX'], cfg.params['NY'], 
 		   cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
 
-	"""
-	Verify if the argument photo is or not
-	a valid one, ie, corresponds to dog nose.
-	"""
+	
+	#Verify if the argument photo is or not
+	#a valid one, i.e, corresponds to dog nose.
 	if args.verify:
 		#loading svm object
 		tgt = open(cfg.params['VAULT']+'SVM', 'rb')
@@ -51,43 +55,54 @@ if __name__=='__main__':
 		tgt.close()
 		#predict
 		result = clf.predict([hist])
-		if result[0]==0: return 'invalid'
-		else: return 'valid'
+		if result[0]==0: ret('invalid')
+		else: ret('valid')
 
-	"""
-	Perform a search for the k nearest results
-	stored in the database
-	"""
+	#Perform a search for the k nearest results
+	#stored in the database
 	elif args.search:
 		#loading nn object
-	 	tgt = open(cfg.params['VAULT']+'NearestNeighbors', 'rb')
-	 	nn = pickle.load(tgt)
-	 	tgt.close()
-	 	#loading mappings dictionary
+		tgt = open(cfg.params['VAULT']+'NearestNeighbors', 'rb')
+		nn = pickle.load(tgt)
+		tgt.close()
+		#loading mappings dictionary
+		tgt = open(cfg.params['VAULT']+'mappings', 'rb')
+		mappings = pickle.load(tgt)
+		tgt.close()
+		#performing the search
+		dist, ind = nn.query(hist, k=cfg.params['NEIGHBORS'])
+		#mapping the results
+		result = [mappings[i] for i in ind]
+		ret(result)
+	
+	elif args.insert:
+		#loading hist matrix
+		matrices = os.listdir(cfg.params['MATRICES_PATH'])
+		matrices.sort()
+		hist_matrix = np.load(matrices[-1])
+		#loading mapings
 	 	tgt = open(cfg.params['VAULT']+'mappings', 'rb')
 	 	mappings = pickle.load(tgt)
-	 	tgt.close()
-	 	#performing the search
-	 	dist, ind = nn.query(hist, k=cfg.params['NEIGHBORS'])
-	 	#mapping the results
-	 	result = [mappings[i] for i in ind]
-	 	return result
-	
-	# elif args.insert:
-	# 	#loading hist matrix
+	 	tgt.close()	
 
-	# 	#loading mapings
+		#store lbp representation
+		np.save(cfg.params['TRAINING_PATH_LBP']+filename, lbp_image)
 
-	# 	#store lbp representation
+		#append hist to hist matrix and update it
+		#todo: search a better way to do that
+		hist_matrix = np.vstack(hist_matrix, hist)
+		out = cfg.params['MATRICES_PATH']+'::'+time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
+		np.save(out, hist_matrix)
 
-	# 	#append hist to hist matrix and update it
+		#append the mapping to dict and update it
+		mappings[hist_matrix.shape[0]-1] = filename
+		#storing mappings in vault
+		tgt = file(cfg.params['VAULT']+'mappings', 'wb')
+		pickle.dump(mappings, tgt)
+		tgt.close() 
 
-	# 	#append the mapping to dict and update it
+		#rebuild NearestNeighbors object and update it
+		build_nn(hist_matrix, cfg.params['VAULT'])
+	 	ret(1)
 
-	# 	#rebuild NearestNeighbors object and update it
-
-	# 	return
-
-	# else:
-	# 	sys.exit('Give me some instruction.')
-	
+	else: sys.exit('Give me some instruction.')

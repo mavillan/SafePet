@@ -2,7 +2,6 @@
 import sys
 import os
 import time
-import argparse
 import zerorpc
 import histogram
 import numpy as np
@@ -26,71 +25,54 @@ class Master():
 
 		#loading mappings dictionary and storing it as attribute
 		tgt = open(cfg.params['VAULT']+'mappings', 'rb')
-		mappings = pickle.load(tgt)
+		self.mappings = pickle.load(tgt)
 		tgt.close()
 
 		#loading hist matrix and storing it as attribute
 		matrices = os.listdir(cfg.params['MATRICES_PATH'])
 		matrices.sort()
-		hist_matrix = np.load(matrices[-1])
+		self.hist_matrix = np.load(matrices[-1])
 
 
-
-	"""
-	Parsing the arguments
-	"""
-	parser = argparse.ArgumentParser()
-	parser.add_argument('-v', '--verify', action='store_true')
-	parser.add_argument('-s', '--search', action='store_true')
-	parser.add_argument('-i', '--insert', action='store_true')
-	parser.add_argument('path', type=str)
-	args = parser.parse_args()
-
-	path = args.path
-	filename = path.strip().split('/')[-1]
-	if not os.path.isfile(path):
-		sys.exit('File doesnt exist.')
-
-	"""
-	Performing some operations, common for all
-	the options
-	"""
-	#greyscale image
-	img = cv.imread(path, cv.IMREAD_GRAYSCALE)
-	#lbp representation
-	lbp_img = lbp(img, cfg.params['P'], cfg.params['R'], cfg.params['LBP_METHOD'])
-	lbp_img = lbp_image.astype(np.uint8)
-	#histogram representation
-	hist = histogram.spatial(lbp_img, cfg.params['NX'], cfg.params['NY'], 
-		   cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
+	def _process(self, path):
+		"""
+		Performing some operations, common for all the options
+		"""
+		if not os.path.isfile(path):
+			#change it
+			sys.exit('File doesnt exist.')
+		#grayscale image
+		img = cv.imread(path, cv.IMREAD_GRAYSCALE)
+		#lbp representation
+		lbp_img = lbp(img, cfg.params['P'], cfg.params['R'], cfg.params['LBP_METHOD'])
+		lbp_img = lbp_image.astype(np.uint8)
+		#histogram representation
+		hist = histogram.spatial(lbp_img, cfg.params['NX'], cfg.params['NY'], 
+			   cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
+		return (lbp_img, hist)
 
 	
 	#Verify if the argument photo is or not
 	#a valid one, i.e, corresponds to dog nose.
-	def verify(self):
-
-			#predict
-			result = clf.predict([hist])
-			if result[0]==0: ret('invalid')
-			else: ret('valid')
+	def verify(self, path):
+			_,hist = _process(path)
+			result = self.clf.predict([hist])
+			if result[0]==0: return 'invalid'
+			else: return 'valid'
 
 	#Perform a search for the k nearest results
 	#stored in the database
-	def search(self):
-
+	def search(self, path):
+			_,hist = _process(path)
 			#performing the search
-			dist, ind = nn.query(hist, k=cfg.params['NEIGHBORS'])
+			dist, ind = self.nn.query(hist, k=cfg.params['NEIGHBORS'])
 			#mapping the results
-			result = [mappings[i] for i in ind]
-			ret(result)
+			result = [self.mappings[i] for i in ind]
+			return result
 		
-	def insert(self):
-
-			#loading mappings
-		 	tgt = open(cfg.params['VAULT']+'mappings', 'rb')
-		 	mappings = pickle.load(tgt)
-		 	tgt.close()	
-
+	def insert(self, path):
+			lbp_image,hist = _process(path)
+			filename = path.strip().split('/')[-1]
 			#store lbp representation
 			np.save(cfg.params['TRAINING_PATH_LBP']+filename, lbp_image)
 
@@ -109,7 +91,7 @@ class Master():
 
 			#rebuild NearestNeighbors object and update it
 			build_nn(hist_matrix, cfg.params['VAULT'])
-		 	ret(1)
+		 	return 1
 
 if __name__=='__main__':
 	s = zerorpc.Server(Master())

@@ -23,6 +23,13 @@ angular.module('safePet')
         });
 	};
 
+	/*$timeout(function(){
+		userInfo.user.$promise.then(function(user){
+			$scope.menuTitle = user.displayName;
+			$scope.dogs = userDogsResource.query({id: user._id});
+		});
+	}, 2000);*/
+
     $scope.showAlert = function() {
    		var alertPopup = $ionicPopup.alert({
      			title: 'Acerca de SafePet',

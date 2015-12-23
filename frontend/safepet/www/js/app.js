@@ -3,7 +3,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 .config(function ($stateProvider, $urlRouterProvider,$authProvider) {
 
     // Satellizer config
-    $authProvider.baseUrl = 'http://safepetapi.labcomp.cl:5000';
+    $authProvider.baseUrl = 'http://localhost:5000';
     $authProvider.loginUrl = "/auth/login";
     $authProvider.signupUrl = "/auth/signup";
     $authProvider.tokenName = "token";
@@ -118,17 +118,17 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 
 // Return the users resource
 .factory('usersResource', ['$resource', function($resource){
-    return $resource("http://safepetapi.labcomp.cl:5000/users/:id",{id: "@id"},{update: {method: "PUT"}});
+    return $resource("http://localhost:5000/users/:id",{id: "@id"},{update: {method: "PUT"}});
 }])
 
 // Return the dogs resource
 .factory('dogsResource', ['$resource', function($resource){
-    return $resource("http://safepetapi.labcomp.cl:5000/dogs/:id",{id: "@id"},{update: {method: "PUT"}});
+    return $resource("http://localhost:5000/dogs/:id",{id: "@id"},{update: {method: "PUT"}});
 }])
 
 // Return the user dogs resource
 .factory('userDogsResource', ['$resource', function($resource){
-    return $resource("http://safepetapi.labcomp.cl:5000/dogs/user/:id",{userId: "@id"},{update: {method: "PUT"}});
+    return $resource("http://localhost:5000/dogs/user/:id",{userId: "@id"},{update: {method: "PUT"}});
 }])
 
 //Camera
@@ -167,5 +167,6 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
             userInfo.userId = null;
             userInfo.user = null;
     };
+    
     return userInfo;
 }]);

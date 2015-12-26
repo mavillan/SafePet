@@ -31,15 +31,17 @@ class Master():
 		#loading hist matrix and storing it as attribute
 		matrices = os.listdir(cfg.params['MATRICES_PATH'])
 		matrices.sort()
-		selfhist_matrix = np.load(matrices[-1])
+		self.hist_matrix = np.load(matrices[-1])
 
 
-	def _process(self, img):
+	def _process(self, path):
 		"""
-		Performing some operations, common for all
-		the options
+		Performing some operations, common for all the options
 		"""
-		#greyscale image
+		if not os.path.isfile(path):
+			#change it
+			sys.exit('File doesnt exist.')
+		#grayscale image
 		img = cv.imread(path, cv.IMREAD_GRAYSCALE)
 		#lbp representation
 		lbp_img = lbp(img, cfg.params['P'], cfg.params['R'], cfg.params['LBP_METHOD'])
@@ -47,32 +49,30 @@ class Master():
 		#histogram representation
 		hist = histogram.spatial(lbp_img, cfg.params['NX'], cfg.params['NY'], 
 			   cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
-
-	path = args.path
-	filename = path.strip().split('/')[-1]
-	if not os.path.isfile(path):
-		sys.exit('File doesnt exist.')
-
-
+		return (lbp_img, hist)
 
 	
 	#Verify if the argument photo is or not
 	#a valid one, i.e, corresponds to dog nose.
 	def verify(self, path):
-			result = clf.predict([hist])
-			if result[0]==0: ret('invalid')
-			else: ret('valid')
+			_,hist = _process(path)
+			result = self.clf.predict([hist])
+			if result[0]==0: return 'invalid'
+			else: return 'valid'
 
 	#Perform a search for the k nearest results
 	#stored in the database
 	def search(self, path):
+			_,hist = _process(path)
 			#performing the search
-			dist, ind = nn.query(hist, k=cfg.params['NEIGHBORS'])
+			dist, ind = self.nn.query(hist, k=cfg.params['NEIGHBORS'])
 			#mapping the results
-			result = [mappings[i] for i in ind]
-			ret(result)
+			result = [self.mappings[i] for i in ind]
+			return result
 		
 	def insert(self, path):
+			lbp_image,hist = _process(path)
+			filename = path.strip().split('/')[-1]
 			#store lbp representation
 			np.save(cfg.params['TRAINING_PATH_LBP']+filename, lbp_image)
 
@@ -91,7 +91,7 @@ class Master():
 
 			#rebuild NearestNeighbors object and update it
 			build_nn(hist_matrix, cfg.params['VAULT'])
-		 	ret(1)
+		 	return 1
 
 if __name__=='__main__':
 	s = zerorpc.Server(Master())

@@ -7,6 +7,7 @@ from sklearn.externals import joblib
 from sklearn.neighbors import BallTree
 from helpers import data_to_hist
 
+
 def build_nn(data, out_path=None):
 	nn = BallTree(data, cfg.params['LEAF_SIZE'], metric='pyfunc', func=metric.chi2)
 	if out_path is not None:
@@ -15,7 +16,6 @@ def build_nn(data, out_path=None):
 		tgt.close()
 		return 1
 	else: return nn
-
 
 def build_svm(in_path1, in_path2, out_path=None):
 	#positive and negative examples data respectively

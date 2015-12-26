@@ -1,7 +1,7 @@
 angular.module('safePet')
 
 
-.controller('menuController', ['$scope','$auth','$state','userInfo','$ionicHistory','$timeout','$ionicPopup' , 'userDogsResource', function($scope,$auth,$state,userInfo,$ionicHistory,$timeout,$ionicPopup, userDogsResource){
+.controller('menuController', ['$scope','$auth','$state','userInfo','$ionicHistory','$timeout','$ionicPopup' , 'userDogsResource', '$interval', function($scope,$auth,$state,userInfo,$ionicHistory,$timeout,$ionicPopup, userDogsResource, $interval){
 
 	// Refresh user information
 	userInfo.refresh();
@@ -23,12 +23,12 @@ angular.module('safePet')
         });
 	};
 
-	/*$timeout(function(){
+	$interval(function(){
 		userInfo.user.$promise.then(function(user){
 			$scope.menuTitle = user.displayName;
 			$scope.dogs = userDogsResource.query({id: user._id});
 		});
-	}, 2000);*/
+	}, 5000)
 
     $scope.showAlert = function() {
    		var alertPopup = $ionicPopup.alert({

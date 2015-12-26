@@ -1,9 +1,9 @@
-angular.module('safePet', ['ionic','ngResource','satellizer'])
+angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 
 .config(function ($stateProvider, $urlRouterProvider,$authProvider) {
 
     // Satellizer config
-    $authProvider.baseUrl = 'http://safepetapi.labcomp.cl:5000';
+    $authProvider.baseUrl = 'http://localhost:5000';
     $authProvider.loginUrl = "/auth/login";
     $authProvider.signupUrl = "/auth/signup";
     $authProvider.tokenName = "token";
@@ -28,7 +28,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
             height: window.screen.height
         },
         url: '/auth/twitter'
-    }
+    };
 
     if (ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
         $authProvider.platform   = 'mobile';
@@ -47,17 +47,17 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
 
     // Router Config
     $stateProvider
-        .state('login', {
-            url: '/login',
-            templateUrl: 'views/auth/login.html',
-            controller: 'authController'
-        })
-        .state('app', {
-            url: "/app",
-            abstract: true,
-            templateUrl: "views/menu/menu.html",
-            controller: 'menuController'
-        })
+    .state('login', {
+        url: '/login',
+        templateUrl: 'views/auth/login.html',
+        controller: 'authController'
+    })
+    .state('app', {
+        url: "/app",
+        abstract: true,
+        templateUrl: "views/menu/menu.html",
+        controller: 'menuController'
+    })
         .state('app.mainList', {
             url: '/mainlist',
             views: {
@@ -67,32 +67,24 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
                 }
             }
         })
-	.state('app.profile', {
- 	    url: '/profile',
-	    views: {
-		'menuContent': {
-		    templateUrl: 'views/profile/profile.html',
-		    controller: 'profileController'
-		}
-	   }
-	})
-	.state('app.editProfile', {
- 	    url: '/edit',
-	    views: {
-		'menuContent': {
-		    templateUrl: 'views/editProfile/editProfile.html',
-		    controller: 'editController'
-		}
-	   }
-	})
-        .state('app.notifications',{
-            url: '/notifications',
+        .state('app.profile', {
+            url: '/profile',
+            cache: false,
             views: {
-                'menuContent': {
-                    templateUrl: 'views/notifications/notifications.html',
-                    controller: 'notificationsController'
-                }
+            'menuContent': {
+                templateUrl: 'views/profile/profile.html',
+                controller: 'profileController'
             }
+           }
+        })
+        .state('app.editProfile', {
+            url: '/edit',
+            views: {
+            'menuContent': {
+                templateUrl: 'views/editProfile/editProfile.html',
+                controller: 'editController'
+            }
+           }
         })
         .state('app.faq',{
             url: '/faq',
@@ -126,17 +118,34 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
 
 // Return the users resource
 .factory('usersResource', ['$resource', function($resource){
-    return $resource("http://safepetapi.labcomp.cl:5000/users/:id",{id: "@id"},{update: {method: "PUT"}});
+    return $resource("http://localhost:5000/users/:id",{id: "@id"},{update: {method: "PUT"}});
 }])
 
 // Return the dogs resource
 .factory('dogsResource', ['$resource', function($resource){
-    return $resource("http://safepetapi.labcomp.cl:5000/dogs/:id",{id: "@id"},{update: {method: "PUT"}});
+    return $resource("http://localhost:5000/dogs/:id",{id: "@id"},{update: {method: "PUT"}});
 }])
 
 // Return the user dogs resource
 .factory('userDogsResource', ['$resource', function($resource){
-    return $resource("http://safepetapi.labcomp.cl:5000/dogs/user/:id",{userId: "@id"},{update: {method: "PUT"}});
+    return $resource("http://localhost:5000/dogs/user/:id",{userId: "@id"},{update: {method: "PUT"}});
+}])
+
+//Camera
+.factory('Camera', ['$q', function($q) {
+  return {
+    getPicture: function(options) {
+      var q = $q.defer();
+      
+      navigator.camera.getPicture(function(result) {
+        q.resolve(result);
+      }, function(err) {
+        q.reject(err);
+      }, options);
+      
+      return q.promise;
+    }
+  }
 }])
 
 // Return current authenticated user
@@ -158,5 +167,6 @@ angular.module('safePet', ['ionic','ngResource','satellizer'])
             userInfo.userId = null;
             userInfo.user = null;
     };
+    
     return userInfo;
 }]);

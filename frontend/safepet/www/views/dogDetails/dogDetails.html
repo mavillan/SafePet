@@ -1,16 +1,111 @@
 <ion-view view-title="Detalle">
+	<ion-nav-buttons side="right">
+        <button class="button button-clear" ng-hide="dog.owner!=UserId" ng-click="editDog()">
+            Editar
+        </button>
+    </ion-nav-buttons>
 	<ion-content>
-		<ion-list>
-			<ion-item>
-				Nombre: {{dog.name}}
-			</ion-item>
-			<ion-item>
+		<div class="list card">
+			<div class="item item-avatar">
+				<img src="">
+				<h2>{{dog.name}}</h2>
+			</div>
+			<div class="item item-body">
 				Color: {{dog.color}}
-			</ion-item>
-			<ion-item>
+			</div>
+			<div class="item item-body">
 				Raza: {{dog.breed}}
-			</ion-item>
-		</ion-list>
-		<button class="button button-clear button-assertive" ng-click="deleteDog()">Eliminar</button>
+			</div>
+			<div ng-hide="dog.lost" class="item item-body">
+				Estado: Con su dueño
+			</div>
+			<div ng-hide="!dog.lost" class="item item-body">
+				Estado: Perdido
+			</div>
+			<div ng-hide="dog.owner!=UserId" class="item tabs tabs-secondary tabs-icon-left">
+				<button ng-hide="dog.lost" class="button button-block button-energized icon-left ion-information-circled" ng-click="lostDog()">Perdido</button>
+			
+				<button ng-hide="!dog.lost"class="button button-block button-balanced icon-left ion-information-circled" ng-click="foundDog()">Encontrado</button>
+			</div>
+		</div>
+	   <!-- Lost dog modal script -->
+	    <script id="lostDog.html" type="text/ng-template">
+	        <div class="modal">
+	            //<!-- Modal header bar -->
+	            <ion-header-bar class="bar-secondary">
+	                <h1 class="title">Notificar</h1>
+	                <button class="button button-assertive button-clear pull-right" ng-click="closeLostDog()">Cancelar</button>
+	            </ion-header-bar>
+
+	            //<!-- Modal content area -->
+	            <ion-content>
+	                <div class="padding">
+	                	<div class="row">
+	                		<div class="col text-center">
+	                			<p>¿Está seguro?</p>
+	                			<h6>Se notificará a todos los usuarios cercanos de que su mascota ha sido reportada como perdida</h6>
+                				<button class="button button-block button-energized pull-left" ng-click="reportLostDog()">Reportar Pérdida</button>
+                			</div>
+                		</div>
+	                </div>
+	            </ion-content>
+	        </div>
+	    </script> 
+
+	   <!-- Found dog modal script -->
+	    <script id="foundDog.html" type="text/ng-template">
+	        <ion-modal-view>
+	            //<!-- Modal header bar -->
+	            <ion-header-bar class="bar-secondary">
+	                <h1 class="title">Notificar</h1>
+	                <button class="button button-assertive button-clear pull-right" ng-click="closeFoundDog()">Cancelar</button>
+	            </ion-header-bar>
+
+	            //<!-- Modal content area -->
+	            <ion-content>
+	                <div class="padding">
+	                	<div class="row">
+	                		<div class="col text-center">
+	                			<p>¿Has encontrado a tu mascota?</p>
+	                			<button class="button button-block button-positive pull-left" ng-click="reportLostDog()">Mascota Encontrada</button>
+	                		</div>
+	                	</div>
+	                </div>
+	            </ion-content>
+	        </ion-modal-view>
+	    </script>
+
+	    <script id="editDog.html" type="text/ng-template">
+	    	<ion-modal-view>
+	    		<ion-header-bar class="bar-secondary">
+	    			<h1 class="title">Editar</h1>
+	    			<button class="button button-clear button-assertive" ng-click="closeEditDog()">Cancelar</button>
+	    		</ion-header-bar>
+	    		<ion-content>
+				    <form ng-submit="editDogProfile(dog)">
+				      <div class="list">
+				        <label class="item item-input item-floating-label">
+				          <span class="input-label">Nombre</span>
+				          <input type="text" placeholder="Nombre Completo" ng-model="dog.name">
+				        </label>
+
+				        <label class="item item-input item-floating-label">
+				          <span class="input-label">Color</span>
+				          <input type="text" placeholder="Direccion" ng-model="dog.color">
+				        </label>
+
+				        <label class="item item-input item-floating-label">
+				          <span class="input-label">Raza</span>
+				          <input type="text" placeholder="Email" ng-model="dog.breed">
+				        </label>
+				      </div>
+				      <div class="padding">
+				        <button type="submit" class="button button-block button-positive">Guardar</button>
+				      </div>
+				    </form>
+	    			<button class="button button-block button-assertive" ng-click="deleteDog()"><i class="ion-close-round"></i>Eliminar</button>
+	    		</ion-content>
+	    	</ion-modal-view>
+	    </script>   
 	</ion-content>
 </ion-view>

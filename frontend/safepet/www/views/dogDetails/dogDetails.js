@@ -4,11 +4,17 @@ angular.module('safePet')
 
 	$scope.dog = dogsResource.get({id: $stateParams.dogId});
     $scope.UserId = userInfo.userId;
-	$scope.deleteDog = function () {
+	
+    $scope.deleteDog = function () {
 		dogsResource.delete({id: $stateParams.dogId});
-		
+		$scope.editDogModal.hide();
 		$state.go('app.mainList');
 	};
+
+    $scope.editDogProfile = function(dog){
+        dogsResource.update({id: $scope.dog._id},{data: $scope.dog});
+        $scope.editDogModal.hide();
+    };
 
 	$scope.reportLostDog = function () {
 		if($scope.dog.lost)

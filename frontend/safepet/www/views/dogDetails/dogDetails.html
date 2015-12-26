@@ -82,7 +82,28 @@
 	    			<button class="button button-clear button-assertive" ng-click="closeEditDog()">Cancelar</button>
 	    		</ion-header-bar>
 	    		<ion-content>
-	    			<button class="button button-assertive" ng-click="deleteDog()"><i class="ion-close-round"></i>Eliminar</button>
+				    <form ng-submit="editDogProfile(dog)">
+				      <div class="list">
+				        <label class="item item-input item-floating-label">
+				          <span class="input-label">Nombre</span>
+				          <input type="text" placeholder="Nombre Completo" ng-model="dog.name">
+				        </label>
+
+				        <label class="item item-input item-floating-label">
+				          <span class="input-label">Color</span>
+				          <input type="text" placeholder="Direccion" ng-model="dog.color">
+				        </label>
+
+				        <label class="item item-input item-floating-label">
+				          <span class="input-label">Raza</span>
+				          <input type="text" placeholder="Email" ng-model="dog.breed">
+				        </label>
+				      </div>
+				      <div class="padding">
+				        <button type="submit" class="button button-block button-positive">Guardar</button>
+				      </div>
+				    </form>
+	    			<button class="button button-block button-assertive" ng-click="deleteDog()"><i class="ion-close-round"></i>Eliminar</button>
 	    		</ion-content>
 	    	</ion-modal-view>
 	    </script>   

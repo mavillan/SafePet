@@ -26,7 +26,6 @@ angular.module('safePet')
         });
 
         $scope.dogModal.hide();
-        $scope.$digest();
     };
 
     // Find all lost dogs.

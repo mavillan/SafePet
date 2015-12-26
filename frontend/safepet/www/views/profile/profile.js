@@ -11,7 +11,6 @@ angular.module('safePet')
 		$scope.User.displayName = user.displayName;
 		$scope.User.picture = user.picture;
 		$scope.User.id = user._id;
-		console.log($scope.User);
 	});
 
 	

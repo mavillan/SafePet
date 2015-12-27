@@ -4,12 +4,12 @@ angular.module('safePet')
 .controller('menuController', ['$scope','$auth','$state','userInfo','$ionicHistory','$timeout','$ionicPopup' , 'userDogsResource', '$interval', function($scope,$auth,$state,userInfo,$ionicHistory,$timeout,$ionicPopup, userDogsResource, $interval){
 
 	// Refresh user information
-	userInfo.refresh();
+	/*userInfo.refresh();
 	// Handle user information from the API
 	userInfo.user.$promise.then(function(user){
 		$scope.menuTitle = user.displayName;
 		$scope.dogs = userDogsResource.query({id: user._id});
-	});
+	});*/
 	
 	$scope.logout = function(){
 		$auth.logout()
@@ -24,10 +24,12 @@ angular.module('safePet')
 	};
 
 	$interval(function(){
-		userInfo.user.$promise.then(function(user){
-			$scope.menuTitle = user.displayName;
-			$scope.dogs = userDogsResource.query({id: user._id});
-		});
+		if($auth.isAuthenticated()){
+			userInfo.user.$promise.then(function(user){
+				$scope.menuTitle = user.displayName;
+				$scope.dogs = userDogsResource.query({id: user._id});
+			});
+		}
 	}, 5000)
 
     $scope.showAlert = function() {

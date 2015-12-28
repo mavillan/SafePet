@@ -4,6 +4,7 @@ body {
 }
 
 
+/* Dark Side Menu */
 .dark {
   background-color: #3f4041 !important;
   color: #ffffff !important;
@@ -60,6 +61,7 @@ body {
   text-decoration: none;
 }
 
-#err {
-	padding: 0;
+/* Alternating Background color Dog list */
+ion-item.alt.item:nth-child(even) a {
+  background-color: #F8F8F8;
 }

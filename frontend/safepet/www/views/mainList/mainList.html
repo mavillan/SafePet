@@ -12,7 +12,7 @@
             <ion-view>
                 <ion-content>
                     <ion-list>
-                        <ion-item  class="item-thumbnail-left" ng-repeat="dog in dogs" href="#/app/{{dog._id}}">
+                        <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogs" href="#/app/{{dog._id}}">
                             <img ng-src="{{dog.photo}}">
                             <h2>{{dog.name}}</h2>
                             <p>{{dog.breed}}</p>
@@ -26,16 +26,14 @@
             <ion-view>
                 <ion-content>
                 <ion-refresher
-                    pulling-text="Pull to refresh..."
+                    pulling-text="Tira para recargar"
                     on-refresh="doRefresh()">
                 </ion-refresher>
                     <ion-list>
-                        <ion-item class="item-thumbnail-left" ng-repeat="dog in lostdogs" href="#/app/{{dog._id}}" ng-hide="!dog.lost">
-                            <div >
-                                <img ng-src="{{dog.photo}}">
-                                <h2>{{dog.name}}</h2>
-                                <p>{{dog.breed}}</p>
-                            </div>
+                        <ion-item class="alt item-thumbnail-left" ng-repeat="dog in lostdogs" href="#/app/{{dog._id}}" ng-hide="!dog.lost">
+                            <img ng-src="{{dog.photo}}">
+                            <h2>{{dog.name}}</h2>
+                            <p>{{dog.breed}}</p>
                         </ion-item>
                     </ion-list>
                 </ion-content>

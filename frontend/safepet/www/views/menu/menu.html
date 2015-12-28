@@ -16,14 +16,14 @@
     <!-- Left Menu -->
     <ion-side-menu side="left">
       <ion-header-bar align-title="left" class="dark bar-stable">
-        <h1 class="title">{{menuTitle}}</h1>
-        <a class="button button-clear icon icon-right" menu-close href="#/app/settings"><i class="ion-android-settings"></i></a>
+        <h1 class="title" style="color:white">{{menuTitle}}</h1>
+        <a class="dark button button-clear item-icon-right" menu-close href="#/app/settings"><i class="ion-android-settings"></i></a>
       </ion-header-bar>
 
       <ion-content class="dark">
       <!-- Menu Options -->
         <ion-list>
-          <ion-item menu-close href="#/app/mainlist" class="dark"> Mis perros <span class="badge badge-positive">{{ dogs.length }}</span> </ion-item>
+          <ion-item menu-close href="#/app/mainlist" class="dark"> Mis perros <span id="ba" class="badge badge-positive">{{ dogs.length }}</span> </ion-item>
           <ion-item menu-close href="#/app/profile" class="dark item-icon-right"><i class="ion-person"></i> Perfil </ion-item>
           <ion-item menu-close href="#/app/faq" class="dark item-icon-right"><i class="ion-chatbubble"></i> Preguntas Frecuentes </ion-item>
           <ion-item menu-close ng-click="showAlert()" class="dark item-icon-right"><i class="ion-help-circled"></i> Acerca de SafePet </ion-item>

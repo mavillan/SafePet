@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval){
+.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs){
 
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
@@ -29,13 +29,14 @@ angular.module('safePet')
     };
 
     // Find all lost dogs.
-    $scope.lostdogs = dogsResource.query();
+    console.log("Getting lost dogs");
+    $scope.lostdogs = lostDogs.query();
     
     //Refresh lost dogs on pull
     $scope.doRefresh = function() {
         $http.get('#/app/mainlist')
         .success(function() {
-            $scope.lostdogs = dogsResource.query();
+            $scope.lostdogs = lostDogs.query();
         }).finally(function() {
             // Stop the ion-refresher from spinning
             $scope.$broadcast('scroll.refreshComplete');

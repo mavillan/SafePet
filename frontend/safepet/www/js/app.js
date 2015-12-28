@@ -131,6 +131,11 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
     return $resource("http://localhost:5000/dogs/user/:id",{userId: "@id"},{update: {method: "PUT"}});
 }])
 
+// Return the lost dogs resource
+.factory('lostDogs', ['$resource', function($resource){
+    return $resource("http://localhost:5000/dogs/lost", {}, {});
+}])
+
 //Camera
 .factory('Camera', ['$q', function($q) {
   return {

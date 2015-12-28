@@ -28,6 +28,10 @@ body {
 	background-color: #3f4041;
 	padding: 0 !important;
 }
+.dark.item > a.activated{
+	background-color: #3f4041 !important;
+  	color: #ffffff !important;
+}
 .dark.item.badge {
 	position: inherit !important;
 }
@@ -37,6 +41,7 @@ body {
 .dark.item:last-child {
   border-bottom: 1px solid #333333;
 }
+
 .dark.item.current {
   background-color: #262727 !important;
   border-top: 1px solid #464646 !important;

@@ -1,14 +1,14 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo){
+.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs){
 
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
         $state.go("login");
-    }
+    };
 
     // Refresh user information
-        userInfo.refresh();
+    userInfo.refresh();
 
     // Handle User dogs from the API.
     userInfo.user.$promise.then(function(user){
@@ -28,12 +28,27 @@ angular.module('safePet')
         $scope.dogModal.hide();
     };
 
+    // Find all lost dogs.
+    console.log("Getting lost dogs");
+    $scope.lostdogs = lostDogs.query();
+    
+    //Refresh lost dogs on pull
+    $scope.doRefresh = function() {
+        $http.get('#/app/mainlist')
+        .success(function() {
+            $scope.lostdogs = lostDogs.query();
+        }).finally(function() {
+            // Stop the ion-refresher from spinning
+            $scope.$broadcast('scroll.refreshComplete');
+        });
+    };
+
     // Create and load the Modal
-    $ionicModal.fromTemplateUrl('newDog.html', function(modal) {
-        $scope.dogModal = modal;
-    }, {
+    $ionicModal.fromTemplateUrl('newDog.html', {
         scope: $scope,
         animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.dogModal = modal;
     });
 
     // Open new task modal
@@ -45,6 +60,59 @@ angular.module('safePet')
     $scope.closeNewDog = function() {
         $scope.dogModal.hide();
     };
+    // Create and load the Modal Crop
+    $ionicModal.fromTemplateUrl('imgCrop.html', function(modal) {
+        $scope.cropModal = modal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up'
+    });
 
+    // Open new task modal
+    $scope.crop = function() {
+        $scope.myImage = '';
+        $scope.myCroppedImage = '';
+        $scope.getPhoto();
+        //$scope.cropModal.show();
+    };
+
+    // Close the new task modal
+    $scope.closeCrop = function() {
+        $scope.cropModal.hide();
+    };
+
+
+    $scope.getPhoto = function() {
+        console.log('Getting camera');
+        Camera.getPicture({
+        quality: 75,
+        targetWidth: 500,
+        targetHeight: 500,
+        saveToPhotoAlbum: false
+        }).then(function(imageURI) {
+            //console.log(imageURI);
+            $scope.lastPhoto = imageURI;
+           /* $scope.showAlert = function() {
+        var alertPopup = $ionicPopup.alert({
+                title: 'Acerca de SafePet',
+                template: '{{lastPhoto}}' 
+        });
+    };
+            $scope.showAlert();*/
+            $scope.myImage = imageURI;
+            $scope.cropModal.show();
+
+        }, function(err) {
+        console.err(err);
+    });
+    
+        navigator.camera.getPicture(function(imageURI) {
+            console.log(imageURI);
+        }, function(err) {
+        }, { 
+            quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL
+        });
+    };
 }]);
 

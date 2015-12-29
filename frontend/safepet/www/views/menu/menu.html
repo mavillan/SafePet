@@ -1,52 +1,35 @@
 <ion-view>
-    <ion-side-menus enable-menu-with-back-views="false">
-      	<!-- Main view -->
-      	<ion-side-menu-content>
-	
-	      	<ion-nav-bar class="bar-stable has-tabs-top">
-		      	<ion-nav-back-button>
-		      	</ion-nav-back-button>
-		      	
-		      	<!-- Toggle side-menu button -->
-		      	<ion-nav-buttons side="left">
-		      		<button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-		      		</button>
-		      	</ion-nav-buttons>	      	  
-	      	</ion-nav-bar>
+  <ion-side-menus enable-menu-with-back-views="false">
+    <!-- Main view -->
+    <ion-side-menu-content>	
+      <ion-nav-bar class="bar-stable has-tabs-top">
+        <ion-nav-back-button></ion-nav-back-button>
+        <!-- Toggle side-menu button -->
+		    <ion-nav-buttons side="left">
+		      <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+        </ion-nav-buttons>	      	  
+      </ion-nav-bar>
 
-	        <!-- Menu content -->
-	        <ion-tabs class="tabs-striped tabs-top tabs-background-stable tabs-color-dark">
+      <ion-nav-view name="menuContent"></ion-nav-view>
+    </ion-side-menu-content>
 
-	        	<ion-tab title="Mis perros">
-	        		<ion-nav-view name="menuContent"></ion-nav-view>
-	        	</ion-tab>
+    <!-- Left Menu -->
+    <ion-side-menu side="left">
+      <ion-header-bar align-title="left" class="dark bar-stable">
+        <h1 class="title" style="color:white">{{menuTitle}}</h1>
+        <a class="dark button button-clear item-icon-right" menu-close href="#/app/settings"><i class="ion-android-settings"></i></a>
+      </ion-header-bar>
 
-	          	<ion-tab title="Perros perdidos">
-	          		<!-- Aca va la lista de perros perdidos -->
-	          	</ion-tab>
-	          	
-	        </ion-tabs>
-        </ion-side-menu-content>
-
-    	<!-- Left Menu -->
-    	<ion-side-menu side="left">
-    	  	<ion-header-bar align-title="left" class="bar-stable">
-    	    	<h1 class="title">{{menuTitle}}</h1>
-    	  	</ion-header-bar>
-
-   			<ion-content>
-   		  		<!-- Menu Options -->
-   		    	<ion-list>
-   		      		<!--<ion-item href="#"> Perros perdidos </ion-item>-->
-                <ion-item menu-close href="#/app/mainlist"> Mis perros </ion-item>
-   		      		<ion-item menu-close href="#/app/profile"> Perfil </ion-item>
-                <ion-item menu-close href="#/app/notifications"> Notificaciones </ion-item>
-   		      		<ion-item menu-close href="#/app/settings"> Ajustes </ion-item>
-   		      		<ion-item menu-close href="#/app/faq"> Preguntas Frecuentes </ion-item>
-   		      		<ion-item menu-close ng-click="showAlert()"> Acerca de SafePet </ion-item>
-   		      		<ion-item menu-close ng-click="logout()"> Logout </ion-item>
-   		    	</ion-list>
-   		  	</ion-content>
-   		</ion-side-menu>
-    </ion-side-menus>
+      <ion-content class="dark">
+      <!-- Menu Options -->
+        <ion-list>
+          <ion-item menu-close href="#/app/mainlist" class="dark"> Mis perros <span id="ba" class="badge badge-positive">{{ dogs.length }}</span> </ion-item>
+          <ion-item menu-close href="#/app/profile" class="dark item-icon-right"><i class="ion-person"></i> Perfil </ion-item>
+          <ion-item menu-close href="#/app/faq" class="dark item-icon-right"><i class="ion-chatbubble"></i> Preguntas Frecuentes </ion-item>
+          <ion-item menu-close ng-click="showAlert()" class="dark item-icon-right"><i class="ion-help-circled"></i> Acerca de SafePet </ion-item>
+          <ion-item menu-close ng-click="logout()" class="dark item-icon-right"><i class="ion-close-circled"></i> Cerrar Sesión </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-side-menu>
+  </ion-side-menus>
 </ion-view>

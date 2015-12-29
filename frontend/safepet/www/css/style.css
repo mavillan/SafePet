@@ -1,1 +1,67 @@
 /* Empty. Add your own CSS if you like */
+body {
+  cursor: url('http://ionicframework.com/img/finger.png'), auto;
+}
+
+
+/* Dark Side Menu */
+.dark {
+  background-color: #3f4041 !important;
+  color: #ffffff !important;
+}
+.dark.scroll-content {
+  background-color: #3f4041 !important;
+}
+.dark.item {
+  background-color: #3f4041;
+  border: none;
+  border-top: 1px solid #464646;
+  border-bottom: 2px solid #333333;
+  padding: 20px;
+  max-height: none;
+}
+
+#ba {
+	position: fixed !important;
+	top: 20px;
+}
+.dark.item > a {
+	background-color: #3f4041;
+	padding: 0 !important;
+}
+.dark.item > a.activated{
+	background-color: #3f4041 !important;
+  	color: #ffffff !important;
+}
+.dark.item.badge {
+	position: inherit !important;
+}
+.dark.item:first-child {
+  border-top: 1px solid black;
+}
+.dark.item:last-child {
+  border-bottom: 1px solid #333333;
+}
+
+.dark.item.current {
+  background-color: #262727 !important;
+  border-top: 1px solid #464646 !important;
+  border-bottom: 2px solid #333333 !important;
+}
+.dark.item.current p, .dark.item.current h3 {
+  opacity: .7;
+}
+.dark h2,
+.dark h3,
+.dark p {
+  color: #F0F1F1;
+}
+
+.dark-head {
+  text-decoration: none;
+}
+
+/* Alternating Background color Dog list */
+ion-item.alt.item:nth-child(even) a {
+  background-color: #F8F8F8;
+}

@@ -1,10 +1,10 @@
-import metric
 import config as cfg
 import numpy as np
 import cPickle as pickle
 from sklearn import svm
 from sklearn.externals import joblib
 from sklearn.neighbors import BallTree
+from sklearn.metrics.pairwise import chi2_kernel
 from helpers import data_to_hist
 
 
@@ -30,7 +30,7 @@ def build_svm(in_path1, in_path2, out_path=None):
 
 	#creating the SVM with chi2 kernel
 	#to do: cross validation
-	clf = svm.NuSVC(kernel=metric.Chi2, nu=0.1)
+	clf = svm.NuSVC(kernel=chi2_kernel, nu=0.1)
 	clf.fit(data,labels)
 
 	if out_path is not None:

@@ -45,7 +45,7 @@ class Master():
 		img = cv.imread(path, cv.IMREAD_GRAYSCALE)
 		#lbp representation
 		lbp_img = lbp(img, cfg.params['P'], cfg.params['R'], cfg.params['LBP_METHOD'])
-		lbp_img = lbp_image.astype(np.uint8)
+		lbp_img = lbp_img.astype(np.uint8)
 		#histogram representation
 		hist = histogram.spatial(lbp_img, cfg.params['NX'], cfg.params['NY'], 
 			   cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
@@ -65,17 +65,17 @@ class Master():
 	def search(self, path):
 			_,hist = self._process(path)
 			#performing the search
-			dist, ind = self.nn.query(hist, k=cfg.params['NEIGHBORS'])
+			dist, ind = self.nn.query([hist], k=cfg.params['NEIGHBORS'])
 			#mapping the results
-			result = [self.mappings[i] for i in ind]
+			result = [self.mappings[i] for i in ind[0]]
 			return result
 	
 	#Insert a new dog
 	def insert(self, path):
-			lbp_image,hist = self._process(path)
+			lbp_img,hist = self._process(path)
 			filename = path.strip().split('/')[-1]
 			#store lbp representation
-			np.save(cfg.params['TRAINING_PATH_LBP']+filename, lbp_image)
+			np.save(cfg.params['TRAINING_PATH_LBP']+filename, lbp_img)
 
 			#append hist to hist matrix and update it
 			#todo: search a better way to do that: hdf5?

@@ -31,15 +31,17 @@ class Master():
 		#loading hist matrix and storing it as attribute
 		matrices = os.listdir(cfg.params['MATRICES_PATH'])
 		matrices.sort()
-		selfhist_matrix = np.load(matrices[-1])
+		self.hist_matrix = np.load(cfg.params['MATRICES_PATH']+matrices[-1])
 
 
-	def _process(self, img):
+	def _process(self, path):
 		"""
-		Performing some operations, common for all
-		the options
+		Performing some operations, common for all the options
 		"""
-		#greyscale image
+		if not os.path.isfile(path):
+			#change that!
+			sys.exit('File doesnt exist.')
+		#grayscale image
 		img = cv.imread(path, cv.IMREAD_GRAYSCALE)
 		#lbp representation
 		lbp_img = lbp(img, cfg.params['P'], cfg.params['R'], cfg.params['LBP_METHOD'])
@@ -47,51 +49,53 @@ class Master():
 		#histogram representation
 		hist = histogram.spatial(lbp_img, cfg.params['NX'], cfg.params['NY'], 
 			   cfg.params['NPATTERNS'], cfg.params['OVERLAPX'], cfg.params['OVERLAPY'])
-
-	path = args.path
-	filename = path.strip().split('/')[-1]
-	if not os.path.isfile(path):
-		sys.exit('File doesnt exist.')
-
-
+		return (lbp_img, hist)
 
 	
 	#Verify if the argument photo is or not
 	#a valid one, i.e, corresponds to dog nose.
 	def verify(self, path):
-			result = clf.predict([hist])
-			if result[0]==0: ret('invalid')
-			else: ret('valid')
+			_,hist = self._process(path)
+			result = self.clf.predict([hist])
+			if result[0]==0: return 'invalid'
+			else: return 'valid'
 
 	#Perform a search for the k nearest results
 	#stored in the database
 	def search(self, path):
+			_,hist = self._process(path)
 			#performing the search
-			dist, ind = nn.query(hist, k=cfg.params['NEIGHBORS'])
+			dist, ind = self.nn.query(hist, k=cfg.params['NEIGHBORS'])
 			#mapping the results
-			result = [mappings[i] for i in ind]
-			ret(result)
-		
+			result = [self.mappings[i] for i in ind]
+			return result
+	
+	#Insert a new dog
 	def insert(self, path):
+			lbp_image,hist = self._process(path)
+			filename = path.strip().split('/')[-1]
 			#store lbp representation
 			np.save(cfg.params['TRAINING_PATH_LBP']+filename, lbp_image)
 
 			#append hist to hist matrix and update it
-			#todo: search a better way to do that
-			hist_matrix = np.vstack(hist_matrix, hist)
+			#todo: search a better way to do that: hdf5?
+			self.hist_matrix = np.vstack(self.hist_matrix, hist)
 			out = cfg.params['MATRICES_PATH']+'::'+time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
-			np.save(out, hist_matrix)
+			np.save(out, self.hist_matrix)
 
 			#append the mapping to dict and update it
-			mappings[hist_matrix.shape[0]-1] = filename
+			self.mappings[self.hist_matrix.shape[0]-1] = filename
 			#storing mappings in vault
 			tgt = file(cfg.params['VAULT']+'mappings', 'wb')
-			pickle.dump(mappings, tgt)
+			pickle.dump(self.mappings, tgt)
 			tgt.close() 
 
 			#rebuild NearestNeighbors object and update it
-			build_nn(hist_matrix, cfg.params['VAULT'])
-		 	ret(1)
+			self.nn = build_nn(self.hist_matrix)
+			tgt = file(cfg.params['VAULT']+'NearestNeighbors', 'wb')
+			pickle.dump(self.nn, tgt)
+			tgt.close()
+		 	return 1
 
 if __name__=='__main__':
 	s = zerorpc.Server(Master())

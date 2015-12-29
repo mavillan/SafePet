@@ -1,3 +1,4 @@
+import metric
 import config as cfg
 import numpy as np
 import cPickle as pickle

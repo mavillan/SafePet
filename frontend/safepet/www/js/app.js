@@ -154,7 +154,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 }])
 
 // Return current authenticated user
-.factory('userInfo', ['$auth', 'usersResource', function($auth,usersResource){
+.factory('userInfo', ['$auth', 'usersResource', 'userDogsResource', '$rootScope', function($auth,usersResource, userDogsResource, $rootScope){
     
     var userInfo = {};
 
@@ -163,6 +163,8 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
             userInfo.tokenPayload = $auth.getPayload();
             userInfo.userId = userInfo.tokenPayload.sub;
             userInfo.user = usersResource.get({id: userInfo.userId});
+            userInfo.dogs = userDogsResource.query({id: userInfo.userId});
+            $rootScope.$broadcast('user:refresh', userInfo);
         }
         
     };
@@ -171,6 +173,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
             userInfo.tokenPayload = null;
             userInfo.userId = null;
             userInfo.user = null;
+            userInfo.dogs = null;
     };
     
     return userInfo;

@@ -11,8 +11,14 @@ angular.module('safePet')
     userInfo.refresh();
 
     // Handle User dogs from the API.
-    userInfo.user.$promise.then(function(user){
+    /*userInfo.user.$promise.then(function(user){
         $scope.dogs = userDogsResource.query({id: user._id});
+    });*/
+
+    // Event listener: update dog list
+    $scope.$on('user:refresh', function(event, data){
+        console.log('refresh dogs mainlist');
+        $scope.dogs = data.dogs;
     });
 
     // create a new dog when the form is submitted
@@ -23,13 +29,13 @@ angular.module('safePet')
         // Save new dog and refreshing dog list in the callback
         dogsResource.save(dog,function(){
             $scope.dogs = userDogsResource.query({id: userInfo.user._id});
+            userInfo.refresh();
         });
 
         $scope.dogModal.hide();
     };
 
     // Find all lost dogs.
-    console.log("Getting lost dogs");
     $scope.lostdogs = lostDogs.query();
     
     //Refresh lost dogs on pull

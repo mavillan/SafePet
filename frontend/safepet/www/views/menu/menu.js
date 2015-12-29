@@ -8,7 +8,6 @@ angular.module('safePet')
 	// Handle user information from the API
 	userInfo.user.$promise.then(function(user){
 		$scope.menuTitle = user.displayName;
-		$scope.dogs = userDogsResource.query({id: user._id});
 	});
 	
 	$scope.logout = function(){
@@ -23,14 +22,10 @@ angular.module('safePet')
         });
 	};
 
-	$interval(function(){
-		if($auth.isAuthenticated()){
-			userInfo.user.$promise.then(function(user){
-				$scope.menuTitle = user.displayName;
-				$scope.dogs = userDogsResource.query({id: user._id});
-			});
-		}
-	}, 5000)
+	// Event listener: update dog count
+	$scope.$on('user:refresh', function(event, data){
+		$scope.dogs = data.dogs;
+	});
 
     $scope.showAlert = function() {
    		var alertPopup = $ionicPopup.alert({

@@ -5,10 +5,16 @@ angular.module('safePet')
 
 	// Refresh user information
 	userInfo.refresh();
-	// Handle user information from the API
-	userInfo.user.$promise.then(function(user){
-		$scope.menuTitle = user.displayName;
+	// Event listener: update dog count
+	// This one is necessary since menuController only charges one time.	
+	$scope.$on('user:refresh', function(event, data){
+		// Handle user information from the API
+		userInfo.user.$promise.then(function(user){
+			$scope.menuTitle = user.displayName;
+		});
+		$scope.dogs = data.dogs;
 	});
+
 	
 	$scope.logout = function(){
 		$auth.logout()
@@ -21,11 +27,6 @@ angular.module('safePet')
     		}, 1500)
         });
 	};
-
-	// Event listener: update dog count
-	$scope.$on('user:refresh', function(event, data){
-		$scope.dogs = data.dogs;
-	});
 
     $scope.showAlert = function() {
    		var alertPopup = $ionicPopup.alert({

@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs){
+.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', 'messages', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, messages){
 
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
@@ -26,6 +26,7 @@ angular.module('safePet')
         // Add owner id to the dog info
         dog.userId = userInfo.user._id;
 
+        console.log(dog);
         // Save new dog and refreshing dog list in the callback
         dogsResource.save(dog,function(){
             $scope.dogs = userDogsResource.query({id: userInfo.user._id});
@@ -92,6 +93,9 @@ angular.module('safePet')
         $scope.cropModal.hide();
     };
 
+    $scope.test = function() {
+        messages.save({sendId: 1, getId: 1})
+    };
 
     $scope.getPhoto = function() {
         console.log('Getting camera');

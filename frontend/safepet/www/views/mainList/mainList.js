@@ -11,15 +11,15 @@ angular.module('safePet')
     userInfo.refresh();
 
     // Handle User dogs from the API.
-    /*userInfo.user.$promise.then(function(user){
+    userInfo.user.$promise.then(function(user){
         $scope.dogs = userDogsResource.query({id: user._id});
-    });*/
+    });
 
     // Event listener: update dog list
-    $scope.$on('user:refresh', function(event, data){
+    /*$scope.$on('user:refresh', function(event, data){
         console.log('refresh dogs mainlist');
         $scope.dogs = data.dogs;
-    });
+    });*/
 
     // create a new dog when the form is submitted
     $scope.createDog = function(dog) {

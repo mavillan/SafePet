@@ -6,7 +6,7 @@ angular.module('safePet')
     $scope.UserId = userInfo.userId;
 	
     $scope.deleteDog = function () {
-		dogsResource.delete({id: 1}, null,
+		dogsResource.delete({id: $stateParams.dogId}, null,
             function(value, responseHeaders){
                 console.log("error?");
                 console.log(value);
@@ -17,7 +17,7 @@ angular.module('safePet')
             }
         );
 		$scope.editDogModal.hide();
-		//$state.go('app.mainList');
+		$state.go('app.mainList');
 	};
 
     $scope.editDogProfile = function(dog){

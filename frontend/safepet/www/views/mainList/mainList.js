@@ -37,6 +37,11 @@ angular.module('safePet')
 
     // Find all lost dogs.
     $scope.lostdogs = lostDogs.query();
+    // Update list on state change
+    $scope.$on('dog:lost', function(event, data){
+        $scope.lostdogs = lostDogs.query();
+    });
+    
     
     //Refresh lost dogs on pull
     $scope.doRefresh = function() {

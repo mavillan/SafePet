@@ -1,23 +1,23 @@
 angular.module('safePet')
 
-.controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state','$ionicModal', 'userInfo', function($scope,dogsResource,$stateParams,$state,$ionicModal, userInfo){
+.controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state','$ionicModal', 'userInfo', '$rootScope', function($scope,dogsResource,$stateParams,$state,$ionicModal, userInfo, $rootScope){
 
 	$scope.dog = dogsResource.get({id: $stateParams.dogId});
     $scope.UserId = userInfo.userId;
 	
     $scope.deleteDog = function () {
-		dogsResource.delete({id: $stateParams.dogId}, null,
+		$scope.dog.$delete({id: $stateParams.dogId},
             function(value, responseHeaders){
                 console.log("error?");
                 console.log(value);
                 console.log(responseHeaders);
             },
             function(httpResponse){
-                console.log("Hubo un error");
+                console.log(httpResponse);
             }
         );
-		$scope.editDogModal.hide();
-		$state.go('app.mainList');
+        $scope.editDogModal.hide();
+        $state.go('app.mainList');
 	};
 
     $scope.editDogProfile = function(dog){
@@ -29,16 +29,24 @@ angular.module('safePet')
 		if($scope.dog.lost)
 		{
 			dogsResource.update({id: $stateParams.dogId},{data: {lost: 0}},function(){
-				$scope.dog = dogsResource.get({id: $stateParams.dogId});
+				$scope.dog = dogsResource.get({id: $stateParams.dogId}, function(){
+                    console.log('Dog state change');
+                    $rootScope.$broadcast('dog:lost', 'Mis datos');
+                });
 				$scope.closeFoundDog();
 				$scope.closeLostDog();
+                $state.go('app.mainList')
 			});
 
 		}else{
 			dogsResource.update({id: $stateParams.dogId},{data: {lost: 1}},function(){
-				$scope.dog = dogsResource.get({id: $stateParams.dogId});
+				$scope.dog = dogsResource.get({id: $stateParams.dogId}, function(){
+                    console.log('Dog state change');
+                    $rootScope.$broadcast('dog:lost', 'Mis datos');
+                });
 				$scope.closeFoundDog();
 				$scope.closeLostDog();
+                $state.go('app.mainList')
 			});
 		}
 	};

@@ -94,7 +94,11 @@ angular.module('safePet')
     };
 
     $scope.test = function() {
-        messages.save({sendId: 1, getId: 1})
+        messages.save({sendId: userInfo.user._id, getId: userInfo.user._id, message: 'Hola'}, function(val, res){
+            console.log("succes");
+        }, function(res){
+            console.log(res.data);
+        });
     };
 
     $scope.getPhoto = function() {

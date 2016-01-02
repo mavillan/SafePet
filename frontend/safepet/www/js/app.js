@@ -138,7 +138,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 
 // Return the lost dogs resource
 .factory('messages', ['$resource', function($resource){
-    return $resource("http://localhost:5000/messages/:sendId/:getId", {sendId: "@sendId", getId: "@getId"}, {});
+    return $resource("http://localhost:5000/messages/:sendId/:getId/", {sendId: "@sendId", getId: "@getId"}, {});
 }])
 
 //Camera

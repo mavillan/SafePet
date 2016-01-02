@@ -1,25 +1,10 @@
 angular.module('safePet')
 
-.controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state','$ionicModal', 'userInfo', '$rootScope', function($scope,dogsResource,$stateParams,$state,$ionicModal, userInfo, $rootScope){
+.controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state','$ionicModal', 'userInfo', '$rootScope', '$ionicPopup', function($scope,dogsResource,$stateParams,$state,$ionicModal, userInfo, $rootScope, $ionicPopup){
 
 	$scope.dog = dogsResource.get({id: $stateParams.dogId});
     $scope.UserId = userInfo.userId;
 	
-    $scope.deleteDog = function () {
-		$scope.dog.$delete({id: $stateParams.dogId},
-            function(value, responseHeaders){
-                console.log("error?");
-                console.log(value);
-                console.log(responseHeaders);
-            },
-            function(httpResponse){
-                console.log(httpResponse);
-            }
-        );
-        $scope.editDogModal.hide();
-        $state.go('app.mainList');
-	};
-
     $scope.editDogProfile = function(dog){
         dogsResource.update({id: $scope.dog._id},{data: $scope.dog});
         $scope.editDogModal.hide();
@@ -103,5 +88,27 @@ angular.module('safePet')
     // Close the new task modal
     $scope.closeFoundDog = function() {
         $scope.foundDogModal.hide();
+    };
+
+    $scope.confirmDogDelete = function(){
+        var deleteConfirm = $ionicPopup.confirm({
+            title: "Eliminar Perro",
+            template: "¿Está seguro que quiere eliminar a su perro?"
+        }).then(function(res){
+            if(res){
+                $scope.dog.$delete({id: $stateParams.dogId},
+                function(value, responseHeaders){
+                    console.log("error?");
+                    console.log(value);
+                    console.log(responseHeaders);
+                },
+                function(httpResponse){
+                    console.log(httpResponse);
+                }
+                );
+                $scope.editDogModal.hide();
+                $state.go('app.mainList');
+            } 
+        });
     };
 }]);

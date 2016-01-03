@@ -2,8 +2,8 @@ angular.module('safePet')
 
 .controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state','$ionicModal', 'userInfo', '$rootScope', '$ionicPopup', function($scope,dogsResource,$stateParams,$state,$ionicModal, userInfo, $rootScope, $ionicPopup){
 
-	$scope.dog = dogsResource.get({id: $stateParams.dogId});
-    $scope.UserId = userInfo.userId;
+	$scope.UserId = userInfo.userId;
+    $scope.dog = dogsResource.get({id: $stateParams.dogId});
 	
     $scope.editDogProfile = function(dog){
         dogsResource.update({id: $scope.dog._id},{data: $scope.dog});
@@ -15,7 +15,6 @@ angular.module('safePet')
 		{
 			dogsResource.update({id: $stateParams.dogId},{data: {lost: 0}},function(){
 				$scope.dog = dogsResource.get({id: $stateParams.dogId}, function(){
-                    console.log('Dog state change');
                     $rootScope.$broadcast('dog:lost', 'Mis datos');
                 });
 				$scope.closeFoundDog();
@@ -26,7 +25,6 @@ angular.module('safePet')
 		}else{
 			dogsResource.update({id: $stateParams.dogId},{data: {lost: 1}},function(){
 				$scope.dog = dogsResource.get({id: $stateParams.dogId}, function(){
-                    console.log('Dog state change');
                     $rootScope.$broadcast('dog:lost', 'Mis datos');
                 });
 				$scope.closeFoundDog();
@@ -70,8 +68,6 @@ angular.module('safePet')
         $scope.lostDogModal.hide();
     };
 
-
-
 	// Create and load the found dog Modal
     $ionicModal.fromTemplateUrl('foundDog.html', function(modal) {
         $scope.foundDogModal = modal;
@@ -96,18 +92,19 @@ angular.module('safePet')
             template: "¿Está seguro que quiere eliminar a su perro?"
         }).then(function(res){
             if(res){
-                $scope.dog.$delete({id: $stateParams.dogId},
-                function(value, responseHeaders){
-                    console.log("error?");
-                    console.log(value);
-                    console.log(responseHeaders);
-                },
-                function(httpResponse){
-                    console.log(httpResponse);
-                }
+                dogsResource.delete({id: $stateParams.dogId},
+                    function(value, responseHeaders){
+                        $scope.editDogModal.hide();
+                        userInfo.refresh();
+                        $state.go('app.mainList');
+                    },
+                    function(httpResponse){
+                        $ionicPopup.alert({
+                            title: "Error",
+                            template: "No se ha podido eliminar su mascota. Inténtelo más tarde"
+                        });
+                    }
                 );
-                $scope.editDogModal.hide();
-                $state.go('app.mainList');
             } 
         });
     };

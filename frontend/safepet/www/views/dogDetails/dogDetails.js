@@ -94,7 +94,7 @@ angular.module('safePet')
     $scope.confirmDogDelete = function(){
         var deleteConfirm = $ionicPopup.confirm({
             title: "Eliminar Perro",
-            template: "¿Está seguro que quiere eliminar a su perro?"
+            template: "¿Está seguro que quiere eliminar a su perro? Borrarlo es un proceso irreversible"
         }).then(function(res){
             if(res){
                 dogsResource.delete({id: $stateParams.dogId},

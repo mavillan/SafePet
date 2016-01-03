@@ -6,6 +6,9 @@ angular.module('safePet')
 	// Refresh user information
 	userInfo.refresh();
 	// Event listener: update dog count
+	userInfo.user.$promise.then(function(user){
+			$scope.menuTitle = user.displayName;
+	});
 	// This one is necessary since menuController only charges one time.	
 	$scope.$on('user:refresh', function(event, data){
 		// Handle user information from the API

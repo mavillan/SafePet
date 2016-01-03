@@ -128,7 +128,12 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 
 // Return the users resource
 .factory('usersResource', ['$resource', function($resource){
-    return $resource("http://localhost:5000/users/:id",{id: "@id"},{update: {method: "PUT"}});
+    return $resource("http://localhost:5000/users/:id/",{id: "@id"},{update: {method: "PUT"}});
+}])
+
+// Return the users id given a name
+.factory('usersEmailResource', ['$resource', function($resource){
+    return $resource("http://localhost:5000/users/n/:email", {email: "@email"}, {update: {method: "PUT"}});
 }])
 
 // Return the dogs resource
@@ -144,11 +149,6 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 // Return the lost dogs resource
 .factory('lostDogs', ['$resource', function($resource){
     return $resource("http://localhost:5000/dogs/lost", {}, {});
-}])
-
-// Return the change owner resource
-.factory('changeOwner', ['$resource', function($resource){
-    return $resource("http://localhost:5000/dogs/change/:dogId/:userId", {dogId: "@dogId", userId: "@userId"}, {update: {method: "PUT"}});
 }])
 
 //Camera

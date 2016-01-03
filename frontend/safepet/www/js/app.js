@@ -71,20 +71,20 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
             url: '/profile',
             cache: false,
             views: {
-            'menuContent': {
-                templateUrl: 'views/profile/profile.html',
-                controller: 'profileController'
+                'menuContent': {
+                    templateUrl: 'views/profile/profile.html',
+                    controller: 'profileController'
+                }
             }
-           }
         })
         .state('app.editProfile', {
             url: '/edit',
             views: {
-            'menuContent': {
-                templateUrl: 'views/editProfile/editProfile.html',
-                controller: 'editController'
+                'menuContent': {
+                    templateUrl: 'views/editProfile/editProfile.html',
+                    controller: 'editController'
+                }
             }
-           }
         })
         .state('app.faq',{
             url: '/faq',
@@ -102,6 +102,16 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
                 }
             }
         })
+        .state('app.change',{
+            url: '/change/:dogId',
+            views: {
+                'menuContent': {
+                    templateUrl: 'views/change/change.html',
+                    controller: 'changeController'
+                }
+            }
+        })
+
         .state('app.dogDetails', {
             url: '/:dogId',
             views: {
@@ -134,6 +144,11 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 // Return the lost dogs resource
 .factory('lostDogs', ['$resource', function($resource){
     return $resource("http://localhost:5000/dogs/lost", {}, {});
+}])
+
+// Return the change owner resource
+.factory('changeOwner', ['$resource', function($resource){
+    return $resource("http://localhost:5000/dogs/change/:dogId/:userId", {dogId: "@dogId", userId: "@userId"}, {update: {method: "PUT"}});
 }])
 
 //Camera

@@ -50,6 +50,11 @@ angular.module('safePet')
         $scope.editDogModal.hide();
     };
 
+    //Go to change owner
+    $scope.change = function() {
+        $scope.editDogModal.hide();
+        $state.go('app.change', {"dogId": $stateParams.dogId});
+    };
 	// Create and load the lost dog Modal
     $ionicModal.fromTemplateUrl('lostDog.html', function(modal) {
         $scope.lostDogModal = modal;

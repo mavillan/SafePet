@@ -1,7 +1,7 @@
 angular.module('safePet')
 
 
-.controller('menuController', ['$scope','$auth','$state','userInfo','$ionicHistory','$timeout','$ionicPopup' , 'userDogsResource', '$interval', function($scope,$auth,$state,userInfo,$ionicHistory,$timeout,$ionicPopup, userDogsResource, $interval){
+.controller('menuController', ['$scope','$auth','$state','userInfo','$ionicHistory','$timeout','$ionicPopup' , 'userDogsResource', '$interval', 'socketConn', function($scope,$auth,$state,userInfo,$ionicHistory,$timeout,$ionicPopup, userDogsResource, $interval,socketConn){
 
 	// Refresh user information
 	userInfo.refresh();
@@ -37,5 +37,9 @@ angular.module('safePet')
      			template: 'SafePet es un producto de OverPi pensado en la seguridad de tu perro. Si desea obtener mayor información puede dirigirse a nuestra <a href="http://safepet.feriadesoftware.cl/">Página web</a> o nuestro <a href="https://www.facebook.com/safepet.cl?fref=ts">Facebook.</a>' 
    		});
  	};
-	
+ 	//Example of socket 
+	socketConn.on('news', function (data) {
+		console.log(data);
+		socketConn.emit('my other event', { my: 'data' });
+	});
 }]);

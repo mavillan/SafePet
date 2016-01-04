@@ -133,7 +133,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 
 // Return the users id given a name
 .factory('usersEmailResource', ['$resource', function($resource){
-    return $resource("http://localhost:5000/users/n/:email", {email: "@email"}, {update: {method: "PUT"}});
+    return $resource("http://localhost:5000/users/e/:email", {email: "@email"}, {update: {method: "PUT"}});
 }])
 
 // Return the dogs resource
@@ -151,6 +151,10 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
     return $resource("http://localhost:5000/dogs/lost", {}, {});
 }])
 
+// Sockect connection 
+.factory('socketConn', [function(){
+    return io('http://localhost:5000');
+}])
 //Camera
 .factory('Camera', ['$q', function($q) {
   return {

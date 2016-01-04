@@ -21,7 +21,7 @@
     <script src="lib/ionic/js/angular-ui/angular-ui-router.min.js"></script>
 
     <script src="lib/satellizer/satellizer.min.js"></script>
-
+    <script src="lib/socket.io/socket.io.js"></script>
     <script src="lib/ng-img-crop/compile/unminified/ng-img-crop.js"></script>    
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -38,7 +38,13 @@
     <script src="views/change/change.js"></script>
   </head>
   <body ng-app="safePet">
-
+<script>
+  var socket = io('http://localhost:5000');
+  socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+  });
+</script>
     <ion-nav-view></ion-nav-view>
 
   </body>

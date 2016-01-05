@@ -18,6 +18,19 @@ angular.module('safePet')
 		$scope.dogs = data.dogs;
 	});
 
+	socketConn.on('changeUser', function(){
+		var alertPop = $ionicPopup.confirm({
+			title: "Cambio de Dueño",
+			template: "Eres dueño de un nuevo perro, ¿Aceptas el cambio?"
+		}, function(resp){
+			if(resp) {
+				socketConn.emit('acceptChange', {resp: 1});
+			} else {
+				socketConn.emit('acceptChange', {resp: 0});
+			}
+		});
+	});
+
 	$scope.logout = function(){
 		$auth.logout()
 		.then(function() {

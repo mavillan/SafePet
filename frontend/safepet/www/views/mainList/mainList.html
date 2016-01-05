@@ -70,7 +70,15 @@
                         <button type="submit" class="button button-block button-positive">Agregar</button>
                     </div>
                 </form>
-                <button ng-click="getPhoto()" class="button button-block button-primary">Foto!</button>
+                <button ng-click="getPhoto(true)" class="button button-block button-primary">Foto!</button>
+                <button class="button button-full button-positive" ng-click="getImageGalery()">
+                    Subir imágenes desde la Galería
+                </button>
+                <ion-list>
+                        <ion-item class="alt item-thumbnail-left" ng-repeat="c in collection">
+                            <img ng-src="{{c}}" style="width:100%; height: auto;"/>
+                        </ion-item>
+                    </ion-list>
             </ion-content>
         </ion-modal-view>
     </script>  
@@ -91,13 +99,14 @@
                 </div>
                 <div>Cropped Image:</div>
                 <img ng-src="{{myCroppedImage}}">
+                <button class="button button-full button-positive" ng-click="fileUpload(myCroppedImage)">Guardar</button>
             </ion-content>
         </div>
     </script>
     <!-- Nose scan Button -->
     <ion-footer-bar align-title="center" class="bar-balanced">
         <h1 class="title">
-            <button class="button button-clear">
+            <button class="button button-clear" ng-click='crop()'>
                 <i class="icon ion-android-camera"></i> Escanear nariz
             </button>
         </h1>

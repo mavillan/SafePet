@@ -1,4 +1,4 @@
-angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
+angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop', 'ngCordova'])
 
 .config(function ($stateProvider, $urlRouterProvider,$authProvider) {
 

@@ -4,13 +4,13 @@ angular.module('safePet')
 .controller('menuController', ['$scope','$auth','$state','userInfo','$ionicHistory','$timeout','$ionicPopup' , 'userDogsResource', '$interval', function($scope,$auth,$state,userInfo,$ionicHistory,$timeout,$ionicPopup, userDogsResource, $interval){
 
 	// Refresh user information
-	userInfo.refresh();
+	/*userInfo.refresh();
 	// Handle user information from the API
 	userInfo.user.$promise.then(function(user){
 		$scope.menuTitle = user.displayName;
 	});
-	
-	$scope.logout = function(){
+	*/
+		$scope.logout = function(){
 		$auth.logout()
 		.then(function() {
 			userInfo.clear();

@@ -173,7 +173,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 }])
 
 // Return current authenticated user
-.factory('userInfo', ['$auth', 'usersResource', 'userDogsResource', '$rootScope', function($auth,usersResource, userDogsResource, $rootScope){
+.factory('userInfo', ['$auth', 'usersResource', 'userDogsResource', '$rootScope','socketConn', function($auth,usersResource, userDogsResource, $rootScope, socketConn){
     
     var userInfo = {};
 
@@ -184,6 +184,8 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
             userInfo.user = usersResource.get({id: userInfo.userId});
             userInfo.dogs = userDogsResource.query({id: userInfo.userId});
             $rootScope.$broadcast('user:refresh', userInfo);
+        } else {
+            userInfo.user = {};
         }
         
     };

@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('profileController', ['$scope','userDogsResource','$auth','$state','userInfo', '$ionicModal', 'usersResource', function($scope,userDogsResource, $auth,$state, userInfo, $ionicModal, usersResource){
+.controller('profileController', ['$scope','userDogsResource','$auth','$state','userInfo', '$ionicModal', 'usersResource', 'socketConn', function($scope,userDogsResource, $auth,$state, userInfo, $ionicModal, usersResource, socketConn){
 	// User information for the view
 	$scope.User = {}
 	userInfo.refresh();
@@ -13,4 +13,6 @@ angular.module('safePet')
 		$scope.User.picture = user.picture;
 		$scope.User.id = user._id;
 	});
+
+	socketConn.emit("knownClients", {});
 }]);

@@ -17,6 +17,10 @@ angular.module('safePet')
 		});
 		$scope.dogs = data.dogs;
 	});
+
+	//Reconnected
+	socketConn.emit('rec', {userId: userInfo.userId});
+	//Listener (Notifications)
 	socketConn.on('changeAccepted', function(){
 		userInfo.refresh();
 	});
@@ -33,6 +37,13 @@ angular.module('safePet')
 			}
 		});
 	});
+	/*socketConn.on('dogFinded', function(data){
+		var text = "¡Han encontrado a " + data.dogName + "!";
+		$ionicPopup.alert({
+			title: "¡Perro Encontrado!"
+			template: text;
+		})
+	});*/
 
 	$scope.logout = function(){
 		$auth.logout()

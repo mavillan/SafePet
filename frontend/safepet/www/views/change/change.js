@@ -1,7 +1,7 @@
 angular.module('safePet')
 
 
-.controller('changeController', ['$scope','$state','$stateParams', '$ionicPopup', '$ionicHistory','usersEmailResource', 'dogsResource', 'userInfo', function($scope,$state, $stateParams, $ionicPopup, $ionicHistory, usersEmailResource, dogsResource, userInfo){
+.controller('changeController', ['$scope','$state','$stateParams', '$ionicPopup', '$ionicHistory','usersEmailResource', 'dogsResource', 'userInfo', 'socketConn', function($scope,$state, $stateParams, $ionicPopup, $ionicHistory, usersEmailResource, dogsResource, userInfo, socketConn){
 	$scope.change = function(user) {
 		var confirmAlert = $ionicPopup.confirm({
 			title: "Cambiar dueño",
@@ -16,14 +16,13 @@ angular.module('safePet')
 							template: "No puedes cambiar de dueño contigo mismo"
 						});
 					} else {
-						dogsResource.update({id: $stateParams.dogId}, {data: {owner: usr._id}}, function(){
-							userInfo.refresh();
-							//Disable back button
-							$ionicHistory.nextViewOptions({
-								disableBack: true
-							});
-							$state.go('app.mainList');
+						console.log("Request dog Change");
+						socketConn.emit("requestDog", {dogId: $stateParams.dogId, newOwner: usr._id, oldOwner: userInfo.user._id});
+						//Disable Back button
+						$ionicHistory.nextViewOptions({
+							disableBack: true
 						});
+						$state.go('app.mainList');
 					}
 				});
 			}

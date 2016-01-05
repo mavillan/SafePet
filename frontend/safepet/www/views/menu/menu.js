@@ -17,14 +17,17 @@ angular.module('safePet')
 		});
 		$scope.dogs = data.dogs;
 	});
-
-	socketConn.on('changeUser', function(){
-		var alertPop = $ionicPopup.confirm({
+	socketConn.on('changeAccepted', function(){
+		userInfo.refresh();
+	});
+	socketConn.on('changeUser', function(data){
+		$ionicPopup.confirm({
 			title: "Cambio de Dueño",
 			template: "Eres dueño de un nuevo perro, ¿Aceptas el cambio?"
-		}, function(resp){
+		}).then(function(resp){
 			if(resp) {
-				socketConn.emit('acceptChange', {resp: 1});
+				socketConn.emit('acceptChange', {resp: 1, user: userInfo.user, dogId: data.dogId, oldOwner: data.oldOwner});
+				userInfo.refresh();				
 			} else {
 				socketConn.emit('acceptChange', {resp: 0});
 			}

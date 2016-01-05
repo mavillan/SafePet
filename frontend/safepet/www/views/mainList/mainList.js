@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs){
+.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', 'socketConn', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, socketConn){
 
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
@@ -9,7 +9,9 @@ angular.module('safePet')
 
     // Refresh user information
     userInfo.refresh();
-
+    socketConn.on('changeAccepted', function(){
+        userInfo.refresh();
+    });
     // Handle User dogs from the API with
     // Event listener: update dog list
     $scope.$on('user:refresh', function(event, data){        

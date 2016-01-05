@@ -1,8 +1,9 @@
 angular.module('safePet')
 
-.controller('profileController', ['$scope','userDogsResource','$auth','$state','userInfo', '$ionicModal', 'usersResource', function($scope,userDogsResource, $auth,$state, userInfo, $ionicModal, usersResource){
+.controller('profileController', ['$scope','userDogsResource','$auth','$state','userInfo', '$ionicModal', 'usersResource', 'socketConn', function($scope,userDogsResource, $auth,$state, userInfo, $ionicModal, usersResource, socketConn){
 	// User information for the view
 	$scope.User = {}
+	userInfo.refresh();
 	// Handle user information
 	userInfo.user.$promise.then(function(user){
 		$scope.User.email = user.email;
@@ -13,27 +14,5 @@ angular.module('safePet')
 		$scope.User.id = user._id;
 	});
 
-	
-	$scope.editProfile = function(User){
-		usersResource.update({id: $scope.User.id},{data: $scope.User});
-		$scope.editModal.hide();
-	};
-
-	// Create and load the Modal
-    $ionicModal.fromTemplateUrl('edit.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.editModal = modal;
-    });
-
-    // Open new task modal
-    $scope.edit = function() {
-        $scope.editModal.show();
-    };
-
-    // Close the new task modal
-    $scope.closeEdit = function() {
-        $scope.editModal.hide();
-    };	
+	socketConn.emit("knownClients", {});
 }]);

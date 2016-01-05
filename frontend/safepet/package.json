@@ -25,6 +25,7 @@
     "cordova-plugin-crop"
   ],
   "cordovaPlatforms": [
-    "android"
+    "android",
+    "ios"
   ]
 }

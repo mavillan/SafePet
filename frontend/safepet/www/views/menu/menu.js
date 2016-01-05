@@ -1,19 +1,42 @@
 angular.module('safePet')
 
 
-.controller('menuController', ['$scope','$auth','$state','userInfo','$ionicHistory','$timeout','$ionicPopup' , 'userDogsResource', '$interval', function($scope,$auth,$state,userInfo,$ionicHistory,$timeout,$ionicPopup, userDogsResource, $interval){
+.controller('menuController', ['$scope','$auth','$state','userInfo','$ionicHistory','$timeout','$ionicPopup' , 'userDogsResource', '$interval', 'socketConn', function($scope,$auth,$state,userInfo,$ionicHistory,$timeout,$ionicPopup, userDogsResource, $interval,socketConn){
 
 	// Refresh user information
-	/*userInfo.refresh();
+	userInfo.refresh();
 	// Handle user information from the API
-	userInfo.user.$promise.then(function(user){
+	/*userInfo.user.$promise.then(function(user){
 		$scope.menuTitle = user.displayName;
+	});*/
+	// This one is necessary since menuController only charges one time.	
+	$scope.$on('user:refresh', function(event, data){
+		// Handle user information from the API
+		userInfo.user.$promise.then(function(user){
+			$scope.menuTitle = user.displayName;
+		});
+		$scope.dogs = data.dogs;
 	});
-	*/
-		$scope.logout = function(){
+
+	socketConn.on('changeUser', function(){
+		var alertPop = $ionicPopup.confirm({
+			title: "Cambio de Dueño",
+			template: "Eres dueño de un nuevo perro, ¿Aceptas el cambio?"
+		}, function(resp){
+			if(resp) {
+				socketConn.emit('acceptChange', {resp: 1});
+			} else {
+				socketConn.emit('acceptChange', {resp: 0});
+			}
+		});
+	});
+
+	$scope.logout = function(){
 		$auth.logout()
 		.then(function() {
 			userInfo.clear();
+			//Example of socket 
+			socketConn.emit('logout', { userId: userInfo.userId });
             $state.go("login");
     		$timeout(function () {
         		$ionicHistory.clearCache();
@@ -22,16 +45,10 @@ angular.module('safePet')
         });
 	};
 
-	// Event listener: update dog count
-	$scope.$on('user:refresh', function(event, data){
-		$scope.dogs = data.dogs;
-	});
-
     $scope.showAlert = function() {
    		var alertPopup = $ionicPopup.alert({
      			title: 'Acerca de SafePet',
-     			template: 'SafePet es un producto de OverPi pensado en la seguridad de tu perro. Si desea obtener mayor información puede dirigirse a nuestra <a href="http://overpi.feriadesoftware.cl/">Página web</a> o nuestro <a href="https://www.facebook.com/safepet.cl?fref=ts">Facebook.</a>' 
+     			template: 'SafePet es un producto de OverPi pensado en la seguridad de tu perro. Si desea obtener mayor información puede dirigirse a nuestra <a href="http://safepet.feriadesoftware.cl/">Página web</a> o nuestro <a href="https://www.facebook.com/safepet.cl?fref=ts">Facebook.</a>' 
    		});
  	};
-	
 }]);

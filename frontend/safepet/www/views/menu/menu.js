@@ -38,7 +38,6 @@ angular.module('safePet')
 		});
 	});
 	socketConn.on('dogLost', function(data){
-		console.log(data);
 		if(data != userInfo.userId){
 			var alert = $ionicPopup.alert({
 				title: "Perro Perdido",

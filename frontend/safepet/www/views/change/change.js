@@ -8,7 +8,6 @@ angular.module('safePet')
 			template: "¿Está seguro que quiere cambiar de dueño a su mascota?"
 		}).then(function(res){
 			if(res){
-				console.log(user.email);
 				usersEmailResource.get({email: user.email}, function(usr){
 					if(usr.email == userInfo.user.email) {
 						var emailAlert = $ionicPopup.alert({

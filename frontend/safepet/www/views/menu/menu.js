@@ -37,13 +37,23 @@ angular.module('safePet')
 			}
 		});
 	});
-	/*socketConn.on('dogFinded', function(data){
-		var text = "¡Han encontrado a " + data.dogName + "!";
-		$ionicPopup.alert({
-			title: "¡Perro Encontrado!"
-			template: text;
-		})
-	});*/
+	socketConn.on('dogLost', function(data){
+		console.log(data);
+		if(data != userInfo.userId){
+			var alert = $ionicPopup.alert({
+				title: "Perro Perdido",
+				template: "Alguien cerca de ti ha perdido a su mascota"
+			});
+		}
+	});
+	socketConn.on('dogFound', function(data){
+		/*$ionicPopup.confirm({
+			title: "¡Perro Encontrado!",
+			template: "¡Han encontrado a una mascota tuya!";
+		}).then(function(){
+			console.log("Ir al perfil de quien encontró al perro");
+		});*/
+	});
 
 	$scope.logout = function(){
 		$auth.logout()

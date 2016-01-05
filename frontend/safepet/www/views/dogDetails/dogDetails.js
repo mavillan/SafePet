@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state','$ionicModal', 'userInfo', '$rootScope', '$ionicPopup', function($scope,dogsResource,$stateParams,$state,$ionicModal, userInfo, $rootScope, $ionicPopup){
+.controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state','$ionicModal', 'userInfo', '$rootScope', '$ionicPopup', 'socketConn', function($scope,dogsResource,$stateParams,$state,$ionicModal, userInfo, $rootScope, $ionicPopup, socketConn){
 
 	$scope.UserId = userInfo.userId;
     $scope.dog = dogsResource.get({id: $stateParams.dogId});
@@ -26,6 +26,7 @@ angular.module('safePet')
 			dogsResource.update({id: $stateParams.dogId},{data: {lost: 1}},function(){
 				$scope.dog = dogsResource.get({id: $stateParams.dogId}, function(){
                     $rootScope.$broadcast('dog:lost', 'Mis datos');
+                    socketConn.emit("reportLostDog", {userId: userInfo.userId});
                 });
 				$scope.closeFoundDog();
 				$scope.closeLostDog();

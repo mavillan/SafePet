@@ -13,6 +13,4 @@ angular.module('safePet')
 		$scope.User.picture = user.picture;
 		$scope.User.id = user._id;
 	});
-
-	socketConn.emit("knownClients", {});
 }]);

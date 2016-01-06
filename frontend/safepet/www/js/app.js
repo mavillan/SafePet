@@ -150,11 +150,11 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 .factory('lostDogs', ['$resource', function($resource){
     return $resource("http://safepetapi.labcomp.cl:5000/dogs/lost", {}, {});
 }])
-// Nose storing
+// Nose imgs storing
 .factory('noseImgs', ['$resource', function($resource){
     return $resource("http://safepetapi.labcomp.cl:5000/noseimgs/:id", {id: "@id"}, {});
 }])
-// Nose storing
+// Dogs Imgs storing
 .factory('dogsImgs', ['$resource', function($resource){
     return $resource("http://safepetapi.labcomp.cl:5000/dogimgs/:id", {id: "@id"}, {});
 }])

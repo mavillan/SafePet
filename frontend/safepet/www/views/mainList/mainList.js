@@ -58,15 +58,31 @@ angular.module('safePet')
     }).then(function(modal) {
         $scope.dogModal = modal;
     });
+    // Create and load the Modal
+    $ionicModal.fromTemplateUrl('newDog2.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.dogModal2 = modal;
+    });
 
     // Open new task modal
     $scope.newDog = function() {
+        $scope.dogModal2.hide();
         $scope.dogModal.show();
+    };
+
+    $scope.newDog2 = function() {
+        $scope.dogModal2.show();
     };
 
     // Close the new task modal
     $scope.closeNewDog = function() {
         $scope.dogModal.hide();
+    };
+
+    $scope.closeNewDog2 = function() {
+        $scope.dogModal2.hide();
     };
     // Create and load the Modal Crop
     $ionicModal.fromTemplateUrl('imgCrop.html', function(modal) {

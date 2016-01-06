@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', '$cordovaImagePicker', '$ionicPlatform', 'socketConn', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, $cordovaImagePicker, $ionicPlatform, socketConn){
+.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', '$cordovaImagePicker', '$ionicPlatform', 'socketConn', 'noseImgs', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, $cordovaImagePicker, $ionicPlatform, socketConn, noseImgs){
 
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
@@ -133,13 +133,29 @@ angular.module('safePet')
 
     $scope.fileUpload = function (upImage, par) {
         if (par){
-            upIm = 
-            upImage = window.atob(upImage);
+            //upIm = 
+           // upImage = window.atob(upImage);
             $scope.cropModal.hide();
+
+            // convert base64/URLEncoded data component to raw binary data held in a string
+            var byteString = atob(upImage.split(',')[1]);
+            var mimeString = upImage.split(',')[0].split(':')[1].split(';')[0]
+
+            var ab = new ArrayBuffer(byteString.length);
+            var ia = new Uint8Array(ab);
+            for (var i = 0; i < byteString.length; i++){
+                ia[i] = byteString.charCodeAt(i);}
+
+            var bb = new Blob([ab], { "type": mimeString });
+            noseImgs.save(bb);
         };
-        console.log(upImage);
+
+        //noseImgs.save(upImage);
+
+
+        /*console.log(upImage);
         // Destination URL 
-        var url = "http://localhost:5000/";
+        var url = "http://safepetapi.labcomp.cl:5000"; //"http://localhost:5000/";
       
         //File for Upload
         var targetPath = upImage;//cordova.file.externalRootDirectory + "logo_radni.png";
@@ -162,7 +178,7 @@ angular.module('safePet')
             console.log("ERROR: " + JSON.stringify(err));
         }, function (progress) {
           // PROGRESS HANDLING GOES HERE
-        });
+        });*/
     };
 
     // Open new task modal

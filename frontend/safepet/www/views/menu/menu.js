@@ -18,17 +18,40 @@ angular.module('safePet')
 		$scope.dogs = data.dogs;
 	});
 
-	socketConn.on('changeUser', function(){
-		var alertPop = $ionicPopup.confirm({
+	//Reconnected
+	socketConn.emit('rec', {userId: userInfo.userId});
+	//Listener (Notifications)
+	socketConn.on('changeAccepted', function(){
+		userInfo.refresh();
+	});
+	socketConn.on('changeUser', function(data){
+		$ionicPopup.confirm({
 			title: "Cambio de Dueño",
 			template: "Eres dueño de un nuevo perro, ¿Aceptas el cambio?"
-		}, function(resp){
+		}).then(function(resp){
 			if(resp) {
-				socketConn.emit('acceptChange', {resp: 1});
+				socketConn.emit('acceptChange', {resp: 1, user: userInfo.user, dogId: data.dogId, oldOwner: data.oldOwner});
+				userInfo.refresh();				
 			} else {
 				socketConn.emit('acceptChange', {resp: 0});
 			}
 		});
+	});
+	socketConn.on('dogLost', function(data){
+		if(data != userInfo.userId){
+			var alert = $ionicPopup.alert({
+				title: "Perro Perdido",
+				template: "Alguien cerca de ti ha perdido a su mascota"
+			});
+		}
+	});
+	socketConn.on('dogFound', function(data){
+		/*$ionicPopup.confirm({
+			title: "¡Perro Encontrado!",
+			template: "¡Han encontrado a una mascota tuya!";
+		}).then(function(){
+			console.log("Ir al perfil de quien encontró al perro");
+		});*/
 	});
 
 	$scope.logout = function(){

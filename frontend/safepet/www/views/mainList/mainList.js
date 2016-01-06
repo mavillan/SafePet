@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', '$cordovaImagePicker', '$ionicPlatform', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, $cordovaImagePicker, $ionicPlatform){
+.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', '$cordovaImagePicker', '$ionicPlatform', 'socketConn', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, $cordovaImagePicker, $ionicPlatform, socketConn){
 
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
@@ -9,7 +9,9 @@ angular.module('safePet')
 
     // Refresh user information
     userInfo.refresh();
-
+    socketConn.on('changeAccepted', function(){
+        userInfo.refresh();
+    });
     // Handle User dogs from the API with
     // Event listener: update dog list
     $scope.$on('user:refresh', function(event, data){        
@@ -80,7 +82,25 @@ angular.module('safePet')
         selectedImage : ''
     };*/
 
+    /*$scope.convertToDataURLviaCanvas = function(url, callback, outputFormat){
+        var img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = function(){
+            var canvas = document.createElement('CANVAS');
+            var ctx = canvas.getContext('2d');
+            var dataURL;
+            canvas.height = this.height;
+            canvas.width = this.width;
+            ctx.drawImage(this, 0, 0);
+            dataURL = canvas.toDataURL(outputFormat);
+            callback(dataURL);
+            canvas = null; 
+        };
+        img.src = url;
+    };*/
+
     $scope.collection = [];
+    //$scope.b64 = [];
 
     $scope.getImageGalery = function(){
         var options = {
@@ -93,7 +113,13 @@ angular.module('safePet')
         $cordovaImagePicker.getPictures(options).then(function (results) {
             for (var i = 0; i < results.length; i++) {
                 console.log('Image URI: ' + results[i]);
-                $scope.collection.push(results[i]);
+                window.plugins.Base64.encodeFile(results[i], function(base64){  // Encode URI to Base64 needed for contacts plugin
+                    results[i] = base64;
+                    $scope.collection.push(results[i]);
+                });
+                /*convertToDataURLviaCanvas(results[i], function(base64Img, 'image/jpeg'){
+                // Base64DataURL
+                });
                 /*window.plugins.Base64.encodeFile($scope.collection.selectedImage, function(base64){  // Encode URI to Base64 needed for contacts plugin
                     $scope.collection.selectedImage = base64;
                 });*/
@@ -104,7 +130,10 @@ angular.module('safePet')
         });
     };
 
-    $scope.fileUpload = function (upImage) {
+    $scope.fileUpload = function (upImage, par) {
+        if (par){
+            $scope.cropModal.hide();
+        };
         console.log(upImage);
         // Destination URL 
         var url = "http://localhost:5000/";
@@ -150,7 +179,7 @@ angular.module('safePet')
             quality: 75,
             targetWidth: 500,
             targetHeight: 500,
-            saveToPhotoAlbum: false
+            saveToPhotoAlbum: true//false
         }).then(function(imageURI) {
             if (opt) {
                 $scope.lastPhoto = imageURI;
@@ -166,8 +195,8 @@ angular.module('safePet')
             console.log(imageURI);
         }, function(err) {
         }, { 
-            quality: 50,
-            destinationType: Camera.DestinationType.FILE_URI
+            quality: 75,
+            destinationType: Camera.DestinationType.DATA_URL//FILE_URI
         });
     };
 }]);

@@ -68,7 +68,7 @@
                         {{lastPhoto}}
                     </div>
                     <div class="padding">
-                        <button type="submit" class="button button-block button-positive">Agregar</button>
+                        <button type="submit" class="button button-block button-positive" ng-click="fileUpload(lastPhoto,false)">Agregar</button>
                     </div>
                 </form>
                 <button ng-click="getPhoto(true)" class="button button-block button-primary">Foto!</button>
@@ -101,6 +101,7 @@
                 </div>
                 <div>Cropped Image:</div>
                 <img ng-src="{{myCroppedImage}}">
+                {{myCroppedImage}}
                 <button class="button button-full button-positive" ng-click="fileUpload(myCroppedImage,true)">Guardar</button>
             </ion-content>
         </div>

@@ -113,7 +113,8 @@ angular.module('safePet')
         $cordovaImagePicker.getPictures(options).then(function (results) {
             for (var i = 0; i < results.length; i++) {
                 console.log('Image URI: ' + results[i]);
-                window.plugins.Base64.encodeFile(results[i], function(base64){  // Encode URI to Base64 needed for contacts plugin
+                $scope.collection.push(results[i]);
+                /*window.plugins.Base64.encodeFile(results[i], function(base64){  // Encode URI to Base64 needed for contacts plugin
                     results[i] = base64;
                     $scope.collection.push(results[i]);
                 });
@@ -132,6 +133,8 @@ angular.module('safePet')
 
     $scope.fileUpload = function (upImage, par) {
         if (par){
+            upIm = 
+            upImage = window.atob(upImage);
             $scope.cropModal.hide();
         };
         console.log(upImage);
@@ -142,7 +145,8 @@ angular.module('safePet')
         var targetPath = upImage;//cordova.file.externalRootDirectory + "logo_radni.png";
       
         // File name only
-        var filename = targetPath.split("/").pop();
+        //var filename = targetPath.split("/").pop();
+        var filename = userInfo.user._id;
       
         var options = {
             fileKey: "file",
@@ -179,10 +183,10 @@ angular.module('safePet')
             quality: 75,
             targetWidth: 500,
             targetHeight: 500,
-            saveToPhotoAlbum: true//false
-        }).then(function(imageURI) {
+            saveToPhotoAlbum: false
+        }).then(function(imageURI){//imageURI) {
             if (opt) {
-                $scope.lastPhoto = imageURI;
+                $scope.lastPhoto = imageURI;//imageURI;
             } else { 
                 $scope.myImage = imageURI;
                 $scope.cropModal.show();

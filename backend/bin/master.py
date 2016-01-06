@@ -3,6 +3,7 @@ import sys
 import os
 import time
 import zerorpc
+import builder
 import histogram
 import numpy as np
 import cv2 as cv
@@ -84,7 +85,7 @@ class Master():
 
 			#append hist to hist matrix and update it
 			#todo: search a better way to do that: hdf5?
-			self.hist_matrix = np.vstack(self.hist_matrix, hist)
+			self.hist_matrix = np.vstack((self.hist_matrix, hist))
 			timestamp = time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
 			out = cfg.params['MATRICES_PATH']+'hist_matrix::'+cfg.params['HIST_TYPE']+'::'+timestamp
 			np.save(out, self.hist_matrix)
@@ -98,7 +99,7 @@ class Master():
 			tgt.close() 
 
 			#rebuild NearestNeighbors object and update it
-			self.nn = build_nn(self.hist_matrix)
+			self.nn = builder.build_nn(self.hist_matrix, store=False)
 			out = cfg.params['NN_PATH']+'nearestneighbors::'+timestamp
 			tgt = file(out, 'wb')
 			pickle.dump(self.nn, tgt)

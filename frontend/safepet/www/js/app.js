@@ -71,20 +71,20 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
             url: '/profile',
             cache: false,
             views: {
-            'menuContent': {
-                templateUrl: 'views/profile/profile.html',
-                controller: 'profileController'
+                'menuContent': {
+                    templateUrl: 'views/profile/profile.html',
+                    controller: 'profileController'
+                }
             }
-           }
         })
         .state('app.editProfile', {
             url: '/edit',
             views: {
-            'menuContent': {
-                templateUrl: 'views/editProfile/editProfile.html',
-                controller: 'editController'
+                'menuContent': {
+                    templateUrl: 'views/editProfile/editProfile.html',
+                    controller: 'editController'
+                }
             }
-           }
         })
         .state('app.faq',{
             url: '/faq',
@@ -102,6 +102,16 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
                 }
             }
         })
+        .state('app.change',{
+            url: '/change/:dogId',
+            views: {
+                'menuContent': {
+                    templateUrl: 'views/change/change.html',
+                    controller: 'changeController'
+                }
+            }
+        })
+
         .state('app.dogDetails', {
             url: '/:dogId',
             views: {
@@ -118,7 +128,12 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 
 // Return the users resource
 .factory('usersResource', ['$resource', function($resource){
-    return $resource("http://localhost:5000/users/:id",{id: "@id"},{update: {method: "PUT"}});
+    return $resource("http://localhost:5000/users/:id/",{id: "@id"},{update: {method: "PUT"}});
+}])
+
+// Return the users id given a name
+.factory('usersEmailResource', ['$resource', function($resource){
+    return $resource("http://localhost:5000/users/e/:email", {email: "@email"}, {update: {method: "PUT"}});
 }])
 
 // Return the dogs resource
@@ -136,6 +151,10 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
     return $resource("http://localhost:5000/dogs/lost", {}, {});
 }])
 
+// Sockect connection 
+.factory('socketConn', [function(){
+    return io('http://localhost:5000');
+}])
 //Camera
 .factory('Camera', ['$q', function($q) {
   return {
@@ -154,7 +173,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 }])
 
 // Return current authenticated user
-.factory('userInfo', ['$auth', 'usersResource', function($auth,usersResource){
+.factory('userInfo', ['$auth', 'usersResource', 'userDogsResource', '$rootScope','socketConn', function($auth,usersResource, userDogsResource, $rootScope, socketConn){
     
     var userInfo = {};
 
@@ -163,6 +182,10 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
             userInfo.tokenPayload = $auth.getPayload();
             userInfo.userId = userInfo.tokenPayload.sub;
             userInfo.user = usersResource.get({id: userInfo.userId});
+            userInfo.dogs = userDogsResource.query({id: userInfo.userId});
+            $rootScope.$broadcast('user:refresh', userInfo);
+        } else {
+            userInfo.user = {};
         }
         
     };
@@ -171,6 +194,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
             userInfo.tokenPayload = null;
             userInfo.userId = null;
             userInfo.user = null;
+            userInfo.dogs = null;
     };
     
     return userInfo;

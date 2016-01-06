@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('authController', ['$scope','$auth','$state','$ionicModal', '$ionicPopup', function($scope,$auth,$state,$ionicModal,$ionicPopup){
+.controller('authController', ['$scope','$auth','$state','$ionicModal', '$ionicPopup', 'userInfo', 'socketConn', '$rootScope', function($scope,$auth,$state,$ionicModal,$ionicPopup, userInfo, socketConn, $rootScope){
     $scope.signup = function(user) {
         $auth.signup({
         	displayName: user.displayName,
@@ -27,6 +27,8 @@ angular.module('safePet')
             password: user.password
         })
         .then(function(){
+            userInfo.refresh();
+            socketConn.emit("login", {userId: userInfo.userId});
             $state.go("app.mainList")
         })
         .catch(function(response){
@@ -41,6 +43,8 @@ angular.module('safePet')
     $scope.authenticate = function(provider) {
       $auth.authenticate(provider)
         .then(function() {
+            userInfo.refresh();
+            socketConn.emit("login", {userId: userInfo.userId});
             $state.go("app.mainList")
         })
         .catch(function(response) {

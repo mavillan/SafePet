@@ -1,6 +1,6 @@
 <ion-view view-title="Detalle">
 	<ion-nav-buttons side="right">
-        <button class="button button-clear" ng-hide="dog.owner!=UserId" ng-click="editDog()">
+        <button class="button button-clear" ng-hide="dog.owner!=UserId || dog.lost" ng-click="editDog()">
             Editar
         </button>
     </ion-nav-buttons>
@@ -23,9 +23,9 @@
 				Estado: Perdido
 			</div>
 			<div ng-hide="dog.owner!=UserId" class="item tabs tabs-secondary tabs-icon-left">
-				<button ng-hide="dog.lost" class="button button-block button-energized icon-left ion-information-circled" ng-click="lostDog()">Perdido</button>
+				<button ng-hide="dog.lost" class="button button-block button-energized icon-left ion-information-circled" ng-click="lostDog()">¿Perdido?</button>
 			
-				<button ng-hide="!dog.lost"class="button button-block button-balanced icon-left ion-information-circled" ng-click="foundDog()">Encontrado</button>
+				<button ng-hide="!dog.lost"class="button button-block button-balanced icon-left ion-information-circled" ng-click="foundDog()">¡Encontrado!</button>
 			</div>
 		</div>
 	   <!-- Lost dog modal script -->
@@ -91,7 +91,7 @@
 
 				        <label class="item item-input item-floating-label">
 				          <span class="input-label">Color</span>
-				          <input type="text" placeholder="Direccion" ng-model="dog.color">
+				          <input type="text" placeholder="Color" ng-model="dog.color">
 				        </label>
 
 				        <label class="item item-input item-floating-label">
@@ -103,7 +103,11 @@
 				        <button type="submit" class="button button-block button-positive">Guardar</button>
 				      </div>
 				    </form>
-	    			<button class="button button-block button-assertive" ng-click="deleteDog()"><i class="ion-close-round"></i>Eliminar</button>
+				    <div class="padding">
+				    	<h2 class="title">Otras opciones</h2>
+				    	<a class="button button-block button-energized icon-left ion-loop" ng-click="change()">Cambiar dueño</a>
+				    	<button class="button button-block button-assertive icon-left ion-close-round" ng-click="confirmDogDelete()">Eliminar</button>
+				    </div>
 	    		</ion-content>
 	    	</ion-modal-view>
 	    </script>   

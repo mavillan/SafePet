@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs){
+.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', 'socketConn', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, socketConn){
 
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
@@ -9,10 +9,13 @@ angular.module('safePet')
 
     // Refresh user information
     userInfo.refresh();
-
-    // Handle User dogs from the API.
-    userInfo.user.$promise.then(function(user){
-        $scope.dogs = userDogsResource.query({id: user._id});
+    socketConn.on('changeAccepted', function(){
+        userInfo.refresh();
+    });
+    // Handle User dogs from the API with
+    // Event listener: update dog list
+    $scope.$on('user:refresh', function(event, data){        
+        $scope.dogs = data.dogs;
     });
 
     // create a new dog when the form is submitted
@@ -23,14 +26,19 @@ angular.module('safePet')
         // Save new dog and refreshing dog list in the callback
         dogsResource.save(dog,function(){
             $scope.dogs = userDogsResource.query({id: userInfo.user._id});
+            userInfo.refresh();
         });
 
         $scope.dogModal.hide();
     };
 
     // Find all lost dogs.
-    console.log("Getting lost dogs");
     $scope.lostdogs = lostDogs.query();
+    // Update list on state change
+    $scope.$on('dog:lost', function(event, data){
+        $scope.lostdogs = lostDogs.query();
+    });
+    
     
     //Refresh lost dogs on pull
     $scope.doRefresh = function() {

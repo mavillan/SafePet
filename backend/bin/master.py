@@ -14,17 +14,23 @@ from skimage.feature import local_binary_pattern as lbp
 class Master():
 	def __init__(self):
 		#loading nn object and storing it as attribute
-		tgt = open(cfg.params['VAULT']+'NearestNeighbors', 'rb')
+		nn_list = os.listdir(cfg.params['NN_PATH'])
+		nn_list.sort()
+		tgt = open(cfg.params['NN_PATH']+nn_list[-1], 'rb')
 		self.nn = pickle.load(tgt)
 		tgt.close()
 
 		#loading svm object and storing it as attribute
-		tgt = open(cfg.params['VAULT']+'SVM', 'rb')
+		svm_list = os.listdir(cfg.params['SVM_PATH'])
+		svm_list.sort()
+		tgt = open(cfg.params['SVM_PATH']+svm_list[-1], 'rb')
 		self.clf = pickle.load(tgt)
 		tgt.close()
 
 		#loading mappings dictionary and storing it as attribute
-		tgt = open(cfg.params['VAULT']+'mappings', 'rb')
+		mappings_list = os.listdir(cfg.params['MAPPINGS_PATH'])
+		mappings_list.sort()
+		tgt = open(cfg.params['MAPPINGS_PATH']+mappings_list[-1], 'rb')
 		self.mappings = pickle.load(tgt)
 		tgt.close()
 
@@ -32,7 +38,6 @@ class Master():
 		matrices = os.listdir(cfg.params['MATRICES_PATH'])
 		matrices.sort()
 		self.hist_matrix = np.load(cfg.params['MATRICES_PATH']+matrices[-1])
-
 
 	def _process(self, path):
 		"""
@@ -80,19 +85,22 @@ class Master():
 			#append hist to hist matrix and update it
 			#todo: search a better way to do that: hdf5?
 			self.hist_matrix = np.vstack(self.hist_matrix, hist)
-			out = cfg.params['MATRICES_PATH']+'::'+time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
+			timestamp = time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
+			out = cfg.params['MATRICES_PATH']+'hist_matrix::'+cfg.params['HIST_TYPE']+'::'+timestamp
 			np.save(out, self.hist_matrix)
 
 			#append the mapping to dict and update it
 			self.mappings[self.hist_matrix.shape[0]-1] = filename
-			#storing mappings in vault
-			tgt = file(cfg.params['VAULT']+'mappings', 'wb')
+			#storing mappings
+			out = cfg.params['MAPPINGS_PATH']+'mappings::'+timestamp
+			tgt = file(out, 'wb')
 			pickle.dump(self.mappings, tgt)
 			tgt.close() 
 
 			#rebuild NearestNeighbors object and update it
 			self.nn = build_nn(self.hist_matrix)
-			tgt = file(cfg.params['VAULT']+'NearestNeighbors', 'wb')
+			out = cfg.params['NN_PATH']+'nearestneighbors::'+timestamp
+			tgt = file(out, 'wb')
 			pickle.dump(self.nn, tgt)
 			tgt.close()
 		 	return 1

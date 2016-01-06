@@ -4,9 +4,7 @@ import os
 import subprocess
 
 """
-WARNING: This scripts has some problems 
-when there exist name collitions. Not apply 
-over important data.
+WARNING: Don't execute this shit
 """
 
 

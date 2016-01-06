@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('profileController', ['$scope','userDogsResource','$auth','$state','userInfo', '$ionicModal', 'usersResource', 'socketConn', function($scope,userDogsResource, $auth,$state, userInfo, $ionicModal, usersResource, socketConn){
+.controller('profileController', ['$scope','userInfo', 'usersResource', 'noseImgs', function($scope,userInfo,usersResource,noseImgs){
 	// User information for the view
 	$scope.User = {}
 	userInfo.refresh();

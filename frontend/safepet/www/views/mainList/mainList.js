@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', 'socketConn', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, socketConn){
+.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', 'socketConn', '$cordovaFileTransfer', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, socketConn, $cordovaFileTransfer){
 
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
@@ -96,8 +96,7 @@ angular.module('safePet')
     $scope.crop = function() {
         $scope.myImage = '';
         $scope.myCroppedImage = '';
-        $scope.getPhoto();
-        //$scope.cropModal.show();
+        $scope.getPhoto(false);
     };
 
     // Close the new task modal
@@ -105,37 +104,48 @@ angular.module('safePet')
         $scope.cropModal.hide();
     };
 
+    $scope.fileUpload = function (par) {
+        var options = {
+            fileKey: "avatar",
+            fileName: "image.png",
+            chunkedMode: false,
+            mimeType: "image/png"
+        };
+        $cordovaFileTransfer.upload("http://safepetapi.labcomp.cl:5000/noseimgs", $scope.lastPhoto, options).then(function(result) {
+            console.log("SUCCESS: " + JSON.stringify(result.response));
+        }, function(err) {
+            console.log("ERROR: " + JSON.stringify(err));
+        }, function (progress) {
+            // constant progress updates
+        });
+        if(par){$scope.dogModal.hide();}
+        else{$scope.cropModal.hide();};
+    };
 
-    $scope.getPhoto = function() {
+    $scope.getPhoto = function(opt) {
         console.log('Getting camera');
         Camera.getPicture({
-        quality: 75,
-        targetWidth: 500,
-        targetHeight: 500,
-        saveToPhotoAlbum: false
-        }).then(function(imageURI) {
-            //console.log(imageURI);
-            $scope.lastPhoto = imageURI;
-           /* $scope.showAlert = function() {
-        var alertPopup = $ionicPopup.alert({
-                title: 'Acerca de SafePet',
-                template: '{{lastPhoto}}' 
-        });
-    };
-            $scope.showAlert();*/
-            $scope.myImage = imageURI;
-            $scope.cropModal.show();
-
+            quality: 75,
+            targetWidth: 500,
+            targetHeight: 500,
+            saveToPhotoAlbum: false
+        }).then(function(imageURI){//imageURI) {
+            if (opt) {
+                $scope.lastPhoto = imageURI;//imageURI;
+            } else { 
+                $scope.myImage = imageURI;
+                $scope.cropModal.show();
+            };
         }, function(err) {
-        console.err(err);
-    });
+            console.err(err);
+        });
     
         navigator.camera.getPicture(function(imageURI) {
             console.log(imageURI);
         }, function(err) {
         }, { 
-            quality: 50,
-            destinationType: Camera.DestinationType.DATA_URL
+            quality: 75,
+            destinationType: Camera.DestinationType.DATA_URL//FILE_URI
         });
     };
 }]);

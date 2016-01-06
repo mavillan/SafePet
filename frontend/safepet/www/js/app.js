@@ -1,4 +1,4 @@
-angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
+angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop', 'ngCordova'])
 
 .config(function ($stateProvider, $urlRouterProvider,$authProvider) {
 
@@ -162,6 +162,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 .factory('socketConn', [function(){
     return io('http://safepetapi.labcomp.cl:5000');
 }])
+
 //Camera
 .factory('Camera', ['$q', function($q) {
   return {

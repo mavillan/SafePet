@@ -73,7 +73,12 @@ class Master():
 			#performing the search
 			dist, ind = self.nn.query([hist], k=cfg.params['NEIGHBORS'])
 			#mapping the results
-			result = [self.mappings[i] for i in ind[0]]
+			result = []
+			for i in ind[0]:
+				fileid = self.mappings[i]
+				#dont put the same id many times
+				if fileid in result: continue
+				result.append(fileid)
 			return result
 	
 	#Insert a new dog
@@ -91,7 +96,8 @@ class Master():
 			np.save(out, self.hist_matrix)
 
 			#append the mapping to dict and update it
-			self.mappings[self.hist_matrix.shape[0]-1] = filename
+			fileid = filename.split('-')[0]
+			self.mappings[self.hist_matrix.shape[0]-1] = fileid
 			#storing mappings
 			out = cfg.params['MAPPINGS_PATH']+'mappings::'+timestamp
 			tgt = file(out, 'wb')

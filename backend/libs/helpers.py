@@ -81,7 +81,8 @@ def data_to_hist(in_path, out_path=None, hist_type=cfg.params['HIST_TYPE'], prec
 		else:
 			print 'invalid hist_type!'; return -1
 		#save the mapping
-		mappings[i_index] = filename
+		fileid = filename.split('-')[0]
+		mappings[i_index] = fileid
 		i_index += 1
 
 	#storing mappings

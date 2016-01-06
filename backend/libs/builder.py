@@ -1,4 +1,5 @@
 import metric
+import time
 import config as cfg
 import numpy as np
 import cPickle as pickle
@@ -9,16 +10,18 @@ from sklearn.metrics.pairwise import chi2_kernel
 from helpers import data_to_hist
 
 
-def build_nn(data, out_path=None):
+def build_nn(data, store=True):
 	nn = BallTree(data, cfg.params['LEAF_SIZE'], metric='pyfunc', func=metric.chi2)
-	if out_path is not None:
-		tgt = file(cfg.params['VAULT']+'NearestNeighbors', 'wb')
+	if store:
+		timestamp = time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
+		out = cfg.params['NN_PATH']+'nearestneighbors::'+timestamp
+		tgt = file(out, 'wb')
 		pickle.dump(nn, tgt)
 		tgt.close()
 		return 1
 	else: return nn
 
-def build_svm(in_path1, in_path2, out_path=None):
+def build_svm(in_path1, in_path2, store=True):
 	#positive and negative examples data respectively
 	p_data = data_to_hist(in_path1)
 	n_data = data_to_hist(in_path2)
@@ -34,8 +37,10 @@ def build_svm(in_path1, in_path2, out_path=None):
 	clf = svm.NuSVC(kernel=chi2_kernel, nu=0.1)
 	clf.fit(data,labels)
 
-	if out_path is not None:
-		tgt = file(cfg.params['VAULT']+'SVM', 'wb')
+	if store:
+		timestamp = time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
+		out = cfg.params['SVM_PATH']+'svm::'+timestamp
+		tgt = file(out, 'wb')
 		pickle.dump(clf, tgt)
 		tgt.close()
 		return 1

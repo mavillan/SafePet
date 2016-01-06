@@ -84,14 +84,16 @@ def data_to_hist(in_path, out_path=None, hist_type=cfg.params['HIST_TYPE'], prec
 		mappings[i_index] = filename
 		i_index += 1
 
-	#storing mappings in vault
-	tgt = file(cfg.params['VAULT']+'mappings', 'wb')
+	#storing mappings
+	timestamp = time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
+	out = cfg.params['MAPPINGS_PATH']+'mappings::'+timestamp
+	tgt = file(out, 'wb')
 	pickle.dump(mappings, tgt)
 	tgt.close()
 
 	if out_path!=None:
 		#save the resulting matrix with timestamps
-		out = out_path+'hist_matrix::'+hist_type+'::'+time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
+		out = out_path+'hist_matrix::'+hist_type+'::'+timestamp
 		np.save(out, hist_matrix)
 		return 1
 	else:

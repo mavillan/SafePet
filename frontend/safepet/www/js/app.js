@@ -3,7 +3,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 .config(function ($stateProvider, $urlRouterProvider,$authProvider) {
 
     // Satellizer config
-    $authProvider.baseUrl = 'http://localhost:5000';
+    $authProvider.baseUrl = 'http://safepetapi.labcomp.cl:5000';
     $authProvider.loginUrl = "/auth/login";
     $authProvider.signupUrl = "/auth/signup";
     $authProvider.tokenName = "token";
@@ -128,32 +128,39 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop'])
 
 // Return the users resource
 .factory('usersResource', ['$resource', function($resource){
-    return $resource("http://localhost:5000/users/:id/",{id: "@id"},{update: {method: "PUT"}});
+    return $resource("http://safepetapi.labcomp.cl:5000/users/:id/",{id: "@id"},{update: {method: "PUT"}});
 }])
 
 // Return the users id given a name
 .factory('usersEmailResource', ['$resource', function($resource){
-    return $resource("http://localhost:5000/users/e/:email", {email: "@email"}, {update: {method: "PUT"}});
+    return $resource("http://safepetapi.labcomp.cl:5000/users/e/:email", {email: "@email"}, {update: {method: "PUT"}});
 }])
 
 // Return the dogs resource
 .factory('dogsResource', ['$resource', function($resource){
-    return $resource("http://localhost:5000/dogs/:id",{id: "@id"},{update: {method: "PUT"}});
+    return $resource("http://safepetapi.labcomp.cl:5000/dogs/:id",{id: "@id"},{update: {method: "PUT"}});
 }])
 
 // Return the user dogs resource
 .factory('userDogsResource', ['$resource', function($resource){
-    return $resource("http://localhost:5000/dogs/user/:id",{userId: "@id"},{update: {method: "PUT"}});
+    return $resource("http://safepetapi.labcomp.cl:5000/dogs/user/:id",{userId: "@id"},{update: {method: "PUT"}});
 }])
 
 // Return the lost dogs resource
 .factory('lostDogs', ['$resource', function($resource){
-    return $resource("http://localhost:5000/dogs/lost", {}, {});
+    return $resource("http://safepetapi.labcomp.cl:5000/dogs/lost", {}, {});
 }])
-
+// Nose storing
+.factory('noseImgs', ['$resource', function($resource){
+    return $resource("http://safepetapi.labcomp.cl:5000/noseimgs/:id", {id: "@id"}, {});
+}])
+// Nose storing
+.factory('dogsImgs', ['$resource', function($resource){
+    return $resource("http://safepetapi.labcomp.cl:5000/dogimgs/:id", {id: "@id"}, {});
+}])
 // Sockect connection 
 .factory('socketConn', [function(){
-    return io('http://localhost:5000');
+    return io('http://safepetapi.labcomp.cl:5000');
 }])
 //Camera
 .factory('Camera', ['$q', function($q) {

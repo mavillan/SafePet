@@ -40,8 +40,31 @@
             </ion-view>
         </ion-tab>                
     </ion-tabs>
-    <!-- New dog modal script -->
     <script id="newDog.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar-secondary">
+                <h1 class="title">Agregar</h1>
+                <button class="button button-clear button-positive" ng-click="closeNewDog()">Cancelar</button>
+            </ion-header-bar>
+            <ion-content>
+                <div class="padding">
+                    <h2 class="title">Instrucciones:</h2>
+                </div>
+                <ion-list>
+                    <ion-item><p>Tome una foto de la nariz del perro</p></ion-item>
+                    <ion-item><p>Recorte el área de la nariz</p></ion-item>
+                    <ion-item><p>Lo anterior se hace 3 veces</p></ion-item>
+                    <ion-item><p>Espere a que se validen las imágenes</p></ion-item>
+                    <ion-item><p>Tome una foto del Perro (perfil)</p></ion-item>
+                    <ion-item><p>Ingrese los datos del Perro</p></ion-item>
+                </ion-list>
+                <div class="padding">
+                    <button class="button button-block button-positive">Entendido</button>
+                </div>
+        </ion-modal-view>
+    </script>
+    <!-- New dog modal script -->
+    <script id="newDog2.html" type="text/ng-template">
         <ion-modal-view>
             <!-- Modal header bar -->
             <ion-header-bar class="bar-secondary">

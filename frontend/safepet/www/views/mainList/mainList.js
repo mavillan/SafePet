@@ -11,7 +11,7 @@ angular.module('safePet')
     $scope.perfil = 0;
     $scope.myImage = '';
     $scope.myCroppedImage = {};
-    //$scope.dogsScanList = {};
+    $scope.dogsScanList = [];
 
     $scope.$watch(function(){return $scope.myCroppedImage}, function(newVal, oldVal){
         $scope.myCroppedImage = newVal;
@@ -228,7 +228,6 @@ angular.module('safePet')
             //scan nose
             $cordovaFileTransfer.upload("http://safepetapi.labcomp.cl:5000/scannose", targetPath, options).then(function(result) {
                 alert("¡Imagen Valida!");
-                alert(result.response);
                 angular.forEach(result.response, function(item){
                     dogsResource.get({id: item}, function(dog){
                         $scope.dogsScanList.push(dog)

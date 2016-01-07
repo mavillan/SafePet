@@ -118,9 +118,9 @@
                 <div class="cropArea">
                     <img-crop image="myImage" result-image="myCroppedImage" area-type="circle"></img-crop>
                 </div>
-                <div>Cropped Image:</div>
+                <div class="padding">Resultado:</div>
                 <img ng-src="{{myCroppedImage}}">
-                <button class="button button-full button-positive" ng-click="fileUpload(true)">Guardar</button>
+                <button class="button button-full button-positive" ng-click="fileUpload()">Guardar</button>
             </ion-content>
         </div>
     </script>

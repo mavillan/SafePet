@@ -7,6 +7,7 @@ angular.module('safePet')
         $state.go("login");
     };
 
+    $scope.varI = 1;
     // Refresh user information
     userInfo.refresh();
     socketConn.on('changeAccepted', function(){
@@ -24,12 +25,35 @@ angular.module('safePet')
         dog.userId = userInfo.user._id;
 
         // Save new dog and refreshing dog list in the callback
-        dogsResource.save(dog,function(){
-            $scope.dogs = userDogsResource.query({id: userInfo.user._id});
-            userInfo.refresh();
+        dogsResource.save(dog,function(dogReturn){
+            //$scope.dogs = userDogsResource.query({id: userInfo.user._id});
+            //userInfo.refresh();
+            $scope.dogModal.hide();
+            $scope.dogId = dogReturn._id;        
+            $scope.myImage = '';
+            $scope.myCroppedImage = '';
+            //Take photo
+            Camera.getPicture({
+                quality: 75,
+                targetWidth: 500,
+                targetHeight: 500,
+                saveToPhotoAlbum: false
+            }).then(function(imageURI){
+                $scope.myImage = imageURI;
+                //Crop It
+                $scope.cropModal.show();
+            }, function(err) {
+                console.err(err);
+            });
+    
+            navigator.camera.getPicture(function(imageURI) {
+                console.log(imageURI);
+            }, function(err) {
+            }, { 
+                quality: 75,
+                destinationType: Camera.DestinationType.DATA_URL//FILE_URI
+            });
         });
-
-        $scope.dogModal.hide();
     };
 
     // Find all lost dogs.
@@ -126,19 +150,13 @@ angular.module('safePet')
         });
     };
 
-    $scope.fileUpload = function (par) {
+    $scope.fileUpload = function () {
         var url = "http://safepetapi.labcomp.cl:5000/noseimgs";
-        //target path may be local or url
-        if(par){
-            $scope.cropModal.hide();
-            var targetPath = $scope.myCroppedImage;
-        } else{
-            $scope.dogModal.hide();
-            var targetPath = $scope.lastPhoto;
-        };
 
         //var filename = targetPath.split("/").pop();
-        var filename = userInfo.user._id + "-" + targetPath.split("/").pop();
+        var targetPath = $scope.myCroppedImage;
+        var filename = $scope.dogId + "-" + $scope.varI;
+        alert(targetPath);
         alert(filename);
         var options = {
             fileKey: "file",
@@ -146,12 +164,14 @@ angular.module('safePet')
             chunkedMode: false,
             mimeType: "image/jpg"
         };
-        socketConn.emit("fileUpload", options);
-        socketConn.emit("fileUpload", $scope.lastPhoto);
         $cordovaFileTransfer.upload("http://safepetapi.labcomp.cl:5000/noseimgs", $scope.lastPhoto, options).then(function(result) {
-            socketConn.emit("fileUpload", "Success");
             console.log("SUCCESS: " + JSON.stringify(result.response));
-            alert("success");
+            if($scope.varI < 4){
+                $scope.varI++;
+                $scope.crop();
+            } else {
+                $scope.varI = 0;
+            }
             //alert(JSON.stringify(result.response));
         }, function(err) {
             console.log("ERROR: " + JSON.stringify(err));

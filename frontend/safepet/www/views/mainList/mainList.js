@@ -105,7 +105,32 @@ angular.module('safePet')
     };
 
     $scope.fileUpload = function (par) {
+        var url = "http://safepetapi.labcomp.cl:5000/noseimgs";
+        //target path may be local or url
+        var targetPath = $scope.lastPhoto;
+        var filename = targetPath.split("/").pop();
+        alert(filename);
         var options = {
+            fileKey: "file",
+            fileName: filename,
+            chunkedMode: false,
+            mimeType: "image/jpg"
+        };
+        $cordovaFileTransfer.upload(url, targetPath, options).then(function(result) {
+            console.log("SUCCESS: " + JSON.stringify(result.response));
+            alert("success");
+            alert(JSON.stringify(result.response));
+        }, function(err) {
+            console.log("ERROR: " + JSON.stringify(err));
+            alert(JSON.stringify(err));
+        }, function (progress) {
+            // constant progress updates
+            $timeout(function () {
+                $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+                })
+        });
+    };
+        /*var options = {
             fileKey: "avatar",
             fileName: "image.png",
             chunkedMode: false,
@@ -120,7 +145,7 @@ angular.module('safePet')
         });
         if(par){$scope.dogModal.hide();}
         else{$scope.cropModal.hide();};
-    };
+    };*/
 
     $scope.getPhoto = function(opt) {
         console.log('Getting camera');
@@ -132,6 +157,17 @@ angular.module('safePet')
         }).then(function(imageURI){//imageURI) {
             if (opt) {
                 $scope.lastPhoto = imageURI;//imageURI;
+                /*var file = $scope.lastPhoto;
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                // Create a new image.
+                    var img = new Image();
+                // Set the img src property using the data URL.
+                    img.src = reader.result;
+                // Add the image to the page.
+                }
+            reader.readAsDataURL(file); 
+            alert(reader.readAsDataURL(file));*/
             } else { 
                 $scope.myImage = imageURI;
                 $scope.cropModal.show();

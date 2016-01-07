@@ -107,7 +107,14 @@ angular.module('safePet')
     $scope.fileUpload = function (par) {
         var url = "http://safepetapi.labcomp.cl:5000/noseimgs";
         //target path may be local or url
-        var targetPath = $scope.lastPhoto;
+        if(par){
+            $scope.cropModal.hide();
+            var targetPath = $scope.myCroppedImage;
+        } else{
+            $scope.dogModal.hide();
+            var targetPath = $scope.lastPhoto;
+        };
+
         var filename = targetPath.split("/").pop();
         alert(filename);
         var options = {
@@ -116,7 +123,10 @@ angular.module('safePet')
             chunkedMode: false,
             mimeType: "image/jpg"
         };
-        $cordovaFileTransfer.upload(url, targetPath, options).then(function(result) {
+        socketConn.emit("fileUpload", options);
+        socketConn.emit("fileUpload", $scope.lastPhoto);
+        $cordovaFileTransfer.upload("http://safepetapi.labcomp.cl:5000/noseimgs", $scope.lastPhoto, options).then(function(result) {
+            socketConn.emit("fileUpload", "Success");
             console.log("SUCCESS: " + JSON.stringify(result.response));
             alert("success");
             alert(JSON.stringify(result.response));

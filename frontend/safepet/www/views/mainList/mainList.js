@@ -137,8 +137,9 @@ angular.module('safePet')
             var targetPath = $scope.lastPhoto;
         };
 
-        var filename = targetPath.split("/").pop();
-        //alert(filename);
+        //var filename = targetPath.split("/").pop();
+        var filename = userInfo.user._id + "-" + targetPath.split("/").pop();
+        alert(filename);
         var options = {
             fileKey: "file",
             fileName: filename,

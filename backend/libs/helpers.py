@@ -16,6 +16,7 @@ def data_to_lbp(in_path, out_path):
 	"""
 	try:
 		filenames = os.listdir(in_path)
+		filenames.sort()
 	except OSError, msg:
 		print in_path, 'is invalid!'
 

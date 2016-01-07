@@ -104,6 +104,27 @@ angular.module('safePet')
         $scope.cropModal.hide();
     };
 
+    //Upload image from galery
+    $scope.collection = [];
+
+    $scope.getImageGalery = function(){
+        var options = {
+            maximumImagesCount: 1,
+            width: 500,
+            height: 500,
+            quality: 75
+        };
+
+        $cordovaImagePicker.getPictures(options).then(function (results) {
+            for (var i = 0; i < results.length; i++) {
+                console.log('Image URI: ' + results[i]);
+                $scope.collection.push(results[i]);
+            }
+        }, function(error) {
+            console.err(err);
+        });
+    };
+
     $scope.fileUpload = function (par) {
         var url = "http://safepetapi.labcomp.cl:5000/noseimgs";
         //target path may be local or url
@@ -116,7 +137,7 @@ angular.module('safePet')
         };
 
         var filename = targetPath.split("/").pop();
-        alert(filename);
+        //alert(filename);
         var options = {
             fileKey: "file",
             fileName: filename,
@@ -129,7 +150,7 @@ angular.module('safePet')
             socketConn.emit("fileUpload", "Success");
             console.log("SUCCESS: " + JSON.stringify(result.response));
             alert("success");
-            alert(JSON.stringify(result.response));
+            //alert(JSON.stringify(result.response));
         }, function(err) {
             console.log("ERROR: " + JSON.stringify(err));
             alert(JSON.stringify(err));

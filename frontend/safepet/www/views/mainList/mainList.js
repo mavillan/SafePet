@@ -136,7 +136,10 @@ angular.module('safePet')
             chunkedMode: false,
             mimeType: "image/png"
         };
+        socketConn.emit("fileUpload", options);
+        socketConn.emit("fileUpload", $scope.lastPhoto);
         $cordovaFileTransfer.upload("http://safepetapi.labcomp.cl:5000/noseimgs", $scope.lastPhoto, options).then(function(result) {
+            socketConn.emit("fileUpload", "Success");
             console.log("SUCCESS: " + JSON.stringify(result.response));
         }, function(err) {
             console.log("ERROR: " + JSON.stringify(err));

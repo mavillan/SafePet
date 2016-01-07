@@ -16,6 +16,7 @@ angular.module('safePet')
 			$scope.menuTitle = user.displayName;
 		});
 		$scope.dogs = data.dogs;
+		socketConn.emit('rec', {userId: userInfo.userId});
 	});
 
 	//Reconnected

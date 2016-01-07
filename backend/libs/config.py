@@ -15,14 +15,14 @@ _NPATTERNS = 59 #number of patterns of lbp method
 ### Parameters for histogram() module funcions
 _HIST_TYPE = 'SPATIAL' #could be SPATIAL or SPATIAL_PYRAMID
 _NX = 10 #number of images divisions on x (rows) direction
-_NY = 10 #number of images divisions on y (cols) direction
+_NY = 10 #number of images div	isions on y (cols) direction
 _OVERLAPX = 2 #overlap on x (rows) direction
 _OVERLAPY = 2 #overlap on y (cols) direction  
 _LEVEL = 3 #number of levels on spatial pyramid
 
 ### Parameters of nearest neighbor search
 _LEAF_SIZE = 20 #leaf size of ball_tree structure
-_NEIGHBORS = 3  #neighbors to show on NN search
+_NEIGHBORS = 3  #neighbors to show on NN search	
 
 
 ### Important paths (paths must be ended by '/', except _ROOT)
@@ -43,7 +43,7 @@ _SVM_TEST = _ROOT+'/svm_test/'
 # Verification of existence
 if not os.path.isdir(_TRAINING_PATH):
 	sys.exit(_TRAINING_PATH+' is not a valid directory!')
-		
+
 if not os.path.isdir(_TRAINING_PATH_LBP):
 	sys.exit(_TRAINING_PATH_LBP+' is not a valid directory!')		
 
@@ -57,22 +57,22 @@ if not os.path.isdir(_MATRICES_PATH):
 	sys.exit(_MATRICES_PATH+' is not a valid directory!')
 
 if not os.path.isdir(_MAPPINGS_PATH):
-	sys.exit(_MATRICES_PATH+' is not a valid directory!')
+	sys.exit(_MAPPINGS_PATH+' is not a valid directory!')
 
 if not os.path.isdir(_NN_PATH):
-	sys.exit(_MATRICES_PATH+' is not a valid directory!')
+	sys.exit(_NN_PATH+' is not a valid directory!')
 
 if not os.path.isdir(_SVM_PATH):
-	sys.exit(_MATRICES_PATH+' is not a valid directory!')
+	sys.exit(_SVM_PATH+' is not a valid directory!')
 
 if not os.path.isdir(_SVM_POSITIVE):
-	sys.exit(_MATRICES_PATH+' is not a valid directory!')
+	sys.exit(_SVM_POSITIVE+' is not a valid directory!')
 
 if not os.path.isdir(_SVM_NEGATIVE):
-	sys.exit(_MATRICES_PATH+' is not a valid directory!')
+	sys.exit(_SVM_NEGATIVE+' is not a valid directory!')
 
 if not os.path.isdir(_SVM_TEST):
-	sys.exit(_MATRICES_PATH+' is not a valid directory!')
+	sys.exit(_SVM_TEST+' is not a valid directory!')
 
 
 ### create params dictionary

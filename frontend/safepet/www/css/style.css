@@ -65,3 +65,10 @@ body {
 ion-item.alt.item:nth-child(even) a {
   background-color: #F8F8F8;
 }
+
+.cropArea {
+  background: #E4E4E4;
+  overflow: hidden;
+  width:500px;
+  height:500px;
+}

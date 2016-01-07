@@ -22,7 +22,9 @@
     "com.ionic.keyboard",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-camera",
-    "cordova-plugin-crop"
+    "cordova-plugin-crop",
+    "org.apache.cordova.file",
+    "org.apache.cordova.file-transfer"
   ],
   "cordovaPlatforms": [
     "android"

@@ -105,7 +105,7 @@ angular.module('safePet')
     };
 
     //Upload image from galery
-    $scope.collection = [];
+    //$scope.collection = [];
 
     $scope.getImageGalery = function(){
         var options = {
@@ -118,7 +118,8 @@ angular.module('safePet')
         $cordovaImagePicker.getPictures(options).then(function (results) {
             for (var i = 0; i < results.length; i++) {
                 console.log('Image URI: ' + results[i]);
-                $scope.collection.push(results[i]);
+                //$scope.collection.push(results[i]);
+                $scope.lastPhoto = results[i];
             }
         }, function(error) {
             console.err(err);

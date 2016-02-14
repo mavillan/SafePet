@@ -86,7 +86,9 @@ angular.module('safePet')
             mimeType: "image/jpg"
         };       
 		$cordovaFileTransfer.upload(url, targetPath, options).then(function(result) {
-            alert("¡Imagen Válida!");
+			if(nose){
+				alert("¡Imagen Válida!");
+			}            
             if(num == 1){
             	$scope.nose1 = 1;
             	$scope.nose1modal.hide();	

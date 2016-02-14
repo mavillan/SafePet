@@ -1,7 +1,6 @@
 angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop', 'ngCordova', 'ngFileUpload'])
 
 .config(function ($stateProvider, $urlRouterProvider,$authProvider) {
-
     // Satellizer config
     $authProvider.baseUrl = 'http://safepetapi.labcomp.cl:5000';
     $authProvider.loginUrl = "/auth/login";
@@ -144,7 +143,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop', 'ngCor
     return $resource("http://safepetapi.labcomp.cl:5000/users/:id/",{id: "@id"},{update: {method: "PUT"}});
 }])
 
-// Return the users id given a name
+// Given an email, return the users id 
 .factory('usersEmailResource', ['$resource', function($resource){
     return $resource("http://safepetapi.labcomp.cl:5000/users/e/:email", {email: "@email"}, {update: {method: "PUT"}});
 }])

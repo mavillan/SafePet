@@ -11,6 +11,9 @@
 				<h2>{{dog.name}}</h2>
 			</div>
 			<div class="item item-body">
+				Dueño: {{owner}}
+			</div>
+			<div class="item item-body">
 				Color: {{dog.color}}
 			</div>
 			<div class="item item-body">
@@ -22,10 +25,13 @@
 			<div ng-hide="!dog.lost" class="item item-body">
 				Estado: Perdido
 			</div>
-			<div ng-hide="dog.owner!=UserId" class="item tabs tabs-secondary tabs-icon-left">
-				<button ng-hide="dog.lost" class="button button-block button-energized icon-left ion-information-circled" ng-click="lostDog()">¿Perdido?</button>
-			
-				<button ng-hide="!dog.lost"class="button button-block button-balanced icon-left ion-information-circled" ng-click="foundDog()">¡Encontrado!</button>
+		</div>
+		<div ng-hide="dog.owner!=UserId" class="padding">
+			<div ng-if="!dog.lost">
+				<button class="button button-block button-energized icon-left ion-information-circled" ng-click="lostDog()">¿Perdido?</button>
+			</div>
+			<div ng-if="dog.lost">
+				<button class="button button-block button-balanced icon-left ion-information-circled" ng-click="foundDog()">¡Encontrado!</button>
 			</div>
 		</div>
 	   <!-- Lost dog modal script -->

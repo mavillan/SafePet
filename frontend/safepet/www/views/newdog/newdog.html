@@ -17,27 +17,6 @@
                     </label>
                 </div>
             </div>
-            <div class="card">
-                <div class="item item-divider">
-                    Imágenes
-                </div>
-            </div>
-            <div class="row">
-                <!-- primera foto -->
-                <div ng-if="!nose1" class="col"><button class="button button-block button-calm" ng-click="getPhoto(1)">Nariz 1</button></div>
-                <div ng-if="nose1" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 1</button></div>
-                <!-- segunda foto -->
-                <div ng-if="!nose2" class="col"><button class="button button-block button-calm" ng-click="getPhoto(2)">Nariz 2</button></div>            
-                <div ng-if="nose2" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 2</button></div>
-            </div>
-            <div class="row">
-                <!-- tercera foto -->
-                <div ng-if="!nose3" class="col"><button class="button button-block button-calm" ng-click="getPhoto(3)">Nariz 3</button></div>            
-                <div ng-if="nose3" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 3</button></div>
-                <!-- foto perfil -->
-                <div ng-if="!perfil" class="col"><button class="button button-block button-calm" ng-click="getPhoto(4)">Perfil</button></div>
-                <div ng-if="perfil" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Perfil</button></div>
-            </div>
             <div class="padding">
                 <div ng-if="!(perfil * nose1 * nose2 * nose3)">
                     <div class="row">
@@ -47,6 +26,22 @@
                 <button ng-if="perfil * nose1 * nose2 * nose3" type="submit" class="button button-block button-positive">Agregar</button>
             </div>
         </form>
+        <div class="row">
+            <!-- primera foto -->
+            <div ng-if="!nose1" class="col"><button class="button button-block button-calm" ng-click="getPhoto(1)">Nariz 1</button></div>
+            <div ng-if="nose1" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 1</button></div>
+            <!-- segunda foto -->
+            <div ng-if="!nose2" class="col"><button class="button button-block button-calm" ng-click="getPhoto(2)">Nariz 2</button></div>            
+            <div ng-if="nose2" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 2</button></div>
+        </div>
+        <div class="row">
+            <!-- tercera foto -->
+            <div ng-if="!nose3" class="col"><button class="button button-block button-calm" ng-click="getPhoto(3)">Nariz 3</button></div>            
+            <div ng-if="nose3" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 3</button></div>
+            <!-- foto perfil -->
+            <div ng-if="!perfil" class="col"><button class="button button-block button-calm" ng-click="getPhoto(4)">Perfil</button></div>
+            <div ng-if="perfil" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Perfil</button></div>
+        </div>
     </ion-content>
 
     <script id="nose1.html" type="text/ng-template">

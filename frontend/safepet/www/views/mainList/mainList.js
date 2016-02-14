@@ -139,6 +139,7 @@ angular.module('safePet')
             $scope.dogsScan.show();
         });
     };
+    
     //Get a photo
     $scope.getPhoto = function() {
         console.log('Getting camera');

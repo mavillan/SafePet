@@ -1,9 +1,13 @@
 angular.module('safePet')
 
-.controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state','$ionicModal', 'userInfo', '$rootScope', '$ionicPopup', 'socketConn', function($scope,dogsResource,$stateParams,$state,$ionicModal, userInfo, $rootScope, $ionicPopup, socketConn){
+.controller('dogDetailsController', ['$scope', 'dogsResource','$stateParams','$state','$ionicModal', 'userInfo', '$rootScope', '$ionicPopup', 'socketConn', 'usersResource', function($scope,dogsResource,$stateParams,$state,$ionicModal, userInfo, $rootScope, $ionicPopup, socketConn, usersResource){
 
 	$scope.UserId = userInfo.userId;
-    $scope.dog = dogsResource.get({id: $stateParams.dogId});
+    $scope.dog = dogsResource.get({id: $stateParams.dogId}, function(d){
+        usersResource.get({id: d.owner}, function(usr){
+            $scope.owner = usr.displayName;
+        });
+    });
 	
     $scope.editDogProfile = function(dog){
         dogsResource.update({id: $scope.dog._id},{data: $scope.dog});

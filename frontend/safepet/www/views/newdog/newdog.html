@@ -1,0 +1,118 @@
+<ion-view view-title="Nuevo Perro">
+    <ion-content>
+        <form ng-submit="createDog(dog)">
+            <div class="card">
+                <div class="item item-divider">
+                    Ingrese los datos
+                </div>
+                <div class="item item-text-wrap">
+                    <label class="item item-input">
+                        <input type="text" placeholder="Nombre" ng-model="dog.name">
+                    </label>
+                    <label class="item item-input">
+                        <input type="text" placeholder="Raza" ng-model="dog.breed">
+                    </label>
+                    <label class="item item-input">
+                        <input type="text" placeholder="Color" ng-model="dog.color">
+                    </label>
+                </div>
+            </div>
+            <div class="card">
+                <div class="item item-divider">
+                    Imágenes
+                </div>
+            </div>
+            <div class="row">
+                <!-- primera foto -->
+                <div ng-if="!nose1" class="col"><button class="button button-block button-calm" ng-click="getPhoto(1)">Nariz 1</button></div>
+                <div ng-if="nose1" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 1</button></div>
+                <!-- segunda foto -->
+                <div ng-if="!nose2" class="col"><button class="button button-block button-calm" ng-click="getPhoto(2)">Nariz 2</button></div>            
+                <div ng-if="nose2" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 2</button></div>
+            </div>
+            <div class="row">
+                <!-- tercera foto -->
+                <div ng-if="!nose3" class="col"><button class="button button-block button-calm" ng-click="getPhoto(3)">Nariz 3</button></div>            
+                <div ng-if="nose3" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 3</button></div>
+                <!-- foto perfil -->
+                <div ng-if="!perfil" class="col"><button class="button button-block button-calm" ng-click="getPhoto(4)">Perfil</button></div>
+                <div ng-if="perfil" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Perfil</button></div>
+            </div>
+            <div class="padding">
+                <div ng-if="!(perfil * nose1 * nose2 * nose3)">
+                    <div class="row">
+                        Deben verificarse todas las imágenes para poder registrarse.
+                    </div>
+                </div>
+                <button ng-if="perfil * nose1 * nose2 * nose3" type="submit" class="button button-block button-positive">Agregar</button>
+            </div>
+        </form>
+    </ion-content>
+
+    <script id="nose1.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar-secondary">
+                <h1 class="title">Cortar y confirmar</h1>
+                <button class="button button-clear button-positive" ng-click="getPhoto(1)">Retomar</button>
+            </ion-header-bar>
+            <ion-content>
+                <div class="cropArea">
+                    <img-crop image="picFile" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
+                </div>
+                <div>
+                    <img ng-src="{{croppedDataUrl}}" />
+                </div>
+                <button ng-click="upload(croppedDataUrl, 1, 1)" class="button button-block button-positive">Submit</button> 
+            </ion-content>
+        </ion-moda-view>
+    </script>
+    <script id="nose2.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar-secondary">
+                <h1 class="title">Cortar y confirmar</h1>
+                <button class="button button-clear button-positive" ng-click="getPhoto(2)">Retomar</button>
+            </ion-header-bar>
+            <ion-content>
+                <div class="cropArea">
+                    <img-crop image="picFile" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
+                </div>
+                <div>
+                    <img ng-src="{{croppedDataUrl}}" />
+                </div>
+                <button ng-click="upload(croppedDataUrl, 1, 2)" class="button button-block button-positive">Submit</button> 
+            
+            </ion-content>
+        </ion-moda-view>
+    </script>
+    <script id="nose3.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar-secondary">
+                <h1 class="title">Cortar y confirmar</h1>
+                <button class="button button-clear button-positive" ng-click="getPhoto(3)">Retomar</button>
+            </ion-header-bar>
+            <ion-content>
+                <div class="cropArea">
+                    <img-crop image="picFile" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
+                </div>
+                <div>
+                    <img ng-src="{{croppedDataUrl}}" />
+                </div>
+                <button ng-click="upload(croppedDataUrl, 1, 3)" class="button button-block button-positive">Submit</button> 
+            </ion-content>
+        </ion-moda-view>
+    </script>
+    <script id="perfil.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar-secondary">
+                <h1 class="title">Confirmar</h1>
+                <button class="button button-clear button-positive" ng-click="getPhoto(4)">Retomar</button>
+            </ion-header-bar>
+            <ion-content>
+                <div>
+                    <img ng-src="{{picFile}}" />
+                </div>
+                <button ng-click="upload(picFile, 1, 0)" class="button button-block button-positive">Submit</button> 
+            </ion-content>
+        </ion-moda-view>
+    </script>
+</ion-view>

@@ -11,13 +11,20 @@
             <!-- Main dog list -->
             <ion-view>
                 <ion-content>
-                    <ion-list>
-                        <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogs" href="#/app/{{dog._id}}">
-                            <img ng-src="{{dog.photo}}">
-                            <h2>{{dog.name}}</h2>
-                            <p>{{dog.breed}}</p>
-                        </ion-item>
-                    </ion-list>
+                    <div ng-if="dogs.length">
+                        <ion-list>
+                            <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogs" href="#/app/{{dog._id}}">
+                                <img ng-src="{{dog.photo}}">
+                                <h2>{{dog.name}}</h2>
+                                <p>{{dog.breed}}</p>
+                            </ion-item>
+                        </ion-list>
+                    </div>
+                    <div ng-if="!dogs.length">
+                        <div class="row">
+                            <div class="col col-33 col-offset-33">No hay contenido para mostrar</div>
+                        </div>
+                    </div>
                 </ion-content>
             </ion-view>
         </ion-tab>
@@ -25,17 +32,24 @@
             <!-- Lost dogs list -->
             <ion-view>
                 <ion-content>
-                <ion-refresher
-                    pulling-text="Arrastra para recargar"
-                    on-refresh="doRefresh()">
-                </ion-refresher>
-                    <ion-list>
-                        <ion-item class="alt item-thumbnail-left" ng-repeat="dog in lostdogs" href="#/app/{{dog._id}}">
-                            <img ng-src="{{dog.photo}}">
-                            <h2>{{dog.name}}</h2>
-                            <p>{{dog.breed}}</p>
-                        </ion-item>
-                    </ion-list>
+                    <ion-refresher
+                        pulling-text="Arrastra para recargar"
+                        on-refresh="doRefresh()">
+                    </ion-refresher>
+                    <div ng-if="lostdogs.length">
+                        <ion-list>
+                            <ion-item class="alt item-thumbnail-left" ng-repeat="dog in lostdogs" href="#/app/{{dog._id}}">
+                                <img ng-src="{{dog.photo}}">
+                                <h2>{{dog.name}}</h2>
+                                <p>{{dog.breed}}</p>
+                            </ion-item>
+                        </ion-list>
+                    </div>
+                    <div ng-if="!lostdogs.length">
+                        <div class="row">
+                            <div class="col col-33 col-offset-33">No hay contenido para mostrar</div>
+                        </div>
+                    </div>
                 </ion-content>
             </ion-view>
         </ion-tab>                
@@ -51,80 +65,16 @@
                     <h2 class="title">Instrucciones:</h2>
                 </div>
                 <ion-list>
-                    <ion-item><p>Ingrese los datos del Perro</p></ion-item>
-                    <ion-item><p>Tome una foto de la nariz del perro</p></ion-item>
-                    <ion-item><p>Recorte el área de la nariz</p></ion-item>
-                    <ion-item><p>Lo anterior se hace 3 veces</p></ion-item>
-                    <ion-item><p>Espere a que se validen las imágenes</p></ion-item>
-                    <ion-item><p>Tome una foto del Perro (perfil)</p></ion-item>
+                    <div class="padding">
+                        <h5>Ingrese los datos del Perro.</h5>
+                        <h5>Tome las 4 imágenes pedidas.</h5>
+                        <h5>Deberá recortar el área de la nariz.</h5>
+                        <h5>Al estar todo confirmado, podrá registrar su mascota</h5>
+                    </div>
                 </ion-list>
                 <div class="padding">
                     <button class="button button-block button-positive" ng-click="newDog()">Entendido</button>
                 </div>
-        </ion-modal-view>
-    </script>
-    <!-- New dog modal script -->
-    <script id="newDog.html" type="text/ng-template">
-        <ion-modal-view>
-            <!-- Modal header bar -->
-            <ion-header-bar class="bar-secondary">
-                <h1 class="title">Nuevo perro</h1>
-                <button class="button button-clear button-positive" ng-click="closeNewDog()">Cancelar</button>
-            </ion-header-bar>
-
-            <!-- Modal content area -->
-            <ion-content>
-                <form ng-submit="createDog(dog)">
-                    <div class="list">
-                        <label class="item item-input">
-                            <input type="text" placeholder="Nombre" ng-model="dog.name">
-                        </label>
-                        <label class="item item-input">
-                            <input type="text" placeholder="Raza" ng-model="dog.breed">
-                        </label>
-                        <label class="item item-input">
-                            <input type="text" placeholder="Color" ng-model="dog.color">
-                        </label>
-                    </div>
-                    <div class="padding">
-                        <button type="submit" class="button button-block button-positive">Agregar</button>
-                    </div>
-                </form>
-            </ion-content>
-        </ion-modal-view>
-    </script>  
-
-    <script id="showPhoto.html" type="text/ng-template">
-        <ion-modal-view>
-            <ion-header-bar class="bar-secondary">
-                <h1 class="title">Confirmar foto {{varI}}</h1>
-                <button class="button button-clear button-positive" ng-click="closeShowPhoto()">Cancelar</button>
-            </ion-header-bar>
-            <ion-content>
-                <div class="padding">
-                    <img ng-src="{{lastPhoto}}" style="max-width: 100%">
-                </div>
-                <button class="button button-full button-positive" ng-click="fileUpload(true)">
-                        Guardar Foto
-                </button>
-            </ion-content>
-        </ion-modal-view>
-    </script>
-
-    <script id="showScanPhoto.html" type="text/ng-template">
-        <ion-modal-view>
-            <ion-header-bar class="bar-secondary">
-                <h1 class="title">Confirmar foto</h1>
-                <button class="button button-clear button-positive" ng-click="closeShowScanPhoto()">Cancelar</button>
-            </ion-header-bar>
-            <ion-content>
-                <div class="padding">
-                    <img ng-src="{{lastPhoto}}" style="max-width: 100%">
-                </div>
-                <button class="button button-full button-positive" ng-click="fileUpload(false)">
-                        Enviar Foto
-                </button>
-            </ion-content>
         </ion-modal-view>
     </script>
 
@@ -136,7 +86,7 @@
             </ion-header-bar>
             <ion-content>
                 <ion-list>
-                    <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogsScan">
+                    <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogsScanList">
                         <img ng-src="{{dog.photo}}">
                         <h2>{{dog.name}}</h2>
                         <p>{{dog.breed}}</p>
@@ -147,29 +97,27 @@
     </script>
     <!-- NgImgCrop modal script -->
     <script id="imgCrop.html" type="text/ng-template">
-        <div class="modal">
-            <!-- Modal header bar -->
+        <ion-modal-view>
             <ion-header-bar class="bar-secondary">
-                <h1 class="title">Escanear nariz</h1>
-                <button class="button button-clear button-positive" ng-click="closeCrop()">Cancelar</button>
+                <h1 class="title">Cortar y confirmar</h1>
+                <button class="button button-clear button-positive" ng-click="getPhoto()">Retomar</button>
             </ion-header-bar>
-
-            <!-- Modal content area -->
             <ion-content>
                 <div class="cropArea">
-                    <img-crop image="myImage" result-image="myCroppedImage.image" area-type="circle"></img-crop>
+                    <img-crop image="picFile" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
                 </div>
-                <div class="padding">Resultado:</div>
-                <img ng-src="{{myCroppedImage.image}}">
-                {{other}}
-                <button class="button button-full button-positive" ng-click="fileUpload()">Guardar</button>
+                <div>
+                    <img ng-src="{{croppedDataUrl}}" />
+                </div>
+                <button ng-click="upload(croppedDataUrl)" class="button button-block button-positive">Submit</button> 
+            
             </ion-content>
-        </div>
+        </ion-moda-view>
     </script>
     <!-- Nose scan Button -->
     <ion-footer-bar align-title="center" class="bar-balanced">
         <h1 class="title">
-            <button class="button button-clear" ng-click='getPhoto(false)'>
+            <button class="button button-clear" ng-click='getPhoto()'>
                 <i class="icon ion-android-camera"></i> Escanear nariz
             </button>
         </h1>

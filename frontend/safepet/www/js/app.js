@@ -1,4 +1,4 @@
-angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop', 'ngCordova'])
+angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop', 'ngCordova', 'ngFileUpload'])
 
 .config(function ($stateProvider, $urlRouterProvider,$authProvider) {
 
@@ -51,6 +51,11 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop', 'ngCor
         url: '/login',
         templateUrl: 'views/auth/login.html',
         controller: 'authController'
+    })
+    .state('test', {
+        url: '/test',
+        templateUrl: 'views/test/test.html',
+        controller: 'testController'
     })
     .state('app', {
         url: "/app",
@@ -111,7 +116,15 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop', 'ngCor
                 }
             }
         })
-
+        .state('app.newdog',{
+            url: '/newdog',
+            views: {
+                'menuContent':{
+                    templateUrl: 'views/newdog/newdog.html',
+                    controller: 'newDogController'
+                }
+            }
+        })
         .state('app.dogDetails', {
             url: '/:dogId',
             views: {

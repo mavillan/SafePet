@@ -20,29 +20,13 @@ angular.module('safePet')
         $scope.dogs = data.dogs;
     });
 
-    // create a new dog when the form is submitted
-    $scope.createDog = function(dog) {
-        // Add owner id to the dog info
-        dog.userId = userInfo.user._id;
-
-        // Save new dog and refreshing dog list in the callback
-        dogsResource.save(dog,function(dogReturn){            
-            userInfo.refresh();
-            $scope.dogModal.hide();
-            $scope.dogId = dogReturn._id;
-            //Take photo
-            $scope.getPhoto(true);
-        });
-    };
-
     // Find all lost dogs.
     $scope.lostdogs = lostDogs.query();
     // Update list on state change
     $scope.$on('dog:lost', function(event, data){
         $scope.lostdogs = lostDogs.query();
     });
-    
-    
+
     //Refresh lost dogs on pull
     $scope.doRefresh = function() {
         $http.get('#/app/mainlist')
@@ -83,6 +67,11 @@ angular.module('safePet')
         animation: 'slide-in-up'
     });
 
+    $scope.opentest = function(){
+        console.log($scope.dogsScanList.length);
+        $scope.dogsScan.show();   
+    }
+
     //Dog Scan List modal
     $ionicModal.fromTemplateUrl('dogsScan.html', function(modal) {
         $scope.dogsScan = modal;
@@ -90,8 +79,12 @@ angular.module('safePet')
         scope: $scope,
         animation: 'slide-in-up'
     });
+    $scope.openDogsScan = function() {
+        $scope.dogsScan.show();
+    }
     $scope.closeDogsScan = function() {
         $scope.dogsScan.hide();
+        $scope.dogsScanList = [];
     };
 
 
@@ -119,7 +112,7 @@ angular.module('safePet')
 
     $scope.upload = function (img) {
         //target path may be local or url
-        $scope.dogModal.hide();
+        $scope.cropModal.hide();
         //var filename = targetPath.split("/").pop();
         var targetPath = $scope.picFile;
         var options = {
@@ -129,20 +122,18 @@ angular.module('safePet')
             mimeType: "image/jpg"
         };
         $cordovaFileTransfer.upload("http://safepetapi.labcomp.cl:5000/scannose", targetPath, options).then(function(result) {
-            alert("¡Imagen Valida!");
-            angular.forEach(result.response, function(item){
+            //alert("¡Imagen Valida!");
+            result.response.forEach(function(item){
                 dogsResource.get({id: item}, function(dog){
                     $scope.dogsScanList.push(dog)
                 });
             });
-            $scope.showScanPhoto.hide();
-            $scope.dogsScan.show();
         });
+        $scope.openDogsScan();
     };
-    
+
     //Get a photo
     $scope.getPhoto = function() {
-        console.log('Getting camera');
         Camera.getPicture({
             quality: 100,
             targetWidth: 500,
@@ -150,7 +141,7 @@ angular.module('safePet')
             saveToPhotoAlbum: false
         }).then(function(imageURI){
             //Scan Nose
-            $scope.lastPhoto = imageURI;
+            $scope.picFile = imageURI;
             $scope.cropModal.show();
         }, function(err) {
             console.err(err);

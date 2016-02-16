@@ -85,7 +85,7 @@
                 <button class="button button-clear button-positive" ng-click="closeDogsScan()">Cancelar</button>
             </ion-header-bar>
             <ion-content>
-                <div ng-if="!dogsScanList.length">
+                <div ng-if="dogsScanList.length">
                     <ion-list>
                         <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogsScanList">
                             <img ng-src="{{dog.photo}}">
@@ -94,9 +94,9 @@
                         </ion-item>
                     </ion-list>
                 </div>
-                <div ng-if="dogsScanList.length">
+                <div ng-if="!dogsScanList.length">
                     <div class="row">
-                        <div class="col col-33 col-offset-33">No hay contenido para mostrar</div>
+                        <div class="col col-33 col-offset-33">No hubo coincidencias.</div>
                     </div>
                 </div>
             </ion-content>
@@ -116,7 +116,7 @@
                 <div>
                     <img ng-src="{{croppedDataUrl}}" />
                 </div>
-                <button ng-click="upload(croppedDataUrl)" class="button button-block button-positive">Submit</button> 
+                <button ng-click="upload(croppedDataUrl)" class="button button-block button-positive">Confirmar</button> 
             
             </ion-content>
         </ion-moda-view>

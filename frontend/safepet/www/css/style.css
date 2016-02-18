@@ -2,7 +2,11 @@
 body {
   cursor: url('http://ionicframework.com/img/finger.png'), auto;
 }
-
+/* Inprofile */
+.inprofile /* a:link, a:visited, a:hover, a:active*/ {
+  text-decoration: none;
+  color: #444444;
+}
 
 /* Dark Side Menu */
 .dark {

@@ -72,8 +72,7 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop', 'ngCor
             }
         })
         .state('app.profile', {
-            url: '/profile',
-            cache: false,
+            url: '/profile/:id',
             views: {
                 'menuContent': {
                     templateUrl: 'views/profile/profile.html',

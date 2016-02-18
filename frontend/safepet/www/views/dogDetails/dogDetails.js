@@ -4,6 +4,7 @@ angular.module('safePet')
 
 	$scope.UserId = userInfo.userId;
     $scope.dog = dogsResource.get({id: $stateParams.dogId}, function(d){
+        $scope.ownerId = d.owner;
         usersResource.get({id: d.owner}, function(usr){
             $scope.owner = usr.displayName;
         });

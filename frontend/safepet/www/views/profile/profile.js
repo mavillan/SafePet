@@ -1,12 +1,13 @@
 angular.module('safePet')
 
-.controller('profileController', ['$scope','userInfo', 'usersResource', 'noseImgs', 'socketConn', function($scope,userInfo,usersResource,noseImgs, socketConn){
+.controller('profileController', ['$scope', 'userInfo', 'usersResource', '$stateParams', function($scope,userInfo,usersResource,$stateParams){
 	// User information for the view
 	$scope.User = {}
-	userInfo.refresh();
-	socketConn.emit('rec', {userId: userInfo.userId});
+	$scope.userId = userInfo.userId;
+	//userInfo.refresh();
+	//socketConn.emit('rec', {userId: userInfo.userId});
 	// Handle user information
-	userInfo.user.$promise.then(function(user){
+	usersResource.get({id: $stateParams.id}, function(user){
 		$scope.User.email = user.email;
 	    $scope.User.phone = user.phone;
 	    $scope.User.address = user.address;

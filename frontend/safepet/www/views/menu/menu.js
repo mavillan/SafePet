@@ -5,6 +5,7 @@ angular.module('safePet')
 
 	// Refresh user information
 	userInfo.refresh();
+	$scope.userId = userInfo.userId;
 	// Event listener: update dog count
 	/*userInfo.user.$promise.then(function(user){
 		$scope.menuTitle = user.displayName;

@@ -9,8 +9,49 @@
                     <label class="item item-input">
                         <input type="text" placeholder="Nombre" ng-model="dog.name">
                     </label>
-                    <label class="item item-input">
-                        <input type="text" placeholder="Raza" ng-model="dog.breed">
+                    <label class="item item-input item-select">
+                        <!--<input type="text" placeholder="Raza" ng-model="dog.breed">-->
+                        <div class="input-label">
+                            Raza
+                        </div>
+                        <select ng-model="dog.breed">
+                            <option>Mestizo</option>
+                            <option>Akita</option>
+                            <option>Alaskan Malamute</option>
+                            <option>Basset Hound</option>
+                            <option>Beagle</option>
+                            <option>Bichón Maltés</option>
+                            <option>Border Collie</option>
+                            <option>Boxer</option>
+                            <option>Bull Terrier</option>
+                            <option>Bulldog Francés</option>
+                            <option>Bulldog Inglés</option>
+                            <option>Caniche</option>
+                            <option>Chihuahueño</option>
+                            <option>Chow Chow</option>
+                            <option>Cocker Americano</option>
+                            <option>Cocker Inglés</option>
+                            <option>Collie de Pelo largo</option>
+                            <option>Dálmata</option>
+                            <option>Fox Terrier</option>
+                            <option>Gran Danés</option>
+                            <option>Golden Retriever</option>
+                            <option>Husky Siberiano</option>
+                            <option>Labrador Retriever</option>
+                            <option>Pastor Alemán</option>
+                            <option>Pit bull</option>
+                            <option>Pug</option>
+                            <option>Pomerania</option>
+                            <option>Rottweiler</option>
+                            <option>Samoyedo</option>
+                            <option>San Bernardo</option>
+                            <option>Schnauzer</option>
+                            <option>Shar Pei</option>
+                            <option>Teckel (Salchicha)</option>
+                            <option>Westie</option>
+                            <option>Yorkshire Terrier</option>
+                            <option>Otro</option>
+                        </select>
                     </label>
                     <label class="item item-input">
                         <input type="text" placeholder="Color" ng-model="dog.color">

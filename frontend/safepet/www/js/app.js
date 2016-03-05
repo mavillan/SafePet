@@ -169,6 +169,13 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop', 'ngCor
 .factory('dogsImgs', ['$resource', function($resource){
     return $resource("http://safepetapi.labcomp.cl:5000/dogimgs/:id", {id: "@id"}, {});
 }])
+// Dog and imgs confirmation
+.factory('confirmNose', ['$resource', function($resource){
+    return $resource("http://safepetapi.labcomp.cl:5000/confirmnose/:id", {id: "@id"}, {});
+}])
+.factory('confirmDog', ['$resource', function($resource){
+    return $resource("http://safepetapi.labcomp.cl:5000/confirmdog/:id", {id: "@id"}, {});
+}])
 // Sockect connection 
 .factory('socketConn', [function(){
     return io('http://safepetapi.labcomp.cl:5000');

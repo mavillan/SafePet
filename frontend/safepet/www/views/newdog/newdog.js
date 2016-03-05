@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('newDogController', ['$scope', '$ionicModal', 'Upload', 'userInfo','Camera', '$cordovaFileTransfer', 'dogsResource', '$state', function($scope, $ionicModal, Upload, userInfo, Camera, $cordovaFileTransfer, dogsResource, $state){
+.controller('newDogController', ['$scope', '$ionicModal', 'Upload', 'userInfo','Camera', '$cordovaFileTransfer', 'dogsResource', '$state','confirmDog', 'confirmNose', function($scope, $ionicModal, Upload, userInfo, Camera, $cordovaFileTransfer, dogsResource, $state, confirmNose, confirmDog){
 	//Verifiers
 	$scope.nose1 = 0;
 	$scope.nose2 = 0;
@@ -116,7 +116,10 @@ angular.module('safePet')
         // Save new dog and refreshing dog list in the callback
         dogsResource.save(dog,function(dogReturn){            
             userInfo.refresh();
+            confirmNose.save(dogReturn._id);
+            confirmDog.save(dogReturn._id);
             alert("Se ha registrado con éxito");
+
             $state.go("app.mainList");
         });
     };

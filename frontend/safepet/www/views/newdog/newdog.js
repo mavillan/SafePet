@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('newDogController', ['$scope', '$ionicModal', 'Upload', 'userInfo','Camera', '$cordovaFileTransfer', 'dogsResource', '$state','confirmDog', 'confirmNose', function($scope, $ionicModal, Upload, userInfo, Camera, $cordovaFileTransfer, dogsResource, $state, confirmNose, confirmDog){
+.controller('newDogController', ['$scope', '$ionicModal', 'Upload', 'userInfo','Camera', '$cordovaFileTransfer', 'dogsResource', '$state','confirmDog', 'confirmNose', '$cordovaImagePicker', function($scope, $ionicModal, Upload, userInfo, Camera, $cordovaFileTransfer, dogsResource, $state, confirmNose, confirmDog, $cordovaImagePicker){
 	//Verifiers
 	$scope.nose1 = 0;
 	$scope.nose2 = 0;
@@ -34,6 +34,39 @@ angular.module('safePet')
     }).then(function(modal) {
         $scope.perfilmodal = modal;
     });
+    //Handle if getImageGalery or getPhoto
+    /*$scope.selectType = function(opt){
+
+    }*/
+    //Get Photo from gallery
+    $scope.getImageGalery = function(opt){
+        var options = {
+            maximumImagesCount: 1,
+            width: 500,
+            height: 500,
+            quality: 100
+        };
+
+        $cordovaImagePicker.getPictures(options).then(function (results) {
+            for (var i = 0; i < results.length; i++) {
+                console.log('Image URI: ' + results[i]);
+                //$scope.collection.push(results[i]);
+                $scope.picFile = results[i];
+	            if(opt == 1){
+	            	$scope.nose1modal.show();	
+	            } else if(opt == 2) {
+	        		$scope.nose2modal.show();	
+	            } else if(opt == 3) {
+	            	$scope.nose3modal.show();
+	            } else {
+	            	$scope.perfilmodal.show();
+	            }
+            }
+        }, function(error) {
+            console.err(err);
+        });
+    };
+
     // -------------------
     //Get Photo Function
     $scope.getPhoto = function(opt) {
@@ -116,8 +149,8 @@ angular.module('safePet')
         // Save new dog and refreshing dog list in the callback
         dogsResource.save(dog,function(dogReturn){            
             userInfo.refresh();
-            confirmNose.save(dogReturn._id);
-            confirmDog.save(dogReturn._id);
+            confirmNose.save({userId: dog.userId, dogId: dogReturn._id});
+            confirmDog.save({userId: dog.userId, dogId: dogReturn._id});
             alert("Se ha registrado con éxito");
 
             $state.go("app.mainList");

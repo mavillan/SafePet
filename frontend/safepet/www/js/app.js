@@ -171,10 +171,10 @@ angular.module('safePet', ['ionic','ngResource','satellizer','ngImgCrop', 'ngCor
 }])
 // Dog and imgs confirmation
 .factory('confirmNose', ['$resource', function($resource){
-    return $resource("http://safepetapi.labcomp.cl:5000/confirmnose/:id", {id: "@id"}, {});
+    return $resource("http://safepetapi.labcomp.cl:5000/confirmnose/:userId/:dogId", {userId: "@userId", dogId: "@dogId"}, {});
 }])
 .factory('confirmDog', ['$resource', function($resource){
-    return $resource("http://safepetapi.labcomp.cl:5000/confirmdog/:id", {id: "@id"}, {});
+    return $resource("http://safepetapi.labcomp.cl:5000/confirmdog/:userId/:dogId", {userId: "@userId", dogId: "@dogId"}, {});
 }])
 // Sockect connection 
 .factory('socketConn', [function(){

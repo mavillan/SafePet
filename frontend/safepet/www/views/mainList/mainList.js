@@ -1,14 +1,15 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', 'socketConn', '$cordovaFileTransfer',  '$cordovaImagePicker', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, socketConn, $cordovaFileTransfer,  $cordovaImagePicker){
+.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', 'socketConn', '$cordovaFileTransfer',  '$cordovaImagePicker', '$ionicLoading','$resource', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, socketConn, $cordovaFileTransfer,  $cordovaImagePicker, $ionicLoading, $resource){
 
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
         $state.go("login");
     };
-    //Results
+    //
     $scope.dogsScanList = [];
-   
+    // Dogs profile img resource
+    $scope.dogProfilePic = $resource("http://safepetapi.labcomp.cl:5000/dogsimgs/:id", {id: '@id'});
     // Refresh user information
     userInfo.refresh();
     socketConn.on('changeAccepted', function(){
@@ -96,7 +97,7 @@ angular.module('safePet')
             maximumImagesCount: 1,
             width: 500,
             height: 500,
-            quality: 75
+            quality: 100
         };
 
         $cordovaImagePicker.getPictures(options).then(function (results) {
@@ -110,9 +111,21 @@ angular.module('safePet')
         });
     };
 
+    $scope.loadingShow = function() {
+        $ionicLoading.show({
+            template: 'Espere un momento'
+        });
+    };
+
+    $scope.loadingClose = function() {
+        $ionicLoading.hide();
+    }
+
+    //Scan Dog's Nose
     $scope.upload = function (img) {
         //target path may be local or url
         $scope.cropModal.hide();
+        $scope.loadingShow();
         //var filename = targetPath.split("/").pop();
         var targetPath = $scope.picFile;
         var options = {
@@ -122,14 +135,23 @@ angular.module('safePet')
             mimeType: "image/jpg"
         };
         $cordovaFileTransfer.upload("http://safepetapi.labcomp.cl:5000/scannose", targetPath, options).then(function(result) {
-            //alert("¡Imagen Valida!");
-            result.response.forEach(function(item){
-                dogsResource.get({id: item}, function(dog){
-                    $scope.dogsScanList.push(dog)
-                });
+            //Results
+            dogsResource.query(result.response, function(dogs){
+                $scope.loadingClose();
+                $scope.dogsScanList = angular.copy(dogs);    
+                $scope.openDogsScan();
             });
+           
+            //alert("¡Imagen Valida!");
+            /*angular.forEach(result.response, function(item){
+                dogsResource.get({id: item}, function(dog){
+                    this.push(dog)
+                });
+            }, $scope.dogsScanList);
+            $q.all(dogsScanList).then(function(){
+                $scope.openDogsScan();
+            });*/
         });
-        $scope.openDogsScan();
     };
 
     //Get a photo

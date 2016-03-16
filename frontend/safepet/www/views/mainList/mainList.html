@@ -14,7 +14,7 @@
                     <div ng-if="dogs.length">
                         <ion-list>
                             <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogs" href="#/app/{{dog._id}}">
-                                <img ng-src="{{dog.photo}}">
+                                <!--<img ng-src="{{dogProfilePic.get(dog._id)}}">-->
                                 <h2>{{dog.name}}</h2>
                                 <p>{{dog.breed}}</p>
                             </ion-item>
@@ -39,7 +39,7 @@
                     <div ng-if="lostdogs.length">
                         <ion-list>
                             <ion-item class="alt item-thumbnail-left" ng-repeat="dog in lostdogs" href="#/app/{{dog._id}}">
-                                <img ng-src="{{dog.photo}}">
+                                <!--<img ng-src="{{dogProfilePic.get(dog._id)}}">-->
                                 <h2>{{dog.name}}</h2>
                                 <p>{{dog.breed}}</p>
                             </ion-item>
@@ -87,7 +87,7 @@
             <ion-content>
                 <div ng-if="dogsScanList.length">
                     <ion-list>
-                        <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogsScanList">
+                        <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogsScanList" href="#/app/profile/{{dog.owner}}">
                             <img ng-src="{{dog.photo}}">
                             <h2>{{dog.name}}</h2>
                             <p>{{dog.breed}}</p>

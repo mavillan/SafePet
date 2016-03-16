@@ -2,7 +2,7 @@
 import sys
 import os
 import time
-import zerorpc
+
 import builder
 import histogram
 import numpy as np
@@ -111,6 +111,44 @@ class Master():
 			pickle.dump(self.nn, tgt)
 			tgt.close()
 		 	return 1
+
+	def delete(self, id):
+			#iterate through mappings
+			deleted = list()
+			for ind, mapp_id in self.mappings.items():
+				if mapp_id != id: continue
+				#delete the mapping
+				del self.mappings[ind]
+				deleted.append(ind)
+				#delete the corresponding matrix entry
+				self.hist_matrix = np.delete(self.hist_matrix, ind, axis=0)
+
+			#fix order in mappings indexes
+			sec_ind = 0
+			for ind in self.mappings.keys():
+				if ind != sec_ind:
+					self.mappings[sec_ind] = self.mappings.pop(ind)
+				sec_ind += 1
+
+			#storing updated mappins and hist_matrix
+			timestamp = time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
+			out = cfg.params['MATRICES_PATH']+'hist_matrix::'+cfg.params['HIST_TYPE']+'::'+timestamp
+			np.save(out, self.hist_matrix)
+
+			out = cfg.params['MAPPINGS_PATH']+'mappings::'+timestamp
+			tgt = file(out, 'wb')
+			pickle.dump(self.mappings, tgt)
+			tgt.close()
+
+			#rebuild NearestNeighbors object and update it
+			self.nn = builder.build_nn(self.hist_matrix, store=False)
+			out = cfg.params['NN_PATH']+'nearestneighbors::'+timestamp
+			tgt = file(out, 'wb')
+			pickle.dump(self.nn, tgt)
+			tgt.close()
+		 	return 1
+
+
 
 if __name__=='__main__':
 	s = zerorpc.Server(Master())

@@ -2,7 +2,7 @@
 import sys
 import os
 import time
-
+import zerorpc
 import builder
 import histogram
 import numpy as np
@@ -85,6 +85,11 @@ class Master():
 	def insert(self, path):
 			lbp_img,hist = self._process(path)
 			filename = path.strip().split('/')[-1]
+
+			#verify it's a valid one
+			valid = self.clf.predict([hist])[0]
+			if not valid: return 0
+
 			#store lbp representation
 			np.save(cfg.params['TRAINING_PATH_LBP']+filename, lbp_img)
 

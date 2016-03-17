@@ -52,7 +52,8 @@ def data_to_hist(in_path, out_path=None, hist_type=cfg.params['HIST_TYPE'], prec
 		return -1
 
 	#dictionary with mappings between row numbers and image name
-	mappings = dict()
+	if out_path!=None:
+		mappings = dict()
 
 	#Generating empty histogram matrix, such that in
 	#each there will be an histogram
@@ -82,16 +83,18 @@ def data_to_hist(in_path, out_path=None, hist_type=cfg.params['HIST_TYPE'], prec
 		else:
 			print 'invalid hist_type!'; return -1
 		#save the mapping
-		fileid = filename.split('-')[0]
-		mappings[i_index] = fileid
+		if out_path!=None:
+			fileid = filename.split('-')[0]
+			mappings[i_index] = fileid
 		i_index += 1
 
 	#storing mappings
-	timestamp = time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
-	out = cfg.params['MAPPINGS_PATH']+'mappings::'+timestamp
-	tgt = file(out, 'wb')
-	pickle.dump(mappings, tgt)
-	tgt.close()
+	if out_path!=None:
+		timestamp = time.strftime("%y-%m-%d")+'::'+time.strftime("%X")
+		out = cfg.params['MAPPINGS_PATH']+'mappings::'+timestamp
+		tgt = file(out, 'wb')
+		pickle.dump(mappings, tgt)
+		tgt.close()
 
 	if out_path!=None:
 		#save the resulting matrix with timestamps

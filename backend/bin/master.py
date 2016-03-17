@@ -153,6 +153,14 @@ class Master():
 			tgt.close()
 		 	return 1
 
+	def synchronize(self, ids):
+		"""
+		This funcion is called when differences are found in
+		both backends. It takes all ids correctly registered,
+		and update the structures (mappings, hist_matrix, nn) 
+		so they are correctly synchronized.
+		"""
+
 
 
 if __name__=='__main__':

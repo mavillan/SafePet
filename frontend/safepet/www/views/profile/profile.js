@@ -4,7 +4,7 @@ angular.module('safePet')
 	// User information for the view
 	$scope.User = {}
 	$scope.userId = userInfo.userId;
-	//userInfo.refresh();
+	userInfo.refresh();
 	//socketConn.emit('rec', {userId: userInfo.userId});
 	// Handle user information
 	usersResource.get({id: $stateParams.id}, function(user){

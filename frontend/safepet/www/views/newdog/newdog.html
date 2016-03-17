@@ -61,27 +61,72 @@
             <div class="padding">
                 <div ng-if="!(perfil * nose1 * nose2 * nose3)">
                     <div class="row">
-                        Deben verificarse todas las imágenes para poder registrarse.
+                        Se piden 3 fotos la nariz de su perro además de una foto para su perfil. Deben verificarse todas las imágenes para poder registrarse.
                     </div>
                 </div>
                 <button ng-if="perfil * nose1 * nose2 * nose3" type="submit" class="button button-block button-positive">Agregar</button>
             </div>
         </form>
         <div class="row">
-            <!-- primera foto -->
-            <div ng-if="!nose1" class="col"><button class="button button-block button-calm" ng-click="getImageGalery(1)">Nariz 1</button></div>
-            <div ng-if="nose1" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 1</button></div>
-            <!-- segunda foto -->
-            <div ng-if="!nose2" class="col"><button class="button button-block button-calm" ng-click="getImageGalery(2)">Nariz 2</button></div>            
-            <div ng-if="nose2" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 2</button></div>
+            <div class="col col-50">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <div class="row">
+                            <div class="col">Nariz 1</div>
+                        </div>
+                        <div class="row">
+                            <div ng-if="!nose1" class="col"><button class="button button-block button-calm" ng-click="getPhoto(1)">Tomar</button></div>
+                            <div ng-if="!nose1" class="col"><button class="button button-block button-calm" ng-click="getImageGalery(1)">Elegir</button></div>
+                            <div ng-if="nose1" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 1</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-50">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <div class="row">
+                            <div class="col">Nariz 2</div>
+                        </div>
+                        <div class="row">
+                            <div ng-if="!nose2" class="col"><button class="button button-block button-calm" ng-click="getPhoto(2)">Tomar</button></div>
+                            <div ng-if="!nose2" class="col"><button class="button button-block button-calm" ng-click="getImageGalery(2)">Elegir</button></div>            
+                            <div ng-if="nose2" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 2</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        
         <div class="row">
-            <!-- tercera foto -->
-            <div ng-if="!nose3" class="col"><button class="button button-block button-calm" ng-click="getImageGalery(3)">Nariz 3</button></div>            
-            <div ng-if="nose3" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 3</button></div>
-            <!-- foto perfil -->
-            <div ng-if="!perfil" class="col"><button class="button button-block button-calm" ng-click="getPhoto(4)">Foto Perfil</button></div>
-            <div ng-if="perfil" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Perfil</button></div>
+            <div class="col col-50">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <div class="row">
+                            <div class="col">Nariz 3</div>
+                        </div>
+                        <div class="row">
+                            <div ng-if="!nose3" class="col"><button class="button button-block button-calm" ng-click="getPhoto(3)">Tomar</button></div>
+                            <div ng-if="!nose3" class="col"><button class="button button-block button-calm" ng-click="getImageGalery(3)">Elegir</button></div>            
+                            <div ng-if="nose3" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 3</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-50">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <div class="row">
+                            <div class="col">Foto Perfil</div>
+                        </div>
+                        <div class="row">
+                            <div ng-if="!perfil" class="col"><button class="button button-block button-calm" ng-click="getPhoto(4)">Tomar</button></div>
+                            <div ng-if="!perfil" class="col"><button class="button button-block button-calm" ng-click="getImageGalery(4)">Elegir</button></div>
+                            <div ng-if="perfil" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Perfil</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </ion-content>
 

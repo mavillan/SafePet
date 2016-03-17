@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', 'socketConn', '$cordovaFileTransfer',  '$cordovaImagePicker', '$ionicLoading','$resource', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, socketConn, $cordovaFileTransfer,  $cordovaImagePicker, $ionicLoading, $resource){
+.controller('mainListController', ['$scope', '$ionicModal', 'userDogsResource','dogsResource','$state','$auth','userInfo', 'Camera', '$http', '$interval', 'lostDogs', 'socketConn', '$cordovaFileTransfer',  '$cordovaImagePicker', '$ionicLoading','$resource', '$ionicPopup', function($scope,$ionicModal,userDogsResource,dogsResource,$state,$auth,userInfo,Camera, $http, $interval, lostDogs, socketConn, $cordovaFileTransfer,  $cordovaImagePicker, $ionicLoading, $resource, $ionicPopup){
 
     // If the user is not authenticated redirect to the login
     if(!$auth.isAuthenticated()){
@@ -9,7 +9,7 @@ angular.module('safePet')
     //
     $scope.dogsScanList = [];
     // Dogs profile img resource
-    $scope.dogProfilePic = $resource("http://safepetapi.labcomp.cl:5000/dogsimgs/:id", {id: '@id'});
+   
     // Refresh user information
     userInfo.refresh();
     socketConn.on('changeAccepted', function(){
@@ -111,6 +111,11 @@ angular.module('safePet')
         });
     };
 
+    $scope.showProfile = function(userId) {
+        $scope.closeDogsScan();
+        $state.go('app.profile', {id: userId});
+    };
+
     $scope.loadingShow = function() {
         $ionicLoading.show({
             template: 'Espere un momento'
@@ -136,6 +141,10 @@ angular.module('safePet')
         };
         $cordovaFileTransfer.upload("http://safepetapi.labcomp.cl:5000/scannose", targetPath, options).then(function(result) {
             //Results
+            $ionicPopup.alert({
+                title: "Validada",
+                template: "¡Imagen Válida!"
+            });
             dogsResource.query(result.response, function(dogs){
                 $scope.loadingClose();
                 $scope.dogsScanList = angular.copy(dogs);    

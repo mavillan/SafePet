@@ -58,7 +58,7 @@
                     </label>
                 </div>
             </div>
-            <div class="padding">
+            <div class="padding" >
                 <div ng-if="!(perfil * nose1 * nose2 * nose3)">
                     <div class="row">
                         Se piden 3 fotos la nariz de su perro además de una foto para su perfil. Deben verificarse todas las imágenes para poder registrarse.
@@ -67,7 +67,7 @@
                 <button ng-if="perfil * nose1 * nose2 * nose3" type="submit" class="button button-block button-positive">Agregar</button>
             </div>
         </form>
-        <div class="row">
+        <div class="row responsive-sm">
             <div class="col col-50">
                 <div class="card">
                     <div class="item item-text-wrap">
@@ -75,8 +75,8 @@
                             <div class="col">Nariz 1</div>
                         </div>
                         <div class="row">
-                            <div ng-if="!nose1" class="col"><button class="button button-block button-calm" ng-click="getPhoto(1)">Tomar</button></div>
-                            <div ng-if="!nose1" class="col"><button class="button button-block button-calm" ng-click="getImageGalery(1)">Elegir</button></div>
+                            <div ng-if="!nose1" class="col col-50"><button class="button button-block button-calm" ng-click="getPhoto(1)">Tomar</button></div>
+                            <div ng-if="!nose1" class="col col-50"><button class="button button-block button-calm" ng-click="getImageGalery(1)">Elegir</button></div>
                             <div ng-if="nose1" class="col"><button class="button button-block button-balanced icon-left ion-checkmark-round" disabled>Nariz 1</button></div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
             </div>
         </div>
         
-        <div class="row">
+        <div class="row responsive-sm">
             <div class="col col-50">
                 <div class="card">
                     <div class="item item-text-wrap">
@@ -128,7 +128,13 @@
                 </div>
             </div>
         </div>
+        <div class="row responsive-sm">
+            <div class="col">
+                <button class="button button-block button-clear" ng-click="up()">Subir</button>
+            </div>
+        </div>
     </ion-content>
+
 
     <script id="nose1.html" type="text/ng-template">
         <ion-modal-view>

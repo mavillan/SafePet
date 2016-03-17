@@ -86,9 +86,12 @@ class Master():
 			lbp_img,hist = self._process(path)
 			filename = path.strip().split('/')[-1]
 
-			#verify it's a valid one
+			#verify if it's a valid one
 			valid = self.clf.predict([hist])[0]
-			if not valid: return 0
+			if not valid:
+				print 'invalid'
+				return 0
+			print 'valid'
 
 			#store lbp representation
 			np.save(cfg.params['TRAINING_PATH_LBP']+filename, lbp_img)

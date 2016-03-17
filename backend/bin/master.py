@@ -158,10 +158,16 @@ class Master():
 		This funcion is called when differences are found in
 		both backends. It takes all ids correctly registered,
 		and update the structures (mappings, hist_matrix, nn) 
-		so they are correctly synchronized.
+		so both backends are correctly synchronized.
 		"""
+		#ids stored actually on this backend
+		current_ids = self.mappings.values()
 
-
+		for tmp in current_ids:
+			if tmp in ids: continue
+			#if not present in the other backend
+			self.delete(tmp)
+		return 1
 
 if __name__=='__main__':
 	s = zerorpc.Server(Master())

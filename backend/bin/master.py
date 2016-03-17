@@ -62,9 +62,9 @@ class Master():
 	#a valid one, i.e, corresponds to dog nose.
 	def verify(self, path):
 			_,hist = self._process(path)
-			result = self.clf.predict([hist])
-			if result[0]==0: return 'invalid'
-			else: return 'valid'
+			valid = self.clf.predict([hist])[0]
+			if valid: return 1
+			return 0
 
 	#Perform a search for the k nearest results
 	#stored in the database

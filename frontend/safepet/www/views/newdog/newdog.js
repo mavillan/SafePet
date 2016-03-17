@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('newDogController', ['$scope', '$ionicModal', 'Upload', 'userInfo','Camera', '$cordovaFileTransfer', 'dogsResource', '$state','confirmDog', 'confirmNose', '$cordovaImagePicker', function($scope, $ionicModal, Upload, userInfo, Camera, $cordovaFileTransfer, dogsResource, $state, confirmNose, confirmDog, $cordovaImagePicker){
+.controller('newDogController', ['$scope', '$ionicModal', 'Upload', 'userInfo','Camera', '$cordovaFileTransfer', 'dogsResource', '$state','confirmDog', 'confirmNose', '$cordovaImagePicker', '$ionicScrollDelegate', function($scope, $ionicModal, Upload, userInfo, Camera, $cordovaFileTransfer, dogsResource, $state, confirmNose, confirmDog, $cordovaImagePicker, $ionicScrollDelegate){
 	//Verifiers
 	$scope.nose1 = 0;
 	$scope.nose2 = 0;
@@ -34,10 +34,10 @@ angular.module('safePet')
     }).then(function(modal) {
         $scope.perfilmodal = modal;
     });
-    //Handle if getImageGalery or getPhoto
-    /*$scope.selectType = function(opt){
-
-    }*/
+    //
+    $scope.up = function(){
+        $ionicScrollDelegate.scrollTop(true);
+    };
     //Get Photo from gallery
     $scope.getImageGalery = function(opt){
         var options = {

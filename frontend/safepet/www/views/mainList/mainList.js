@@ -8,8 +8,7 @@ angular.module('safePet')
     };
     //
     $scope.dogsScanList = [];
-    // Dogs profile img resource
-   
+
     // Refresh user information
     userInfo.refresh();
     socketConn.on('changeAccepted', function(){

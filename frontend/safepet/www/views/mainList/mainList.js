@@ -143,11 +143,14 @@ angular.module('safePet')
                 title: "Validada",
                 template: "¡Imagen Válida!"
             });
-            dogsResource.query(result.response, function(dogs){
-                $scope.loadingClose();
-                $scope.dogsScanList = angular.copy(dogs);    
-                $scope.openDogsScan();
-            });
+            result.response.forEach(function(item){
+                dogsResource.get({id: item}, function(dog){
+                    $scope.dogsScanList.push(dog);
+                });
+            };
+
+            $scope.loadingClose();
+            $scope.openDogsScan();
         }, function(err) {
             console.log("ERROR: " + JSON.stringify(err));
             $scope.loadingClose();

@@ -159,11 +159,15 @@ angular.module('safePet')
         // Save new dog and refreshing dog list in the callback
         dogsResource.save(dog,function(dogReturn){            
             userInfo.refresh();
-            confirmNose.save({userId: dog.userId, dogId: dogReturn._id});
-            confirmDog.save({userId: dog.userId, dogId: dogReturn._id});
-            alert("Se ha registrado con éxito");
-
-            $state.go("app.mainList");
+            confirmNose.save({userId: dog.userId, dogId: dogReturn._id}, function(){
+                confirmDog.save({userId: dog.userId, dogId: dogReturn._id}, function(){
+                    $ionicPopup.alert({
+                        title: "Registrado",
+                        template: "Se ha registrado con éxito"
+                    });
+                    $state.go("app.mainList");
+                });    
+            });
         });
     };
 }]);

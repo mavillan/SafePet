@@ -131,14 +131,13 @@ angular.module('safePet')
         $scope.cropModal.hide();
         $scope.loadingShow();
         //var filename = targetPath.split("/").pop();
-        var targetPath = $scope.picFile;
         var options = {
             fileKey: "file",
             fileName: "scan.jpg",
             chunkedMode: false,
             mimeType: "image/jpg"
         };
-        $cordovaFileTransfer.upload("http://safepetapi.labcomp.cl:5000/scannose", targetPath, options).then(function(result) {
+        $cordovaFileTransfer.upload("http://safepetapi.labcomp.cl:5000/scannose", img, options).then(function(result) {
             //Results
             $ionicPopup.alert({
                 title: "Validada",

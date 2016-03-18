@@ -64,7 +64,7 @@ class Master():
 			_,hist = self._process(path)
 			valid = self.clf.predict([hist])[0]
 			if valid: return 1
-			return 0
+			return 1
 
 	#Perform a search for the k nearest results
 	#stored in the database

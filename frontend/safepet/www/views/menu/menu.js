@@ -48,12 +48,13 @@ angular.module('safePet')
 		}
 	});
 	socketConn.on('dogFound', function(data){
-		/*$ionicPopup.confirm({
+		$ionicPopup.confirm({
 			title: "¡Perro Encontrado!",
-			template: "¡Han encontrado a una mascota tuya!";
+			template: "¡Han encontrado a una mascota tuya!",
+			okText: "Ir al perfil"
 		}).then(function(){
-			console.log("Ir al perfil de quien encontró al perro");
-		});*/
+			$state.go('app.profile', {id: data.founderId});
+		});
 	});
 
 	$scope.logout = function(){

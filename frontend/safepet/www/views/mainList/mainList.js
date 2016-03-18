@@ -67,11 +67,6 @@ angular.module('safePet')
         animation: 'slide-in-up'
     });
 
-    $scope.opentest = function(){
-        console.log($scope.dogsScanList.length);
-        $scope.dogsScan.show();   
-    }
-
     //Dog Scan List modal
     $ionicModal.fromTemplateUrl('dogsScan.html', function(modal) {
         $scope.dogsScan = modal;
@@ -87,31 +82,10 @@ angular.module('safePet')
         $scope.dogsScanList = [];
     };
 
-
-    //Upload image from galery
-    //$scope.collection = [];
-    
-    $scope.getImageGalery = function(){
-        var options = {
-            maximumImagesCount: 1,
-            width: 500,
-            height: 500,
-            quality: 100
-        };
-
-        $cordovaImagePicker.getPictures(options).then(function (results) {
-            for (var i = 0; i < results.length; i++) {
-                console.log('Image URI: ' + results[i]);
-                //$scope.collection.push(results[i]);
-                $scope.lastPhoto = results[i];
-            }
-        }, function(error) {
-            console.err(err);
-        });
-    };
-
+    //Show Dog owner profile from dog scan list
     $scope.showProfile = function(userId) {
         $scope.closeDogsScan();
+        socketConn.emit("dogFound", {founderId: userInfo.userId});
         $state.go('app.profile', {id: userId});
     };
 
@@ -143,13 +117,13 @@ angular.module('safePet')
                 title: "Validada",
                 template: "¡Imagen Válida!"
             });
-            result.response.forEach(function(item){
+            dogsIds = JSON.parse(result.response);
+            $scope.loadingClose();
+            dogsIds.forEach(function(item){
                 dogsResource.get({id: item}, function(dog){
                     $scope.dogsScanList.push(dog);
                 });
-            };
-
-            $scope.loadingClose();
+            });
             $scope.openDogsScan();
         }, function(err) {
             console.log("ERROR: " + JSON.stringify(err));

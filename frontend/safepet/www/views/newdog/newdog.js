@@ -1,6 +1,6 @@
 angular.module('safePet')
 
-.controller('newDogController', ['$scope', '$ionicModal', 'Upload', 'userInfo','Camera', '$cordovaFileTransfer', 'dogsResource', '$state','confirmDog', 'confirmNose', '$cordovaImagePicker', '$ionicScrollDelegate', function($scope, $ionicModal, Upload, userInfo, Camera, $cordovaFileTransfer, dogsResource, $state, confirmNose, confirmDog, $cordovaImagePicker, $ionicScrollDelegate){
+.controller('newDogController', ['$scope', '$ionicModal', 'Upload', 'userInfo','Camera', '$cordovaFileTransfer', 'dogsResource', '$state','confirmDog', 'confirmNose', '$cordovaImagePicker', '$ionicScrollDelegate', '$ionicPopup', function($scope, $ionicModal, Upload, userInfo, Camera, $cordovaFileTransfer, dogsResource, $state, confirmNose, confirmDog, $cordovaImagePicker, $ionicScrollDelegate, $ionicPopup){
 	//Verifiers
 	$scope.nose1 = 0;
 	$scope.nose2 = 0;
@@ -110,25 +110,32 @@ angular.module('safePet')
             var url = "http://safepetapi.labcomp.cl:5000/dogsimgs";
             var filename = userInfo.userId + "_registro.jpg";
         }
-
-        var targetPath = $scope.picFile;
         var options = {
             fileKey: "file",
             fileName: filename,
             chunkedMode: false,
             mimeType: "image/jpg"
         };       
-		$cordovaFileTransfer.upload(url, targetPath, options).then(function(result) {
-			if(nose){
-				alert("¡Imagen Válida!");
-			}            
+		$cordovaFileTransfer.upload(url, photo, options).then(function(result) {
             if(num == 1){
+                $ionicPopup.alert({
+                    title: "Validada",
+                    template: "¡Imagen Válida!"
+                });
             	$scope.nose1 = 1;
             	$scope.nose1modal.hide();	
             } else if(num == 2) {
+                $ionicPopup.alert({
+                    title: "Validada",
+                    template: "¡Imagen Válida!"
+                });
             	$scope.nose2 = 1;
         		$scope.nose2modal.hide();	
             } else if(num == 3) {
+                $ionicPopup.alert({
+                    title: "Validada",
+                    template: "¡Imagen Válida!"
+                });
             	$scope.nose3 = 1;
             	$scope.nose3modal.hide();
             } else {
@@ -137,7 +144,10 @@ angular.module('safePet')
             }
        	}, function(err) {
             console.log("ERROR: " + JSON.stringify(err));
-            alert("Imagen inválida");
+            $ionicPopup.alert({
+                title: "Inválida",
+                template: "Inténtelo nuevamente"
+            });
         });
     };
    

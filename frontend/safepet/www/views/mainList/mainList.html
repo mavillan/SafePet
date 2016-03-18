@@ -85,18 +85,25 @@
                 <button class="button button-clear button-positive" ng-click="closeDogsScan()">Cancelar</button>
             </ion-header-bar>
             <ion-content>
-                <div ng-if="dogsScanList.length">
-                    <ion-list>
-                        <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogsScanList" on-tap="showProfile(dog.owner)">
-                            <img ng-src="http://safepetapi.labcomp.cl:5000/dogsimgs/{{dog._id}}">
-                            <h2>{{dog.name}}</h2>
-                            <p>{{dog.breed}}</p>
-                        </ion-item>
-                    </ion-list>
+                <div class="row">
+                    <div class="col col-offset-33">
+                        <p>Toca para ir al perfil del dueño</p>
+                    </div>
                 </div>
-                <div ng-if="!dogsScanList.length">
-                    <div class="row">
-                        <div class="col col-33 col-offset-33">No hubo coincidencias.</div>
+                <div class="row">
+                    <div ng-if="dogsScanList.length">
+                        <ion-list>
+                            <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogsScanList" on-tap="showProfile(dog.owner)">
+                                <img ng-src="http://safepetapi.labcomp.cl:5000/dogsimgs/{{dog._id}}">
+                                <h2>{{dog.name}}</h2>
+                                <p>{{dog.breed}}</p>
+                            </ion-item>
+                        </ion-list>
+                    </div>
+                    <div ng-if="!dogsScanList.length">
+                        <div class="row">
+                            <div class="col col-33 col-offset-33">No hubo coincidencias.</div>
+                        </div>
                     </div>
                 </div>
             </ion-content>
@@ -114,7 +121,14 @@
                     <img-crop image="picFile" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
                 </div>
                 <div>
-                    <img ng-src="{{croppedDataUrl}}" />
+                    <div class="row responsive-sm">
+                        Resultado:
+                    </div>
+                    <div class="row responsive-sm">
+                        <div class="col col-offset-33">
+                            <img ng-src="{{croppedDataUrl}}" />
+                        </div>
+                    </div>
                 </div>
                 <button ng-click="upload(croppedDataUrl)" class="button button-block button-positive">Confirmar</button> 
             

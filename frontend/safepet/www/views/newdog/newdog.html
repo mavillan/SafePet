@@ -147,9 +147,16 @@
                     <img-crop image="picFile" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
                 </div>
                 <div>
-                    <img ng-src="{{croppedDataUrl}}" />
+                    <div class="row responsive-sm">
+                        Resultado:
+                    </div>
+                    <div class="row responsive-sm">
+                        <div class="col col-offset-33">
+                            <img ng-src="{{croppedDataUrl}}" />
+                        </div>
+                    </div>
                 </div>
-                <button ng-click="upload(croppedDataUrl, 1, 1)" class="button button-block button-positive">Submit</button> 
+                <button ng-click="upload(croppedDataUrl, 1, 1)" class="button button-block button-positive">Enviar</button> 
             </ion-content>
         </ion-moda-view>
     </script>
@@ -164,9 +171,16 @@
                     <img-crop image="picFile" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
                 </div>
                 <div>
-                    <img ng-src="{{croppedDataUrl}}" />
+                    <div class="row responsive-sm">
+                        Resultado:
+                    </div>
+                    <div class="row responsive-sm">
+                        <div class="col col-offset-33">
+                            <img ng-src="{{croppedDataUrl}}" />
+                        </div>
+                    </div>
                 </div>
-                <button ng-click="upload(croppedDataUrl, 1, 2)" class="button button-block button-positive">Submit</button> 
+                <button ng-click="upload(croppedDataUrl, 1, 2)" class="button button-block button-positive">Enviar</button> 
             
             </ion-content>
         </ion-moda-view>
@@ -181,10 +195,15 @@
                 <div class="cropArea">
                     <img-crop image="picFile" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
                 </div>
-                <div>
-                    <img ng-src="{{croppedDataUrl}}" />
-                </div>
-                <button ng-click="upload(croppedDataUrl, 1, 3)" class="button button-block button-positive">Submit</button> 
+                <div class="row responsive-sm">
+                        Resultado:
+                    </div>
+                    <div class="row responsive-sm">
+                        <div class="col col-offset-33">
+                            <img ng-src="{{croppedDataUrl}}" />
+                        </div>
+                    </div>
+                <button ng-click="upload(croppedDataUrl, 1, 3)" class="button button-block button-positive">Enviar</button> 
             </ion-content>
         </ion-moda-view>
     </script>
@@ -198,7 +217,7 @@
                 <div>
                     <img ng-src="{{picFile}}" />
                 </div>
-                <button ng-click="upload(picFile, 0, 0)" class="button button-block button-positive">Submit</button> 
+                <button ng-click="upload(picFile, 0, 0)" class="button button-block button-positive">Enviar</button> 
             </ion-content>
         </ion-moda-view>
     </script>

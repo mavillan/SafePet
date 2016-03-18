@@ -102,7 +102,7 @@ angular.module('safePet')
 
     //File Upload
     $scope.upload = function (photo, nose, num) {
-        if(nose) {
+        if(nose == 1) {
             var url = "http://safepetapi.labcomp.cl:5000/noseimgs";
             var filename = userInfo.userId + "_registro-" + num + ".jpg";
         }

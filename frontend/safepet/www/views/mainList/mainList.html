@@ -92,21 +92,19 @@
                         <p>Toca para ir al perfil del dueño</p>
                     </div>
                 </div>
-                <div class="row">
-                    <div ng-if="dogsScanList.length">
-                        <ion-list>
-                            <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogsScanList" on-tap="showProfile(dog.owner)">
-                                <img ng-src="http://safepetapi.labcomp.cl:5000/dogsimgs/{{dog._id}}">
-                                <h2>{{dog.name}}</h2>
-                                <p>{{dog.breed}}</p>
-                                <p>{{dog.color}}</p>
-                            </ion-item>
-                        </ion-list>
-                    </div>
-                    <div ng-if="!dogsScanList.length">
-                        <div class="row">
-                            <div class="col col-33 col-offset-33">No hubo coincidencias.</div>
-                        </div>
+                <div ng-if="dogsScanList.length">
+                    <ion-list>
+                        <ion-item class="alt item-thumbnail-left" ng-repeat="dog in dogsScanList" on-tap="showProfile(dog.owner)">
+                            <img ng-src="http://safepetapi.labcomp.cl:5000/dogsimgs/{{dog._id}}">
+                            <h2>{{dog.name}}</h2>
+                            <p>{{dog.breed}}</p>
+                            <p>{{dog.color}}</p>
+                        </ion-item>
+                    </ion-list>
+                </div>
+                <div ng-if="!dogsScanList.length">
+                    <div class="row">
+                        <div class="col col-33 col-offset-33">No hubo coincidencias.</div>
                     </div>
                 </div>
             </ion-content>
